@@ -45,7 +45,7 @@ function Dashboard(props) {
 
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
-		console.log('Please login first');
+		//console.log('Please login first');
 		props.history.replace('/login')
 		return null
 	}

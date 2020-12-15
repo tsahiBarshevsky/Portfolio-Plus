@@ -69,6 +69,18 @@ class Firebase
             return quote.get('quote');
         }
     }
+
+    async getAllQuotes()
+    {
+        const snapshot = await app.firestore().collection('users_codedamn_video').get();
+        return snapshot.docs.map(doc => doc.data());
+        /*this.db.collection(`users_codedamn_video`).onSnapshot((snapshot) => {
+            const postData = [];
+            snapshot.forEach((doc) => postData.push({ ...doc.data(), id: doc.id }));
+            console.log(postData.length);
+            return postData['quote'];
+        });*/
+    }
 }
 
 export default new Firebase();
