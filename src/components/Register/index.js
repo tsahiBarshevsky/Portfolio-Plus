@@ -3,7 +3,7 @@ import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment }
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import PersonIcon from '@material-ui/icons/Person';
-import EmailIcon from '@material-ui/icons/Email';
+import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import LockIcon from '@material-ui/icons/Lock';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
@@ -141,7 +141,7 @@ function Register(props) {
 							onChange={e => setEmail(e.target.value)}
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<EmailIcon />
+								<AlternateEmailIcon />
 							</InputAdornment>} />
 					</FormControl>
 					<FormControl margin="normal" required fullWidth>
