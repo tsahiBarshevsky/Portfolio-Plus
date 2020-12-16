@@ -34,6 +34,7 @@ const styles = theme => ({
 		marginTop: theme.spacing(8),
 		display: 'flex',
 		flexDirection: 'column',
+		justifyContent: 'center',
 		alignItems: 'center',
 		boxShadow: '2px 2px 5px 0px rgba(0, 0, 0, 0.5)',
 		backgroundColor: 'rgba(40, 57, 101, 0.7)',
@@ -54,6 +55,10 @@ const styles = theme => ({
 	},
 	form: 
 	{
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
 		width: '100%',
 		marginTop: theme.spacing(1),
 	},
@@ -64,19 +69,19 @@ const styles = theme => ({
         borderRadius: '25px',
 		fontFamily: 'Andika New Basic'
 	},
-	lable:
-	{
-		color: 'black',
-	},
 	submit: 
 	{
 		fontSize: '17px',
 		textTransform: 'capitalize',
-		width: '110px',
+		width: '130px',
 		height: '35px',
 		backgroundColor: 'rgba(255, 255, 255, 0.65)',
 		borderRadius: '25px',
-		marginTop: theme.spacing(3)
+		marginTop: theme.spacing(3),
+		"&:hover":
+		{
+			backgroundColor: 'rgba(255, 255, 255, 0.55)'
+		}
 	},
 });
 
@@ -108,7 +113,7 @@ function Register(props) {
 					<PersonAddRoundedIcon className={classes.icon} />
 				</Avatar>
 				<MuiThemeProvider theme={theme}>
-					<Typography component="h1" variant="h5">
+					<Typography align="center" component="h1" variant="h5">
 						Create new account
 					</Typography>
 				</MuiThemeProvider>
