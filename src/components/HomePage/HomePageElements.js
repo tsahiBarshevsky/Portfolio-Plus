@@ -9,6 +9,7 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     padding: 30px 30px;
+    background-color: wheat;
 `;
 
 export const SubtitleContianer = styled.div`
@@ -22,6 +23,7 @@ export const SubtitleContianer = styled.div`
 export const Text = styled.p`
     font-size: 20px;
     text-align: center;
+    padding-bottom: 50px;
 `;
 
 export const LoginLink = styled(Link)`
@@ -29,4 +31,9 @@ export const LoginLink = styled(Link)`
     text-align: center;
     text-decoration: none;
     color: black;
+`;
+
+export const Picture = styled.img`
+    width: 100%;
+    height: auto;
 `;
