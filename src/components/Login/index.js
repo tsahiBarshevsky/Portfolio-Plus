@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment } from '@material-ui/core';
+import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
@@ -90,15 +91,31 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 			color: 'white'
+		},
+		subtitle1:
+		{
+			fontSize: '15px'
 		}
 	}
 });
 
-function SignIn(props) {
+function SignIn(props) 
+{
 	const { classes } = props;
-
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const [open, setOpen] = useState(false);
+
+	const Alert = (props) =>
+    {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+	}
+	
+	const closeSnackbar = () =>
+	{
+		setOpen(false);
+	}
 
 	return (
 		<main className={classes.main}>
@@ -150,10 +167,20 @@ function SignIn(props) {
           			</Button>
 				</form>
 			</Paper>
+			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
+                <Alert onClose={closeSnackbar} severity="error">
+					<MuiThemeProvider theme={theme}>
+						<Typography align="center" variant="subtitle1">
+							{error}
+						</Typography>
+					</MuiThemeProvider>
+                </Alert>
+            </Snackbar>
 		</main>
 	)
 
-	async function login() {
+	async function login() 
+	{
 		try 
 		{
 			await firebase.login(email, password);
@@ -161,7 +188,8 @@ function SignIn(props) {
 		} 
 		catch(error) 
 		{
-			alert(error.message);
+			setOpen(true);
+			setError(error.message);
 		}
 	}
 }

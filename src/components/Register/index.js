@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment } from '@material-ui/core';
+import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import PersonIcon from '@material-ui/icons/Person';
@@ -92,19 +93,33 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 			color: 'white'
+		},
+		subtitle1:
+		{
+			fontSize: '15px'
 		}
 	}
 });
 
-function Register(props) {
+function Register(props) 
+{
 	const { classes } = props;
-	//console.log(document.getElementById('myDiv').clientHeight);
-	//console.log(document.getElementById('myDiv').clientWidth);
-
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [quote, setQuote] = useState('');
+	const [error, setError] = useState('');
+	const [open, setOpen] = useState(false);
+
+	const Alert = (props) =>
+    {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+	}
+	
+	const closeSnackbar = () =>
+	{
+		setOpen(false);
+	}
 
 	return (
 		<main className={classes.main}>
@@ -171,10 +186,20 @@ function Register(props) {
           			</Button>
 				</form>
 			</Paper>
+			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
+                <Alert onClose={closeSnackbar} severity="error">
+					<MuiThemeProvider theme={theme}>
+						<Typography align="center" variant="subtitle1">
+							{error}
+						</Typography>
+					</MuiThemeProvider>
+                </Alert>
+            </Snackbar>
 		</main>
 	)
 
-	async function onRegister() {
+	async function onRegister() 
+	{
 		try 
 		{
 			await firebase.register(name, email, password);
@@ -183,7 +208,8 @@ function Register(props) {
 		} 
 		catch(error) 
 		{
-			alert(error.message);
+			setOpen(true);
+			setError(error.message);
 		}
 	}
 }
