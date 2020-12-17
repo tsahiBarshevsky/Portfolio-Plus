@@ -8,12 +8,12 @@ function Show(props)
     useEffect(() =>
     {
         firebase.getAllQuotes().then(setQuotes);
-    }, [firebase.getAllQuotes()]);
+        console.log("stam");
+    }, []);
 
     return (
         <div>
-            <h1>{props.match.params.username}</h1>
-            {/*{quotes.map((quote, index) =>
+            {quotes.map((quote, index) =>
                 <div key={index}>
                     {quote.user === props.match.params.username ?
                         <>
@@ -22,7 +22,7 @@ function Show(props)
                         </>
                     : null}
                 </div>
-            )}*/}
+            )}
         </div>
     )
 }
