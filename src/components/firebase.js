@@ -83,9 +83,9 @@ class Firebase
         }
     }
 
-    async getAllQuotes()
+    async getAllProjects(username)
     {
-        const snapshot = await app.firestore().collection('users_codedamn_video').get();
+        const snapshot = await app.firestore().collection(`${username}`).get();
         return snapshot.docs.map(doc => doc.data());
         /*this.db.collection(`users_codedamn_video`).onSnapshot((snapshot) => {
             const postData = [];

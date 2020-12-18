@@ -3,24 +3,23 @@ import firebase from '../firebase'
 
 function Show(props) 
 {
-    const [quotes, setQuotes] = useState([]);
+    const [projects, setProjects] = useState([]);
 
     useEffect(() =>
     {
-        firebase.getAllQuotes().then(setQuotes);
+        firebase.getAllProjects(props.match.params.username).then(setProjects);
         console.log("stam");
     }, []);
 
     return (
         <div>
-            {quotes.map((quote, index) =>
+            {projects.map((project, index) =>
                 <div key={index}>
-                    {quote.user === props.match.params.username ?
-                        <>
-                            <h1>{quote.quote}</h1>
-                            <h3>{quote.user}</h3>
-                        </>
-                    : null}
+                    <h1>{project.title}</h1>
+                    <h3>{project.type}</h3>
+                    <h3>{project.description}</h3>
+                    <h3>{project.links}</h3>
+                    <h3>{project.video}</h3>
                 </div>
             )}
         </div>
