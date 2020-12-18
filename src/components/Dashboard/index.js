@@ -9,7 +9,6 @@ import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,6 +23,9 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -137,7 +139,10 @@ function Dashboard(props) {
 	const [links, setLinks] = useState('');
 	const [video, setVideo] = useState('');
 	const [open, setOpen] = useState(false);
-
+	const [openError, setOpenError] = useState(false);
+	const [error, setError] = useState('');
+	const [openSuccess, setOpenSuccess] = useState('');
+	const [openDialog, setOpenDialog] = useState('');
 
 	/*useEffect(() =>
 	{
@@ -148,19 +153,29 @@ function Dashboard(props) {
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
 		//console.log('Please login first');
-		props.history.replace('/login')
-		return null
+		props.history.replace('/login');
+		return null;
 	}
 
 	const Alert = (props) =>
     {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
+	};
+
+	const closeSnackbar = () =>
+	{
+		setOpenError(false);
+		setOpenSuccess(false);
 	}
 
-	/*const closeSnackbar = () =>
+	const clearForm = () =>
 	{
-		setOpen(false);
-	}*/
+		setTitle('');
+		setType('');
+		setDescription('');
+		setLinks('');
+		setVideo('');
+	}
 
 	const handleDrawerOpen = () => 
 	{
@@ -170,6 +185,14 @@ function Dashboard(props) {
 	const handleDrawerClose = () => 
 	{
 		setOpen(false);
+	};
+
+	const handleClickOpen = () => {
+		setOpenDialog(true);
+	};
+	
+	const handleClickClose = () => {
+		setOpenDialog(false);
 	};
 
 	return (
@@ -240,97 +263,109 @@ function Dashboard(props) {
           			[classes.contentShift]: open,
         		})}>
         		<div className={classes.drawerHeader} />
-				<Fab className={classes.fab} color="primary" aria-label="add">
+				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
 				</Fab>
+				<Dialog
+					open={openDialog}
+					onClose={handleClickClose}
+					aria-labelledby="alert-dialog-title"
+					aria-describedby="alert-dialog-description"
+					style={{cursor: "default"}}>
+						<DialogTitle id="alert-dialog-title">
+							<MuiThemeProvider theme={typographyTheme}>
+								<Typography component="h1" variant="h5">
+									{`Adding new project`}
+								</Typography>
+							</MuiThemeProvider>
+						</DialogTitle>
+						<DialogContent>
+							<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="title" name="title"
+										disableUnderline 
+										placeholder="Project title.."
+										className={classes.input}
+										autoComplete="off" 
+										autoFocus value={title} 
+										onChange={e => setTitle(e.target.value)} />
+								</FormControl>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="type" name="type"
+										disableUnderline 
+										placeholder="Project type.."
+										className={classes.input}
+										autoComplete="off" 
+										value={type} 
+										onChange={e => setType(e.target.value)} />
+								</FormControl>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="description" name="description"
+										disableUnderline 
+										placeholder="Project description.."
+										className={classes.input}
+										autoComplete="off" 
+										value={description} 
+										onChange={e => setDescription(e.target.value)} />
+								</FormControl>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="links" name="links"
+										disableUnderline 
+										placeholder="Links.."
+										className={classes.input}
+										autoComplete="off" 
+										value={links} 
+										onChange={e => setLinks(e.target.value)} />
+								</FormControl>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="video" name="video"
+										disableUnderline 
+										placeholder="Video.."
+										className={classes.input}
+										autoComplete="off" 
+										value={video} 
+										onChange={e => setVideo(e.target.value)} />
+								</FormControl>
+								<Button
+									type="submit"
+									fullWidth
+									variant="contained"
+									color="primary"
+									onClick={addProject}
+									className={classes.submit}>
+									Add
+								</Button>
+								<Button
+									fullWidth
+									variant="contained"
+									color="primary"
+									onClick={clearForm}
+									className={classes.submit}>
+									Clear form
+								</Button>
+							</form>
+						</DialogContent>
+				</Dialog>
+				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+					<Alert onClose={closeSnackbar} severity="success">
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="subtitle1">
+								{`Project added successfully!`}
+							</Typography>
+						</MuiThemeProvider>
+					</Alert>
+				</Snackbar>
+				<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
+					<Alert onClose={closeSnackbar} severity="error">
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="subtitle1">
+								{error}
+							</Typography>
+						</MuiThemeProvider>
+					</Alert>
+				</Snackbar>
       		</main>
     	</div>
-		/*<main className={classes.main}>
-			<Paper className={classes.paper}>
-				<Avatar className={classes.avatar}>
-					<VerifiedUserOutlined />
-				</Avatar>
-				<MuiThemeProvider theme={theme}>
-					<Typography component="h1" variant="h5">
-						{`Hello, ${firebase.getCurrentUsername()}!`}
-					</Typography>
-				</MuiThemeProvider>
-				<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
-					<FormControl margin="normal" required fullWidth>
-						<Input id="title" name="title"
-							disableUnderline 
-							placeholder="Project title.."
-							className={classes.input}
-							autoComplete="off" 
-							autoFocus value={title} 
-							onChange={e => setTitle(e.target.value)} />
-					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<Input id="type" name="type"
-							disableUnderline 
-							placeholder="Project type.."
-							className={classes.input}
-							autoComplete="off" 
-							value={type} 
-							onChange={e => setType(e.target.value)} />
-					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<Input id="description" name="description"
-							disableUnderline 
-							placeholder="Project description.."
-							className={classes.input}
-							autoComplete="off" 
-							value={description} 
-							onChange={e => setDescription(e.target.value)} />
-					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<Input id="links" name="links"
-							disableUnderline 
-							placeholder="Links.."
-							className={classes.input}
-							autoComplete="off" 
-							value={links} 
-							onChange={e => setLinks(e.target.value)} />
-					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<Input id="video" name="video"
-							disableUnderline 
-							placeholder="Video.."
-							className={classes.input}
-							autoComplete="off" 
-							value={video} 
-							onChange={e => setVideo(e.target.value)} />
-					</FormControl>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="secondary"
-						onClick={addProject}
-						className={classes.submit}>
-						Add
-          			</Button>
-				</form>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="secondary"
-					onClick={logout}
-					className={classes.submit}>
-					Logout
-          		</Button>
-			</Paper>
-			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
-                <Alert onClose={closeSnackbar} severity="success">
-					<MuiThemeProvider theme={theme}>
-						<Typography align="center" variant="subtitle1">
-							Project added successfully! 
-						</Typography>
-					</MuiThemeProvider>
-                </Alert>
-            </Snackbar>
-		</main>*/
 	);
 
 	async function addProject()
@@ -338,11 +373,14 @@ function Dashboard(props) {
 		try
 		{
 			await firebase.addProject(title, type, description, links, video);
-			setOpen(true);
+			setOpenDialog(false);
+			setOpenSuccess(true);
+			clearForm();
 		}
 		catch(error)
 		{
-			alert(error.message);
+			setError(error.message);
+			setOpenError(true);
 		}
 	}
 
