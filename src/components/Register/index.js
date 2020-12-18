@@ -203,7 +203,7 @@ function Register(props)
 		try 
 		{
 			await firebase.register(name, email, password);
-			await firebase.addQuote(quote);
+			//await firebase.addQuote(quote);
 			props.history.replace('/dashboard');
 		} 
 		catch(error) 

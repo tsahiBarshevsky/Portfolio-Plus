@@ -39,6 +39,19 @@ class Firebase
         });
     }
 
+    addProject(title, type, description, links, video)
+    {
+        if (!this.auth.currentUser)
+            return alert("Not authorized");
+        return this.db.doc(`${this.auth.currentUser.displayName}/${title}`).set({
+            title: title,
+            type: type,
+            description: description,
+            links: links,
+            video: video
+        });
+    }
+
     addQuote(quote)
     {
         if (!this.auth.currentUser)
