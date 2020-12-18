@@ -11,9 +11,16 @@ function Show(props)
         console.log("stam");
     }, []);
 
+    /*if (projects.length < 1)
+    {
+        props.history.replace('/');
+		return null;
+    }*/
+
     return (
         <div>
-            {projects.map((project, index) =>
+            {projects.length > 1 ?
+            projects.map((project, index) =>
                 <div key={index}>
                     <h1>{project.title}</h1>
                     <h3>{project.type}</h3>
@@ -21,7 +28,7 @@ function Show(props)
                     <h3>{project.links}</h3>
                     <h3>{project.video}</h3>
                 </div>
-            )}
+            ) : "User doesn't exists"}
         </div>
     )
 }
