@@ -1,38 +1,103 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, Paper, Avatar, FormControl, Input, Button, Snackbar } from '@material-ui/core';
-import VerifiedUserOutlined from '@material-ui/icons/VerifiedUserOutlined';
-import withStyles from '@material-ui/core/styles/withStyles';
+import { Typography, FormControl, Input, Button, Snackbar } from '@material-ui/core';
+import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import Drawer from '@material-ui/core/Drawer';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import clsx from 'clsx';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
+const drawerWidth = 240;
 const styles = theme => ({
-	main: {
-		width: 'auto',
-		display: 'block', // Fix IE 11 issue.
-		marginLeft: theme.spacing.unit * 3,
-		marginRight: theme.spacing.unit * 3,
-		[theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	paper: {
-		backgroundColor: 'rgba(0, 0, 0, 0.4)',
-		marginTop: theme.spacing.unit * 8,
+	root: 
+	{
 		display: 'flex',
-		flexDirection: 'column',
+		cursor: 'default'
+	},
+	appBar: 
+	{
+		transition: theme.transitions.create(['margin', 'width'], 
+		{
+			easing: theme.transitions.easing.sharp,
+			duration: theme.transitions.duration.leavingScreen,
+		}),
+	},
+	appBarShift: 
+	{
+		width: `calc(100% - ${drawerWidth}px)`,
+		marginLeft: drawerWidth,
+		transition: theme.transitions.create(['margin', 'width'], 
+		{
+			easing: theme.transitions.easing.easeOut,
+		  	duration: theme.transitions.duration.enteringScreen,
+		}),
+	},
+	menuButton: 
+	{
+		marginRight: theme.spacing(2),
+	},
+	hide: 
+	{
+		display: 'none',
+	},
+	drawer: 
+	{
+		width: drawerWidth,
+		flexShrink: 0,
+	},
+	drawerPaper: 
+	{
+		width: drawerWidth,
+	},
+	drawerHeader: 
+	{
+		display: 'flex',
 		alignItems: 'center',
-		padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+		padding: theme.spacing(0, 1),
+		...theme.mixins.toolbar,
+		justifyContent: 'flex-end',
 	},
-	avatar: {
-		margin: theme.spacing.unit,
-		backgroundColor: theme.palette.secondary.main,
+	content: 
+	{
+		flexGrow: 1,
+		padding: theme.spacing(3),
+		transition: theme.transitions.create('margin', 
+		{
+		  	easing: theme.transitions.easing.sharp,
+		  	duration: theme.transitions.duration.leavingScreen,
+		}),
+		marginLeft: -drawerWidth,
 	},
-	submit: {
-		marginTop: theme.spacing.unit * 3,
+	contentShift: 
+	{
+		transition: theme.transitions.create('margin', 
+		{
+		  	easing: theme.transitions.easing.easeOut,
+		  	duration: theme.transitions.duration.enteringScreen,
+		}),
+		marginLeft: 0,
+	},
+	submit: 
+	{
+		marginTop: theme.spacing(3),
 	},
 	input:
 	{
@@ -40,10 +105,16 @@ const styles = theme => ({
         height: '40px',
         borderRadius: '25px',
 		fontFamily: 'Andika New Basic'
-	}
+	},
+	fab: 
+	{
+		position: 'fixed',
+		bottom: theme.spacing(2),
+		right: theme.spacing(2),
+	},
 });
 
-const theme = createMuiTheme({
+const typographyTheme = createMuiTheme({
 	typography:
 	{
 		allVariants:
@@ -59,12 +130,14 @@ const theme = createMuiTheme({
 
 function Dashboard(props) {
 	const { classes } = props;
+  	const theme = useTheme();
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('');
 	const [description, setDescription] = useState('');
 	const [links, setLinks] = useState('');
 	const [video, setVideo] = useState('');
 	const [open, setOpen] = useState(false);
+
 
 	/*useEffect(() =>
 	{
@@ -84,13 +157,95 @@ function Dashboard(props) {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
 	}
 
-	const closeSnackbar = () =>
+	/*const closeSnackbar = () =>
 	{
 		setOpen(false);
-	}
+	}*/
+
+	const handleDrawerOpen = () => 
+	{
+		setOpen(true);
+	};
+	
+	const handleDrawerClose = () => 
+	{
+		setOpen(false);
+	};
 
 	return (
-		<main className={classes.main}>
+		<div className={classes.root}>
+      		<CssBaseline />
+      		<AppBar
+        		position="fixed"
+        		className={clsx(classes.appBar, {
+          			[classes.appBarShift]: open,
+        		})} >
+        		<Toolbar>
+					<IconButton
+						color="inherit"
+						aria-label="open drawer"
+						onClick={handleDrawerOpen}
+						edge="start"
+						className={clsx(classes.menuButton, open && classes.hide)}>
+						<MenuIcon />
+					</IconButton>
+					<MuiThemeProvider theme={typographyTheme}>
+						<Typography component="h1" variant="h5">
+							{`Hello, ${firebase.getCurrentUsername()}!`}
+						</Typography>
+					</MuiThemeProvider>
+        		</Toolbar>
+      		</AppBar>
+      		<Drawer
+				className={classes.drawer}
+				variant="persistent"
+				anchor="left"
+				open={open}
+				classes={{
+					paper: classes.drawerPaper,
+				}}>
+				<div className={classes.drawerHeader}>
+					<IconButton onClick={handleDrawerClose}>
+						{theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+					</IconButton>
+				</div>
+        		<Divider />
+				<List>
+					{['Dashboard', 'Settings'].map((text, index) => (
+						<ListItem button key={text}>
+							<ListItemIcon>{index % 2 === 0 ? <DashboardIcon /> : <SettingsIcon />}</ListItemIcon>
+							<MuiThemeProvider theme={typographyTheme}>
+								<Typography variant="h6">
+									{text}
+								</Typography>
+							</MuiThemeProvider>
+						</ListItem>
+					))}
+				</List>
+        		<Divider />
+				<List>
+					<ListItem button onClick={logout}>
+						<ListItemIcon><ExitToAppIcon /></ListItemIcon>
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography variant="h6">
+								Logout
+							</Typography>
+						</MuiThemeProvider>
+					</ListItem>
+				</List>
+      		</Drawer>
+      		<main
+				className={clsx(classes.content, 
+				{
+          			[classes.contentShift]: open,
+        		})}>
+        		<div className={classes.drawerHeader} />
+				<Fab className={classes.fab} color="primary" aria-label="add">
+					<AddIcon />
+				</Fab>
+      		</main>
+    	</div>
+		/*<main className={classes.main}>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<VerifiedUserOutlined />
@@ -175,7 +330,7 @@ function Dashboard(props) {
 					</MuiThemeProvider>
                 </Alert>
             </Snackbar>
-		</main>
+		</main>*/
 	);
 
 	async function addProject()
@@ -197,4 +352,4 @@ function Dashboard(props) {
 	}
 }
 
-export default withRouter(withStyles(styles)(Dashboard))
+export default withRouter(withStyles(styles)(Dashboard));
