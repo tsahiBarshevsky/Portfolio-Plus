@@ -1,27 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, FormControl, Input, Button, Snackbar } from '@material-ui/core';
+import { 
+	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
+	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
-import Divider from '@material-ui/core/Divider';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import Drawer from '@material-ui/core/Drawer';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import SettingsIcon from '@material-ui/icons/Settings';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import clsx from 'clsx';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -33,7 +26,7 @@ const styles = theme => ({
 	root: 
 	{
 		display: 'flex',
-		cursor: 'default'
+		cursor: 'default',
 	},
 	appBar: 
 	{
@@ -144,6 +137,12 @@ function Dashboard(props) {
 	const [error, setError] = useState('');
 	const [openSuccess, setOpenSuccess] = useState('');
 	const [openDialog, setOpenDialog] = useState('');
+	const [projects, setProjects] = useState([]);
+
+    useEffect(() =>
+    {
+        firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
+    }, []);
 
 	/*useEffect(() =>
 	{
@@ -264,7 +263,12 @@ function Dashboard(props) {
           			[classes.contentShift]: open,
         		})}>
         		<div className={classes.drawerHeader} />
-				<ProjectCard title="project" />
+				{projects.length > 1 ?
+				projects.map((project, index) =>
+					<div key={index}>
+						<ProjectCard title={project.title} />
+					</div>
+				) : "You dont have projects yet"}
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
 				</Fab>

@@ -1,8 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/styles';
+import { createMuiTheme, makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import { Fab, Paper } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VisibilityIcon from '@material-ui/icons/Visibility';
 
 const useStyles = makeStyles(theme => ({
     main: 
@@ -23,39 +25,57 @@ const useStyles = makeStyles(theme => ({
 	},
 	paper: 
 	{
+		display: 'flex',
+		justifyContent: 'space-between',
 		borderRadius: '20px',
 		marginTop: theme.spacing(8),
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'center',
 		alignItems: 'center',
 		boxShadow: '2px 2px 5px 0px rgba(0, 0, 0, 0.5)',
-		backgroundColor: 'rgba(40, 57, 101, 0.7)',
 		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
     },
     fab: 
 	{
-		position: 'fixed',
-		bottom: theme.spacing(2),
-		right: theme.spacing(2),
+		margin: '5px'
 	}
 }));
+
+const theme = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Andika New Basic", sans-serif`,
+			padding: '10px'
+		},
+		subtitle1:
+		{
+			fontSize: '20px'
+		}
+	}
+});
 
 function ProjectCard(props) 
 {
     const classes = useStyles();
     return (
-        <main className={classes.main}>
-            <Paper className={classes.paper}>
-                <h1>{props.title}</h1>
-                <Fab color="primary" size="small">
-                    <EditIcon />
-                </Fab>
-                <Fab color="primary" size="small">
-                    <DeleteIcon />
-                </Fab>
-            </Paper>
-        </main>
+		<Paper className={classes.paper}>
+			<MuiThemeProvider theme={theme}>
+				<Typography variant="subtitle1">
+					{props.title}
+				</Typography>
+			</MuiThemeProvider>
+			<div>
+				<Fab className={classes.fab} color="primary" size="small">
+					<VisibilityIcon />
+				</Fab>
+				<Fab className={classes.fab} color="primary" size="small">
+					<EditIcon />
+				</Fab>
+				<Fab className={classes.fab} color="primary" size="small">
+					<DeleteIcon />
+				</Fab>
+			</div>
+		</Paper>
     )
 }
 
