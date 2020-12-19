@@ -26,6 +26,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import ProjectCard from '../ProjectCard';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -263,6 +264,7 @@ function Dashboard(props) {
           			[classes.contentShift]: open,
         		})}>
         		<div className={classes.drawerHeader} />
+				<ProjectCard title="project" />
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
 				</Fab>
@@ -283,6 +285,7 @@ function Dashboard(props) {
 							<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="title" name="title"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}} 
 										disableUnderline 
 										placeholder="Project title.."
 										className={classes.input}
@@ -292,6 +295,7 @@ function Dashboard(props) {
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="type" name="type"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
 										placeholder="Project type.."
 										className={classes.input}
@@ -301,6 +305,7 @@ function Dashboard(props) {
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="description" name="description"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
 										placeholder="Project description.."
 										className={classes.input}
@@ -310,6 +315,7 @@ function Dashboard(props) {
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="links" name="links"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
 										placeholder="Links.."
 										className={classes.input}
@@ -319,6 +325,7 @@ function Dashboard(props) {
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="video" name="video"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
 										placeholder="Video.."
 										className={classes.input}
@@ -385,8 +392,8 @@ function Dashboard(props) {
 	}
 
 	async function logout() {
-		await firebase.logout()
-		props.history.push('/')
+		await firebase.logout();
+		props.history.push('/');
 	}
 }
 

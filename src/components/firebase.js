@@ -52,6 +52,17 @@ class Firebase
         });
     }
 
+    deleteProject(title)
+    {
+        if (!this.auth.currentUser)
+            return alert("Not authorized");
+        this.db.collection(`${this.auth.currentUser.displayName}`).where("title", "==", title).get()
+        .then(querySnapshot => {
+            querySnapshot.docs[0].ref.delete();
+        });
+        //const res = await db.collection('cities').doc('DC').delete();
+    }
+
     addQuote(quote)
     {
         if (!this.auth.currentUser)
