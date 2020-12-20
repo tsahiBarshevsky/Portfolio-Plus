@@ -20,13 +20,14 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ProjectCard from '../ProjectCard';
+import GenericPhoto from '../../images/person-circle-outline.svg';
 
 const drawerWidth = 240;
 const styles = theme => ({
 	root: 
 	{
 		display: 'flex',
-		cursor: 'default',
+		cursor: 'default'
 	},
 	appBar: 
 	{
@@ -71,7 +72,7 @@ const styles = theme => ({
 		...theme.mixins.toolbar,
 		justifyContent: 'flex-end',
 	},
-	content: 
+	main: 
 	{
 		flexGrow: 1,
 		padding: theme.spacing(3),
@@ -82,7 +83,7 @@ const styles = theme => ({
 		}),
 		marginLeft: -drawerWidth,
 	},
-	contentShift: 
+	mainShift: 
 	{
 		transition: theme.transitions.create('margin', 
 		{
@@ -90,6 +91,18 @@ const styles = theme => ({
 		  	duration: theme.transitions.duration.enteringScreen,
 		}),
 		marginLeft: 0,
+	},
+	content:
+	{
+		display: 'flex',
+		flexDirection: 'column',
+		justifyContent: 'center',
+		alignItems: 'center',
+		marginTop: '55px'
+	},
+	profileImage:
+	{
+
 	},
 	submit: 
 	{
@@ -117,14 +130,21 @@ const typographyTheme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 		},
-		subtitle1:
-		{
-			fontSize: '15px'
-		}
 	}
 });
 
-function Dashboard(props) {
+function Dashboard(props) 
+{
+	const getGreeting = () => 
+	{
+		const now = new Date().getHours();
+		if (now > 22) return "Good night";
+		if (now > 17) return "Good evening";
+		if (now > 12) return "Good afternonn";
+		if (now > 6) return "Good morning";
+	}
+
+	const greet = getGreeting();
 	const { classes } = props;
   	const theme = useTheme();
 	const [title, setTitle] = useState('');
@@ -139,10 +159,10 @@ function Dashboard(props) {
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
 
-    /*useEffect(() =>
+    useEffect(() =>
     {
         firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
-    }, []);*/
+    }, []);
 
 	/*useEffect(() =>
 	{
@@ -199,20 +219,22 @@ function Dashboard(props) {
 	const handleDrawerOpen = () => 
 	{
 		setOpen(true);
-	};
+	}
 	
 	const handleDrawerClose = () => 
 	{
 		setOpen(false);
-	};
+	}
 
-	const handleClickOpen = () => {
+	const handleClickOpen = () => 
+	{
 		setOpenDialog(true);
-	};
+	}
 	
-	const handleClickClose = () => {
+	const handleClickClose = () =>
+	{
 		setOpenDialog(false);
-	};
+	}
 
 	return (
 		<div className={classes.root}>
@@ -232,8 +254,8 @@ function Dashboard(props) {
 						<MenuIcon />
 					</IconButton>
 					<MuiThemeProvider theme={typographyTheme}>
-						<Typography component="h1" variant="h5">
-							{`Hello, ${firebase.getCurrentUsername()}!`}
+						<Typography variant="h6">
+							Dashboard panel
 						</Typography>
 					</MuiThemeProvider>
         		</Toolbar>
@@ -277,17 +299,24 @@ function Dashboard(props) {
 				</List>
       		</Drawer>
       		<main
-				className={clsx(classes.content, 
+				className={clsx(classes.main, 
 				{
-          			[classes.contentShift]: open,
+          			[classes.mainShift]: open,
         		})}>
-        		<div className={classes.drawerHeader} />
-				{/*projects.length > 1 ?
-				projects.map((project, index) =>
-					<div key={index}>
-						<ProjectCard title={project.title} />
-					</div>
-				) : <CircularProgress />*/}
+				<div className={classes.content}>
+					<img src={GenericPhoto} alt="User image" width="100px"/>
+					<MuiThemeProvider theme={typographyTheme}>
+						<Typography align="center" variant="h5">
+							{`${greet}, ${firebase.getCurrentUsername()}!`}
+						</Typography>
+					</MuiThemeProvider>
+					{projects.length > 1 ?
+					projects.map((project, index) =>
+						<div key={index}>
+							<ProjectCard title={project.title} />
+						</div>
+					) : <CircularProgress />}
+				</div>
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
 				</Fab>
@@ -336,27 +365,26 @@ function Dashboard(props) {
 										value={description} 
 										onChange={e => setDescription(e.target.value)} />
 								</FormControl>
-								
-									{links.map((x, i) =>
-									{
-										return(
-											<FormControl margin="normal" required fullWidth>
-												<Input id="links" name="links"
-													inputProps={{min: 0, style: { marginLeft: '20px' }}}
-													disableUnderline 
-													placeholder="Link"
-													className={classes.input}
-													autoComplete="off" 
-													value={x.links} 
-													onChange={e => handleInputChange(e, i)} />
-												<div>
-													{links.length !== 1 && <Button
-													onClick={() => handleRemoveClick(i)}>Remove</Button>}
-													{links.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
-												</div>
-											</FormControl>
-										);
-									})}
+								{links.map((x, i) =>
+								{
+									return(
+										<FormControl margin="normal" required fullWidth>
+											<Input id="links" name="links"
+												inputProps={{min: 0, style: { marginLeft: '20px' }}}
+												disableUnderline 
+												placeholder={`link #${i+1}`}
+												className={classes.input}
+												autoComplete="off" 
+												value={x.links} 
+												onChange={e => handleInputChange(e, i)} />
+											<div>
+												{links.length !== 1 && <Button
+												onClick={() => handleRemoveClick(i)}>Remove</Button>}
+												{links.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
+											</div>
+										</FormControl>
+									);
+								})}
 								<FormControl margin="normal" required fullWidth>
 									<Input id="video" name="video"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
