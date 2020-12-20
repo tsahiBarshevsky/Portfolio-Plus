@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
-	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab } from '@material-ui/core';
+	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
@@ -130,7 +130,7 @@ function Dashboard(props) {
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('');
 	const [description, setDescription] = useState('');
-	const [links, setLinks] = useState('');
+	const [links, setLinks] = useState([{link: ''}]);
 	const [video, setVideo] = useState('');
 	const [open, setOpen] = useState(false);
 	const [openError, setOpenError] = useState(false);
@@ -139,10 +139,10 @@ function Dashboard(props) {
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
 
-    useEffect(() =>
+    /*useEffect(() =>
     {
         firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
-    }, []);
+    }, []);*/
 
 	/*useEffect(() =>
 	{
@@ -156,6 +156,25 @@ function Dashboard(props) {
 		props.history.replace('/login');
 		return null;
 	}
+
+	const handleInputChange = (e, index) => 
+	{
+		const { value } = e.target;
+		console.log(value);
+		const list = [...links];
+		list[index] = value;
+		setLinks(list);
+	}
+
+	const handleRemoveClick = index => {
+		const list = [...links];
+		list.splice(index, 1);
+		setLinks(list);
+	}
+
+	const handleAddClick = () => {
+		setLinks([...links, { link: '' }]);
+	};
 
 	const Alert = (props) =>
     {
@@ -173,7 +192,7 @@ function Dashboard(props) {
 		setTitle('');
 		setType('');
 		setDescription('');
-		setLinks('');
+		setLinks([{link: ''}]);
 		setVideo('');
 	}
 
@@ -263,12 +282,12 @@ function Dashboard(props) {
           			[classes.contentShift]: open,
         		})}>
         		<div className={classes.drawerHeader} />
-				{projects.length > 1 ?
+				{/*projects.length > 1 ?
 				projects.map((project, index) =>
 					<div key={index}>
 						<ProjectCard title={project.title} />
 					</div>
-				) : "You dont have projects yet"}
+				) : <CircularProgress />*/}
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
 				</Fab>
@@ -317,16 +336,27 @@ function Dashboard(props) {
 										value={description} 
 										onChange={e => setDescription(e.target.value)} />
 								</FormControl>
-								<FormControl margin="normal" required fullWidth>
-									<Input id="links" name="links"
-										inputProps={{min: 0, style: { marginLeft: '20px' }}}
-										disableUnderline 
-										placeholder="Links.."
-										className={classes.input}
-										autoComplete="off" 
-										value={links} 
-										onChange={e => setLinks(e.target.value)} />
-								</FormControl>
+								
+									{links.map((x, i) =>
+									{
+										return(
+											<FormControl margin="normal" required fullWidth>
+												<Input id="links" name="links"
+													inputProps={{min: 0, style: { marginLeft: '20px' }}}
+													disableUnderline 
+													placeholder="Link"
+													className={classes.input}
+													autoComplete="off" 
+													value={x.links} 
+													onChange={e => handleInputChange(e, i)} />
+												<div>
+													{links.length !== 1 && <Button
+													onClick={() => handleRemoveClick(i)}>Remove</Button>}
+													{links.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
+												</div>
+											</FormControl>
+										);
+									})}
 								<FormControl margin="normal" required fullWidth>
 									<Input id="video" name="video"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}

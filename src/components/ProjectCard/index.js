@@ -1,7 +1,6 @@
 import React from 'react';
 import { createMuiTheme, makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
-import { Fab, Paper } from '@material-ui/core';
+import { Fab, Paper, Typography } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';

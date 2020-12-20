@@ -61,7 +61,6 @@ class Firebase
             querySnapshot.docs[0].ref.delete();
         });*/
         const res = this.db.collection(`${this.auth.currentUser.displayName}`).doc(`${title}`).delete();
-        console.log("enter");
     }
 
     addQuote(quote)
