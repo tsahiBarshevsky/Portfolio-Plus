@@ -25,7 +25,13 @@ function Show(props)
                     <h1>{project.title}</h1>
                     <h3>{project.type}</h3>
                     <h3>{project.description}</h3>
-                    <h3>{project.links}</h3>
+                    <ol>
+                        {project.links.map(link =>
+                            <li>
+                                {link}
+                            </li>
+                        )}
+                    </ol>
                     <h3>{project.video}</h3>
                 </div>
             ) : "User doesn't exists"}
