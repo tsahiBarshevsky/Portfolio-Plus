@@ -5,6 +5,7 @@ import { Fab, Paper } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
+import firebase from '../firebase';
 
 const useStyles = makeStyles(theme => ({
     main: 
@@ -71,12 +72,24 @@ function ProjectCard(props)
 				<Fab className={classes.fab} color="primary" size="small">
 					<EditIcon />
 				</Fab>
-				<Fab className={classes.fab} color="primary" size="small">
+				<Fab className={classes.fab} color="primary" size="small" onClick={deleteProject}>
 					<DeleteIcon />
 				</Fab>
 			</div>
 		</Paper>
-    )
+	);
+	
+	async function deleteProject()
+	{
+		try 
+		{
+			await firebase.deleteProject(props.title);
+		} 
+		catch (error)
+		{
+			alert(error.message);
+		}
+	}
 }
 
 export default ProjectCard;
