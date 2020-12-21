@@ -158,6 +158,8 @@ function Dashboard(props)
 	const [openSuccess, setOpenSuccess] = useState('');
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
+	const [image, setImage] = useState(null);
+	const [url, setUrl] = useState('');
 
     useEffect(() =>
     {
@@ -236,6 +238,12 @@ function Dashboard(props)
 		setOpenDialog(false);
 	}
 
+	const handleImageChange = e =>
+	{
+		if (e.target.files[0])
+			setImage(e.target.files[0]);
+	}
+
 	return (
 		<div className={classes.root}>
       		<CssBaseline />
@@ -304,7 +312,10 @@ function Dashboard(props)
           			[classes.mainShift]: open,
         		})}>
 				<div className={classes.content}>
-					<img src={GenericPhoto} alt="User image" width="100px"/>
+					<img src={url !== '' ? url : GenericPhoto} alt="User image" width="100px"/>
+					<Input type="file" onChange={handleImageChange} />
+					<Button onClick={uploadImage}>Upload</Button>
+					<Button onClick={getImageURL}>Check</Button>
 					<MuiThemeProvider theme={typographyTheme}>
 						<Typography align="center" variant="h5">
 							{`${greet}, ${firebase.getCurrentUsername()}!`}
@@ -451,6 +462,31 @@ function Dashboard(props)
 			setError(error.message);
 			setOpenError(true);
 		}
+	}
+
+	async function uploadImage()
+	{
+		try 
+		{
+			if (image.size < 5000000) //less then 5mb
+			{
+				await firebase.uploadImage(image, firebase.getCurrentUsername());
+			}
+			else
+				alert("Image's size is bigger than 5mb!");
+		} 
+		catch (error) 
+		{
+			console.log(error);
+		}
+	}
+
+	async function getImageURL()
+	{
+		var username = firebase.getCurrentUsername();
+		firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
+			url => {setUrl(url);}
+		);
 	}
 
 	async function logout() {

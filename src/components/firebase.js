@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAVgBNDlARe8CY5YRXP_vJXcrcMVVoMV00",
@@ -19,6 +20,7 @@ class Firebase
         app.initializeApp(firebaseConfig);
         this.auth = app.auth();
         this.db = app.firestore();
+        this.storage = app.storage();
     }
 
     login(email, password)
@@ -61,6 +63,15 @@ class Firebase
             querySnapshot.docs[0].ref.delete();
         });*/
         const res = this.db.collection(`${this.auth.currentUser.displayName}`).doc(`${title}`).delete();
+    }
+
+    uploadImage(image, name)
+    {
+        const uploadTask = this.storage.ref(`Profile images/${name}`).put(image);
+        uploadTask.on(
+            "state_changed", 
+            snapshot => {}, 
+            error => {console.log(error);});
     }
 
     addQuote(quote)

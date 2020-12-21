@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import firebase from '../firebase'
+import React, { useState, useEffect } from 'react';
+import firebase from '../firebase';
+import GenericPhoto from '../../images/person-circle-outline.svg';
 
 function Show(props) 
 {
     const [projects, setProjects] = useState([]);
+    const [url, setUrl] = useState('');
 
     useEffect(() =>
     {
+        getImageURL();
         firebase.getAllProjects(props.match.params.username).then(setProjects);
-        console.log("stam");
     }, []);
 
     /*if (projects.length < 1)
@@ -19,6 +21,7 @@ function Show(props)
 
     return (
         <div>
+            <img src={url !== '' ? url : GenericPhoto} alt="User image" width="100px"/>
             {projects.length > 1 ?
             projects.map((project, index) =>
                 <div key={index}>
@@ -37,6 +40,14 @@ function Show(props)
             ) : "User doesn't exists"}
         </div>
     )
+
+    async function getImageURL()
+	{
+		var username = props.match.params.username;
+		firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
+			url => {setUrl(url);}
+		);
+	}
 }
 
-export default Show
+export default Show;
