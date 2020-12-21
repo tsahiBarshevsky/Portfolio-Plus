@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
@@ -104,12 +104,20 @@ const theme = createMuiTheme({
 function Register(props) 
 {
 	const { classes } = props;
+	const [users, setUsers] = useState([]);
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [quote, setQuote] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
+	const [fault, setFault] = useState(false);
+
+	useEffect(() => {
+		firebase.getAllUsers().then(setUsers);
+	}, []);
+
+	console.log(users);
 
 	const Alert = (props) =>
     {
@@ -200,16 +208,31 @@ function Register(props)
 
 	async function onRegister() 
 	{
-		try 
+		var fault = false;
+		//check username availability
+		for (let index = 0; index < users.length; index++) 
 		{
-			await firebase.register(name, email, password);
-			//await firebase.addQuote(quote);
-			props.history.replace('/dashboard');
-		} 
-		catch(error) 
+			if (name === users[index].username)
+				fault = true;		
+		}
+		if (!fault) //username available
+		{
+			try 
+			{
+				await firebase.register(name, email, password); //register
+				await firebase.addUserToList(name); //add to users' list
+				props.history.replace('/dashboard');
+			} 
+			catch(error) 
+			{
+				setOpen(true);
+				setError(error.message);
+			}
+		}
+		else //username unavailable
 		{
 			setOpen(true);
-			setError(error.message);
+			setError("Username is already taken. Please choose other username.")
 		}
 	}
 }

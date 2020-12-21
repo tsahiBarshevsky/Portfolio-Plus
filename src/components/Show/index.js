@@ -22,7 +22,7 @@ function Show(props)
     return (
         <div>
             <img src={url !== '' ? url : GenericPhoto} alt="User image" width="100px"/>
-            {projects.length > 1 ?
+            {projects.length >= 1 ?
             projects.map((project, index) =>
                 <div key={index}>
                     <h1>{project.title}</h1>

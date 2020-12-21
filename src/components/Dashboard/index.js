@@ -21,6 +21,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
+import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -102,7 +103,9 @@ const styles = theme => ({
 	},
 	profileImage:
 	{
-
+		width: '200px',
+		height: '200px',
+		borderRadius: '50%'
 	},
 	submit: 
 	{
@@ -138,10 +141,10 @@ function Dashboard(props)
 	const getGreeting = () => 
 	{
 		const now = new Date().getHours();
-		if (now > 22) return "Good night";
-		if (now > 17) return "Good evening";
-		if (now > 12) return "Good afternonn";
-		if (now > 6) return "Good morning";
+		if (now >= 22) return "Good night";
+		if (now >= 17) return "Good evening";
+		if (now >= 12) return "Good afternoon";
+		if (now >= 6) return "Good morning";
 	}
 
 	const greet = getGreeting();
@@ -163,6 +166,7 @@ function Dashboard(props)
 
     useEffect(() =>
     {
+		getImageURL();
         firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
     }, []);
 
@@ -312,16 +316,27 @@ function Dashboard(props)
           			[classes.mainShift]: open,
         		})}>
 				<div className={classes.content}>
-					<img src={url !== '' ? url : GenericPhoto} alt="User image" width="100px"/>
-					<Input type="file" onChange={handleImageChange} />
+					<img className={classes.profileImage}
+						src={url !== '' ? url : GenericPhoto} alt="Profile image" />
+					<label htmlFor="upload-photo">
+						<input
+							accept="image/*"
+							style={{ display: "none" }}
+							id="upload-photo"
+							name="upload-photo"
+							type="file"
+							onChange={handleImageChange}/>
+						<Fab color="primary" size="small" component="span" aria-label="add">
+							<PhotoCameraOutlinedIcon />
+						</Fab>
+					</label>
 					<Button onClick={uploadImage}>Upload</Button>
-					<Button onClick={getImageURL}>Check</Button>
 					<MuiThemeProvider theme={typographyTheme}>
 						<Typography align="center" variant="h5">
 							{`${greet}, ${firebase.getCurrentUsername()}!`}
 						</Typography>
 					</MuiThemeProvider>
-					{projects.length > 1 ?
+					{projects.length >= 1 ?
 					projects.map((project, index) =>
 						<div key={index}>
 							<ProjectCard title={project.title} />
@@ -471,6 +486,7 @@ function Dashboard(props)
 			if (image.size < 5000000) //less then 5mb
 			{
 				await firebase.uploadImage(image, firebase.getCurrentUsername());
+				alert("Upload successfully");
 			}
 			else
 				alert("Image's size is bigger than 5mb!");

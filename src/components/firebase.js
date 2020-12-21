@@ -116,6 +116,20 @@ class Firebase
             return postData['quote'];
         });*/
     }
+
+    async addUserToList(name)
+    {
+        return this.db.doc(`list-of-users/${name}`).set({
+            username: name
+        });
+    }
+
+    async getAllUsers()
+    {
+        const snapshot = await app.firestore().collection(`list-of-users`).get();
+        return snapshot.docs.map(doc => doc.data());
+    }
+    
 }
 
 export default new Firebase();
