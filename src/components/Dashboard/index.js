@@ -151,7 +151,8 @@ function Dashboard(props)
 
 	const greet = getGreeting();
 	const { classes } = props;
-  	const theme = useTheme();
+	const theme = useTheme();
+	const [update, setUpdate] = useState(true);  
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('');
 	const [description, setDescription] = useState('');
@@ -169,8 +170,12 @@ function Dashboard(props)
     useEffect(() =>
     {
 		getImageURL();
-        firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
-    }, []);
+		if (update)
+		{
+			firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
+			setUpdate(false);
+		}
+    }, [firebase.getAllProjects()]);
 
 	/*useEffect(() =>
 	{
@@ -188,7 +193,6 @@ function Dashboard(props)
 	const handleInputChange = (e, index) => 
 	{
 		const { value } = e.target;
-		console.log(value);
 		const list = [...links];
 		list[index] = value;
 		setLinks(list);
@@ -484,6 +488,7 @@ function Dashboard(props)
 			await firebase.addProject(title, type, description, links, video);
 			setOpenDialog(false);
 			setOpenSuccess(true);
+			setUpdate(true);
 			clearForm();
 		}
 		catch(error)
