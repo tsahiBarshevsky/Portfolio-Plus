@@ -18,6 +18,11 @@ export const SubtitleContianer = styled.div`
     justify-content: center;
     align-items: center;
     width: 45%;
+
+    @media screen and (max-width: 959px)
+    {
+        width: 85%;
+    }
 `;
 
 export const Text = styled.p`
@@ -31,6 +36,13 @@ export const LoginLink = styled(Link)`
     text-align: center;
     text-decoration: none;
     color: black;
+    transition: all 0.5s ease-out;
+
+    &:hover
+    {
+        transition: all 0.5s ease-in;
+        color: #ff4040;
+    }
 `;
 
 export const Picture = styled.img`

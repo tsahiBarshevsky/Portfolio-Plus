@@ -108,16 +108,12 @@ function Register(props)
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
-	const [quote, setQuote] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
-	const [fault, setFault] = useState(false);
 
 	useEffect(() => {
 		firebase.getAllUsers().then(setUsers);
 	}, []);
-
-	console.log(users);
 
 	const Alert = (props) =>
     {

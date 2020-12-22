@@ -11,11 +11,21 @@ import Vector3 from '../../images/Vector3.svg';
 const styles = theme => ({
 	button: 
 	{
-		borderRadius: '25px',
+		color: '#ff4040',
 		fontSize: '20px',
+		fontWeight: '600',
+		letterSpacing: '1px',
+		border: '3px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
 		marginTop: theme.spacing(3),
 		marginBottom: theme.spacing(1),
-		textTransform: 'capitalize'
+		textTransform: 'capitalize',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040'
+		}
 	},
 	item1:
 	{
@@ -101,8 +111,7 @@ function HomePage(props) {
 					Get started!
 			</Button>
 			<Text>
-				Already have an account?
-				<LoginLink to="/login">Login!</LoginLink>	
+				Already have an account? <LoginLink to="/login">Login!</LoginLink>	
 			</Text>
 			<Grid
 				spacing={0}
