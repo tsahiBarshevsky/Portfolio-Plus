@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
-	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress } from '@material-ui/core';
+	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
+	Grid } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -27,6 +28,7 @@ const drawerWidth = 240;
 const styles = theme => ({
 	root: 
 	{
+		backgroundColor: '#f5f5f5',
 		display: 'flex',
 		cursor: 'default'
 	},
@@ -336,12 +338,24 @@ function Dashboard(props)
 							{`${greet}, ${firebase.getCurrentUsername()}!`}
 						</Typography>
 					</MuiThemeProvider>
+					<MuiThemeProvider theme={typographyTheme}>
+						<Typography align="center" variant="h5">
+							<Link target="_blank" to={`/${firebase.getCurrentUsername()}`}>Your link</Link>
+						</Typography>
+					</MuiThemeProvider>
 					{projects.length >= 1 ?
-					projects.map((project, index) =>
-						<div key={index}>
-							<ProjectCard title={project.title} />
-						</div>
-					) : <CircularProgress />}
+					<Grid 
+						container spacing={3} direction="row"
+						justify="center" alignItems="center">
+						{projects.map((project, index) =>
+						<Grid item key={index}>
+							<ProjectCard 
+								name={firebase.getCurrentUsername()}
+								title={project.title} />
+						</Grid>
+						)}
+					</Grid>
+					: <CircularProgress />}
 				</div>
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />
@@ -383,7 +397,7 @@ function Dashboard(props)
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="description" name="description"
-										inputProps={{min: 0, style: { marginLeft: '20px' }}}
+										inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
 										disableUnderline 
 										placeholder="Project description.."
 										className={classes.input}

@@ -105,6 +105,13 @@ class Firebase
         }
     }
 
+    async getSingleProject(username, title)
+    {
+        const cityRef = this.db.collection(`${username}`).doc(`${title}`);
+        const doc = await cityRef.get();
+        return doc.data();
+    }
+
     async getAllProjects(username)
     {
         const snapshot = await app.firestore().collection(`${username}`).get();
@@ -130,6 +137,10 @@ class Firebase
         return snapshot.docs.map(doc => doc.data());
     }
     
+    async updateProject(username, title, type, description, links, video)
+    {
+        this.db.collection(`${username}`).doc(`${title}`).update({type: type});
+    }
 }
 
 export default new Firebase();

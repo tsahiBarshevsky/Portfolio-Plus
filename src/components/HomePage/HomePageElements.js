@@ -9,7 +9,7 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     padding: 30px 30px;
-    background-color: wheat;
+    background-color: #f5f5f5;
 `;
 
 export const SubtitleContianer = styled.div`

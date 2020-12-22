@@ -1,48 +1,15 @@
 import React, { useState } from 'react';
-import { createMuiTheme, makeStyles, MuiThemeProvider } from '@material-ui/core/styles';
-import { Button, DialogActions, Fab, Paper, Typography, Snackbar } from '@material-ui/core';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { Button, DialogActions, Typography, Snackbar, Input, FormControl } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import firebase from '../firebase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import WarningIcon from '@material-ui/icons/Warning';
 import MuiAlert from '@material-ui/lab/Alert';
-
-const useStyles = makeStyles(theme => ({
-    main: 
-	{
-		width: 'auto',
-		display: 'block',
-		borderRadius: '20px',
-		marginLeft: theme.spacing(3),
-		marginRight: theme.spacing(3),
-		backgroundColor: 'white',
-		backgroundPosition: 'center', 
-		backgroundRepeat: 'no-repeat',
-		[theme.breakpoints.up(400 + theme.spacing(6))]: {
-			width: 400,
-			marginLeft: 'auto',
-			marginRight: 'auto',
-		},
-	},
-	paper: 
-	{
-		display: 'flex',
-		justifyContent: 'space-between',
-		borderRadius: '20px',
-		marginTop: theme.spacing(8),
-		alignItems: 'center',
-		boxShadow: '2px 2px 5px 0px rgba(0, 0, 0, 0.5)',
-		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
-    },
-    fab: 
-	{
-		margin: '5px'
-	}
-}));
+import { Container, Icon } from './projectCardElements';
 
 const theme = createMuiTheme({
 	typography:
@@ -51,12 +18,15 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 		},
+		subtitle1:
+		{
+			fontSize: '20px',
+		}
 	}
 });
 
 function ProjectCard(props) 
 {
-	const classes = useStyles();
 	const [open, setOpen] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState('');
 
@@ -73,7 +43,14 @@ function ProjectCard(props)
 	const handleClose = () =>
 	{
 		setOpen(false);
+		//setEdit(false);
 	}
+
+	/*const handleOpenEditDialog = () =>
+	{
+		setEdit(true);
+		getSingleProject();
+	}*/
 
 	const closeSnackbar = () =>
 	{
@@ -81,22 +58,19 @@ function ProjectCard(props)
 	}
 
     return (
-		<Paper className={classes.paper}>
+		<Container>
 			<MuiThemeProvider theme={theme}>
 				<Typography variant="subtitle1">
 					{props.title}
 				</Typography>
 			</MuiThemeProvider>
 			<div>
-				<Fab className={classes.fab} color="primary" size="small">
-					<VisibilityIcon />
-				</Fab>
-				<Fab className={classes.fab} color="primary" size="small">
+				<Icon color="primary" size="small">
 					<EditIcon />
-				</Fab>
-				<Fab className={classes.fab} color="primary" size="small" onClick={handleOpen}>
+				</Icon>
+				<Icon color="primary" size="small" onClick={handleOpen}>
 					<DeleteIcon />
-				</Fab>
+				</Icon>
 			</div>
 			<Dialog
 				open={open}
@@ -135,8 +109,32 @@ function ProjectCard(props)
 					</MuiThemeProvider>
 				</Alert>
 			</Snackbar>
-		</Paper>
+		</Container>
 	);
+
+	/*async function getSingleProject()
+	{
+		try 
+		{
+			await firebase.getSingleProject(props.name, props.title).then(setProject);
+		} 
+		catch (error) 
+		{
+			console.log(error.message);
+		}
+	}
+
+	async function updateProject()
+	{
+		try 
+		{
+			await firebase.updateProject(props.name, props.title, "update type");
+		} 
+		catch (error) 
+		{
+			console.log(error.message);
+		}
+	}*/
 	
 	async function deleteProject()
 	{
