@@ -2,16 +2,31 @@ import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
 import "./style.css";
+
+const theme = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Andika New Basic", sans-serif`,
+        },
+        h4:
+        {
+            fontSize: '25px'
+        }
+	}
+});
 
 function PersonalLink(props) {
     const [projects, setProjects] = useState([]);
     const [url, setUrl] = useState('');
-    const [selectedId, setSelectedId] = useState(null);
 
     useEffect(() =>
     {
-        //getImageURL();
+        getImageURL();
         firebase.getAllProjects(props.match.params.username).then(setProjects);
     }, []);
 
@@ -29,12 +44,16 @@ function PersonalLink(props) {
         return (
             <motion.li layout onClick={toggleOpen} initial={{ borderRadius: 10 }}>
                 <motion.div layout >
-                    <h3>{projects[props.location].title}</h3>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h4" gutterBottom>
+                            {projects[props.location].title}
+                        </Typography>
+                    </MuiThemeProvider>
                 </motion.div>
                 <AnimatePresence>{isOpen && <Content location={props.location} />}</AnimatePresence>
             </motion.li>
         );
-      }
+    }
       
     function Content(props) 
     {
@@ -45,32 +64,43 @@ function PersonalLink(props) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}>
                     <div>
-                        <h3>{projects[props.location].type}</h3>
-                        <h3>{projects[props.location].description}</h3>
-                        <ol>
-                            {projects[props.location].links.map(link =>
-                                <li>
-                                    <a href={link} target="_blank">go</a>
-                                </li>
-                            )}
-                        </ol>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography variant="subtitle1" gutterBottom>
+                                {`Type: ${projects[props.location].type}`}
+                            </Typography>
+                            <Typography variant="subtitle1" gutterBottom>
+                                {projects[props.location].description}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                <u>Links</u>
+                                <br />
+                            </Typography>
+                        </MuiThemeProvider>
+                        {projects[props.location].links.map((link, index) =>
+                            <a href={link} target="_blank">{`link #${index+1}`}</a>
+                        )}
                         <div className="videoConainer">
                             <iframe className="video"
                                 src={projects[props.location].video}
-                                width="50" height="40"
                                 frameborder="0"
-                                allowfullscreen
+                                allowFullScreen
                                 allow="accelerometer; 
                                         autoplay; encrypted-media; 
-                                        gyroscope; picture-in-picture" />
-                            </div>
+                                        gyroscope; picture-in-picture;" />
+                        </div>
                     </div>
             </motion.div>
         );
     }
 
     return (
-        <div>
+        <div className="container">
+            <img className="image" src={url} alt="User's image" />
+            <MuiThemeProvider theme={theme}>
+                <Typography variant="h3" gutterBottom>
+                    {props.match.params.username}
+                </Typography>
+            </MuiThemeProvider>
             <AnimateSharedLayout>
                 <motion.ul layout initial={{ borderRadius: 25 }}>
                 {projects.length >= 1 ?
@@ -79,24 +109,6 @@ function PersonalLink(props) {
                 ) : "User doesn't exists"}
                 </motion.ul>
             </AnimateSharedLayout>
-            
-            {/*<img src={url !== '' ? url : GenericPhoto} alt="User image" width="100px"/>
-            {projects.length >= 1 ?
-            projects.map((project, index) =>
-                <div key={index}>
-                    <h1>{project.title}</h1>
-                    <h3>{project.type}</h3>
-                    <h3>{project.description}</h3>
-                    <ol>
-                        {project.links.map(link =>
-                            <li>
-                                {link}
-                            </li>
-                        )}
-                    </ol>
-                    <h3>{project.video}</h3>
-                </div>
-            ) : "User doesn't exists"}*/}
         </div>
     )
 
