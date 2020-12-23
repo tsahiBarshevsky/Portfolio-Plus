@@ -281,7 +281,7 @@ function Settings(props)
                             {`Change username`}
                         </Typography>
                     </MuiThemeProvider>
-                    <FormControl margin="normal" required fullWidth>
+                    <FormControl margin="normal" required >
                         <Input id="username" name="username"
                             inputProps={{min: 0, style: { marginLeft: '20px' }}} 
                             disableUnderline 
@@ -334,7 +334,7 @@ function Settings(props)
 			try 
 			{
                 const oldUsername = firebase.getCurrentUsername();
-                await firebase.updateUsername(username);
+                await firebase.updateUsername(username, oldUsername);
                 await firebase.addUserToList(username); //add to users' list
                 await firebase.deleteUserFromList(oldUsername); //delete old name from users' list
 			} 

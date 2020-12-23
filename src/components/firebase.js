@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import {firestoreConnect} from 'react-redux-firebase';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAVgBNDlARe8CY5YRXP_vJXcrcMVVoMV00",
@@ -152,8 +153,9 @@ class Firebase
         this.db.collection(`${username}`).doc(`${title}`).update({type: type});
     }
 
-    async updateUsername(username)
+    async updateUsername(username, oldUsername)
     {
+        console.log(oldUsername);
         this.auth.currentUser.updateProfile({
             displayName: username
         });
