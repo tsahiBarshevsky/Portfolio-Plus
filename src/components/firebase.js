@@ -96,6 +96,11 @@ class Firebase
         return this.auth.currentUser && this.auth.currentUser.displayName;
     }
 
+    getCurrentUsernameEmail()
+    {
+        return this.auth.currentUser && this.auth.currentUser.email;
+    }
+
     async getCurrentUserQuote()
     {
         if (this.auth.currentUser)
@@ -136,10 +141,22 @@ class Firebase
         const snapshot = await app.firestore().collection(`list-of-users`).get();
         return snapshot.docs.map(doc => doc.data());
     }
+
+    deleteUserFromList(name)
+    {
+        const res = this.db.collection(`list-of-users`).doc(`${name}`).delete();
+    }
     
     async updateProject(username, title, type, description, links, video)
     {
         this.db.collection(`${username}`).doc(`${title}`).update({type: type});
+    }
+
+    async updateUsername(username)
+    {
+        this.auth.currentUser.updateProfile({
+            displayName: username
+        });
     }
 }
 

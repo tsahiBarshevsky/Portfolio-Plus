@@ -294,7 +294,7 @@ function Dashboard(props)
         		<Divider />
 				<List>
 					{['Dashboard', 'Settings'].map((text, index) => (
-						<ListItem button key={text}>
+						<ListItem button key={text} onClick={index % 2 === 0 ? handleDrawerClose : goToSettings}>
 							<ListItemIcon>{index % 2 === 0 ? <DashboardIcon /> : <SettingsIcon />}</ListItemIcon>
 							<MuiThemeProvider theme={typographyTheme}>
 								<Typography variant="h6">
@@ -518,10 +518,18 @@ function Dashboard(props)
 
 	async function getImageURL()
 	{
-		var username = firebase.getCurrentUsername();
-		firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
-			url => {setUrl(url);}
-		);
+		if (firebase.getCurrentUsername())
+		{
+			var username = firebase.getCurrentUsername();
+			firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
+				url => {setUrl(url);}
+			);
+		}
+	}
+
+	async function goToSettings()
+	{
+		props.history.push('/settings');
 	}
 
 	async function logout() {

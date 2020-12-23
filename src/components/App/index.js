@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import firebase from '../firebase';
 import './style.css';
 import PersonalLink from '../Personal link';
+import Settings from '../Settings';
 
 const theme = createMuiTheme();
 
@@ -32,6 +33,7 @@ export default function App() {
 					<Route exact path="/login" component={Login} />
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/dashboard" component={Dashboard} />
+					<Route exact path="/settings" component={Settings} />
 					<Route exact path="/:username" component={PersonalLink} />
 				</Switch>
 			</Router>
