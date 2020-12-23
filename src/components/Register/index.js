@@ -10,6 +10,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
 import Background from '../../images/register-form-background.png';
+import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 
 const styles = theme => ({
 	main: 
@@ -106,10 +107,12 @@ function Register(props)
 	const { classes } = props;
 	const [users, setUsers] = useState([]);
 	const [name, setName] = useState('');
+	const [profession, setProfession] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
+	console.log(profession);
 
 	useEffect(() => {
 		firebase.getAllUsers().then(setUsers);
@@ -139,6 +142,7 @@ function Register(props)
 				<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
 					<FormControl margin="normal" required fullWidth>
 						<Input id="name" name="name"
+							required
 							disableUnderline 
 							placeholder="Name.."
 							className={classes.input}
@@ -151,7 +155,22 @@ function Register(props)
 							</InputAdornment>} />
 					</FormControl>
 					<FormControl margin="normal" required fullWidth>
+						<Input id="profession" name="profession"
+							required
+							disableUnderline 
+							placeholder="Profession.."
+							className={classes.input}
+							autoComplete="off" 
+							autoFocus value={profession} 
+							onChange={e => setProfession(e.target.value)} 
+							startAdornment=
+							{<InputAdornment style={{marginLeft: "13px"}} position="start">
+								<EmojiEventsIcon />
+							</InputAdornment>} />
+					</FormControl>
+					<FormControl margin="normal" required fullWidth>
 						<Input id="email" name="email"
+							required
 							disableUnderline
 							placeholder="Email address.."
 							className={classes.input}  
@@ -165,6 +184,7 @@ function Register(props)
 					</FormControl>
 					<FormControl margin="normal" required fullWidth>
 						<Input id="password" name="password"
+							required
 							disableUnderline 
 							placeholder="Password.."
 							className={classes.input} 
@@ -216,7 +236,7 @@ function Register(props)
 			try 
 			{
 				await firebase.register(name, email, password); //register
-				await firebase.addUserToList(name); //add to users' list
+				await firebase.addUserToList(name, profession); //add to users' list
 				props.history.replace('/dashboard');
 			} 
 			catch(error) 

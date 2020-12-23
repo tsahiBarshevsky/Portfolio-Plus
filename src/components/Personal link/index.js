@@ -22,12 +22,14 @@ const theme = createMuiTheme({
 
 function PersonalLink(props) {
     const [projects, setProjects] = useState([]);
+    const [profession, setProfession] = useState('');
     const [url, setUrl] = useState('');
 
     useEffect(() =>
     {
         getImageURL();
         firebase.getAllProjects(props.match.params.username).then(setProjects);
+        firebase.getUserProfession(props.match.params.username).then(setProfession);
     }, []);
 
     /*if (projects.length < 1)
@@ -98,7 +100,7 @@ function PersonalLink(props) {
             <img className="image" src={url} alt="User's image" />
             <MuiThemeProvider theme={theme}>
                 <Typography variant="h3" gutterBottom>
-                    {props.match.params.username}
+                    {`${props.match.params.username} - ${profession}`}
                 </Typography>
             </MuiThemeProvider>
             <AnimateSharedLayout>

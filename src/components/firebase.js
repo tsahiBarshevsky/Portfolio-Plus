@@ -129,10 +129,11 @@ class Firebase
         });*/
     }
 
-    async addUserToList(name)
+    async addUserToList(name, profession)
     {
         return this.db.doc(`list-of-users/${name}`).set({
-            username: name
+            username: name,
+            profession: profession
         });
     }
 
@@ -140,6 +141,13 @@ class Firebase
     {
         const snapshot = await app.firestore().collection(`list-of-users`).get();
         return snapshot.docs.map(doc => doc.data());
+    }
+
+    async getUserProfession(user)
+    {
+        const cityRef = this.db.collection(`list-of-users`).doc(`${user}`);
+        const doc = await cityRef.get();
+        return doc.data().profession;
     }
 
     deleteUserFromList(name)
