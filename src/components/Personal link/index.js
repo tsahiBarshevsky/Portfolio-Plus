@@ -103,14 +103,15 @@ function PersonalLink(props) {
                     {`${props.match.params.username} - ${profession}`}
                 </Typography>
             </MuiThemeProvider>
+            {projects.length >= 1 ?
             <AnimateSharedLayout>
                 <motion.ul layout initial={{ borderRadius: 25 }}>
-                {projects.length >= 1 ?
-                projects.map((project, index) =>
-                    <Item key={project} location={index} />
-                ) : "User doesn't exists"}
+                    {projects.map((project, index) =>
+                        <Item key={project} location={index} />
+                    )} 
                 </motion.ul>
             </AnimateSharedLayout>
+            : `${props.match.params.username} has no projects yet`}
         </div>
     )
 

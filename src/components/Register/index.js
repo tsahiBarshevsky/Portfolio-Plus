@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
+import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar, Tooltip, Fade } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
@@ -11,6 +11,7 @@ import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
 import Background from '../../images/register-form-background.png';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 
 const styles = theme => ({
 	main: 
@@ -64,6 +65,13 @@ const styles = theme => ({
 		width: '100%',
 		marginTop: theme.spacing(1),
 	},
+	formControl:
+	{
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'center',
+		alignItems: 'center',	
+	},
 	input:
 	{
 		backgroundColor: 'rgba(255, 255, 255, 0.65)',
@@ -85,6 +93,13 @@ const styles = theme => ({
 			backgroundColor: 'rgba(255, 255, 255, 0.55)'
 		}
 	},
+	helpIcon:
+	{
+		fontSize: '30px',
+		color: 'rgba(255, 255, 255, 0.65)',
+		margin: '10px',
+		cursor: 'pointer'
+	}
 });
 
 const theme = createMuiTheme({
@@ -112,7 +127,6 @@ function Register(props)
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
-	console.log(profession);
 
 	useEffect(() => {
 		firebase.getAllUsers().then(setUsers);
@@ -140,9 +154,8 @@ function Register(props)
 					</Typography>
 				</MuiThemeProvider>
 				<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
-					<FormControl margin="normal" required fullWidth>
+					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="name" name="name"
-							required
 							disableUnderline 
 							placeholder="Name.."
 							className={classes.input}
@@ -153,10 +166,14 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<PersonIcon />
 							</InputAdornment>} />
+						<Tooltip title="It'll be the name for your personal link" 
+							TransitionComponent={Fade} 
+							TransitionProps={{ timeout: 400 }}>
+							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
+						</Tooltip>
 					</FormControl>
-					<FormControl margin="normal" required fullWidth>
+					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="profession" name="profession"
-							required
 							disableUnderline 
 							placeholder="Profession.."
 							className={classes.input}
@@ -167,10 +184,14 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<EmojiEventsIcon />
 							</InputAdornment>} />
+						<Tooltip title="What are you doing in life?" 
+							TransitionComponent={Fade} 
+							TransitionProps={{ timeout: 400 }}>
+							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
+						</Tooltip>
 					</FormControl>
-					<FormControl margin="normal" required fullWidth>
+					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="email" name="email"
-							required
 							disableUnderline
 							placeholder="Email address.."
 							className={classes.input}  
@@ -181,10 +202,14 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<AlternateEmailIcon />
 							</InputAdornment>} />
+						<Tooltip title="The email will be used by you to login" 
+							TransitionComponent={Fade} 
+							TransitionProps={{ timeout: 400 }}>
+							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
+						</Tooltip>
 					</FormControl>
-					<FormControl margin="normal" required fullWidth>
+					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="password" name="password"
-							required
 							disableUnderline 
 							placeholder="Password.."
 							className={classes.input} 
@@ -195,7 +220,12 @@ function Register(props)
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<LockIcon />
-							</InputAdornment>}  />
+							</InputAdornment>} />
+						<Tooltip title="Must be at least 6 characters" 
+							TransitionComponent={Fade} 
+							TransitionProps={{ timeout: 400 }}>
+							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
+						</Tooltip>
 					</FormControl>
 					{/*<FormControl margin="normal" required fullWidth>
 						<InputLabel htmlFor="quote">Your Favorite Quote</InputLabel>
