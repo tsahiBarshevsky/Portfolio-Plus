@@ -276,22 +276,6 @@ function Settings(props)
                         </Typography>
                     </MuiThemeProvider>
                     <Divider />
-                    <MuiThemeProvider theme={typographyTheme}>
-                        <Typography align="center" variant="h5">
-                            {`Change username`}
-                        </Typography>
-                    </MuiThemeProvider>
-                    <FormControl margin="normal" required >
-                        <Input id="username" name="username"
-                            inputProps={{min: 0, style: { marginLeft: '20px' }}} 
-                            disableUnderline 
-                            placeholder="New username.."
-                            className={classes.input}
-                            autoComplete="off" 
-                            autoFocus value={username} 
-                            onChange={e => setUsername(e.target.value)} />
-                    </FormControl>
-                    <Button onClick={updateUsername}>Update</Button>
 				</div>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
@@ -318,37 +302,6 @@ function Settings(props)
     async function goToDashboard()
     {
         props.history.push('/dashboard');
-    }
-
-    async function updateUsername()
-    {
-        var fault = false;
-		//check username availability
-		for (let index = 0; index < users.length; index++) 
-		{
-			if (username === users[index].username)
-				fault = true;		
-		}
-        if (!fault) //username available
-		{
-			try 
-			{
-                const oldUsername = firebase.getCurrentUsername();
-                await firebase.updateUsername(username, oldUsername);
-                await firebase.addUserToList(username); //add to users' list
-                await firebase.deleteUserFromList(oldUsername); //delete old name from users' list
-			} 
-			catch(error) 
-			{
-				setOpenError(true);
-				setError(error.message);
-			}
-		}
-		else //username unavailable
-		{
-			setOpenError(true);
-			setError("Username is already taken. Please choose other username.")
-		}
     }
 
 	async function logout() {

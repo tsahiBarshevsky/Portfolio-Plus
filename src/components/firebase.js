@@ -2,7 +2,6 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import {firestoreConnect} from 'react-redux-firebase';
 
 const firebaseConfig = {
     apiKey: "AIzaSyAVgBNDlARe8CY5YRXP_vJXcrcMVVoMV00",
