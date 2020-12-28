@@ -3,15 +3,34 @@ import firebase from '../firebase';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import { Typography, Divider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import "./style.css";
+import { Root, TextWrapper, TopLine } from './PersonalLinkElements';
+
+const useStyles = makeStyles((theme) => ({
+    avatar: {
+        width: theme.spacing(18),
+        height: theme.spacing(18),
+        [theme.breakpoints.down("xs")]:
+        {
+            width: theme.spacing(14),
+            height: theme.spacing(14),
+        }
+    },
+    divider: {
+        height: theme.spacing(.3),
+        backgroundColor: 'black'
+    }
+}));
 
 const theme = createMuiTheme({
 	typography:
 	{
 		allVariants:
 		{
-			fontFamily: `"Andika New Basic", sans-serif`,
+            fontFamily: `"Andika New Basic", sans-serif`,
         },
         h4:
         {
@@ -22,14 +41,15 @@ const theme = createMuiTheme({
 
 function PersonalLink(props) {
     const [projects, setProjects] = useState([]);
-    const [profession, setProfession] = useState('');
+    const [userInfo, setUserInfo] = useState('');
     const [url, setUrl] = useState('');
+    const classes = useStyles();
 
     useEffect(() =>
     {
         getImageURL();
         firebase.getAllProjects(props.match.params.username).then(setProjects);
-        firebase.getUserProfession(props.match.params.username).then(setProfession);
+        firebase.getUserInfo(props.match.params.username).then(setUserInfo);
     }, []);
 
     /*if (projects.length < 1)
@@ -95,14 +115,27 @@ function PersonalLink(props) {
         );
     }
 
+
+    /*main*/
     return (
-        <div className="container">
-            <img className="image" src={url} alt="User's image" />
-            <MuiThemeProvider theme={theme}>
-                <Typography variant="h3" gutterBottom>
-                    {`${props.match.params.username} - ${profession}`}
-                </Typography>
-            </MuiThemeProvider>
+        <Root>
+            <TopLine>
+                <MuiThemeProvider theme={theme}>
+                    <TextWrapper>
+                        <Typography variant="h3" >
+                            {`${props.match.params.username}`}
+                        </Typography>
+                        <Typography variant="h4" gutterBottom>
+                            {`${userInfo.profession}`}
+                        </Typography>
+                        <Typography variant="subtitle1">
+                            {`Last update: ${userInfo.lastUpdate}`}
+                        </Typography>
+                    </TextWrapper>
+                </MuiThemeProvider>
+                <Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
+            </TopLine>
+            <Divider variant="middle" className={classes.divider} />
             {projects.length >= 1 ?
             <AnimateSharedLayout>
                 <motion.ul layout initial={{ borderRadius: 25 }}>
@@ -112,7 +145,7 @@ function PersonalLink(props) {
                 </motion.ul>
             </AnimateSharedLayout>
             : `${props.match.params.username} has no projects yet`}
-        </div>
+        </Root>
     )
 
     async function getImageURL()

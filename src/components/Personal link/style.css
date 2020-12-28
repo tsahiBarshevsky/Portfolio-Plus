@@ -22,7 +22,7 @@ body {
   text-align: center;
 }*/
 
-/*.container
+.container
 {
     cursor: default;
     background: linear-gradient(250deg, #8190d4, #949665);
@@ -102,4 +102,4 @@ li:last-child
     width: 100%;
     height: 100%;
     border: none;
-}*/
+}

@@ -43,9 +43,14 @@ class Firebase
 
     addProject(title, type, description, links, video)
     {
+        const username = this.auth.currentUser.displayName;
+        const now = new Date();
+        const date = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
         if (!this.auth.currentUser)
             return alert("Not authorized");
-        return this.db.doc(`${this.auth.currentUser.displayName}/${title}`).set({
+        this.db.collection('list-of-users').doc(`${username}`).update({
+            lastUpdate: date});
+        return this.db.doc(`${username}/${title}`).set({
             title: title,
             type: type,
             description: description,
@@ -129,11 +134,12 @@ class Firebase
         });*/
     }
 
-    async addUserToList(name, profession)
+    async addUserToList(name, profession, date)
     {
         return this.db.doc(`list-of-users/${name}`).set({
             username: name,
-            profession: profession
+            profession: profession,
+            lastUpdate: date
         });
     }
 
@@ -143,11 +149,11 @@ class Firebase
         return snapshot.docs.map(doc => doc.data());
     }
 
-    async getUserProfession(user)
+    async getUserInfo(user) //profession and last update
     {
-        const cityRef = this.db.collection(`list-of-users`).doc(`${user}`);
-        const doc = await cityRef.get();
-        return doc.data().profession;
+        const ref = this.db.collection(`list-of-users`).doc(`${user}`);
+        const doc = await ref.get();
+        return doc.data();
     }
 
     deleteUserFromList(name)

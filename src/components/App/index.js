@@ -10,7 +10,6 @@ import firebase from '../firebase';
 import './style.css';
 import PersonalLink from '../Personal link';
 import Settings from '../Settings';
-import Stam from '../stam/stam';
 
 const theme = createMuiTheme();
 
@@ -35,7 +34,6 @@ export default function App() {
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/settings" component={Settings} />
-					<Route exact path="/stam" component={Stam} />
 					<Route exact path="/:username" component={PersonalLink} />
 				</Switch>
 			</Router>
