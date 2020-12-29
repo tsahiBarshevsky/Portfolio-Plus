@@ -6,13 +6,13 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import "./style.css";
-import { Root, TextWrapper, TopLine } from './PersonalLinkElements';
+import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Title } from './PersonalLinkElements';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
-        width: theme.spacing(18),
-        height: theme.spacing(18),
+        width: theme.spacing(19),
+        height: theme.spacing(19),
+        //border: '5px double black',
         [theme.breakpoints.down("xs")]:
         {
             width: theme.spacing(14),
@@ -21,7 +21,18 @@ const useStyles = makeStyles((theme) => ({
     },
     divider: {
         height: theme.spacing(.3),
-        backgroundColor: 'black'
+        width: '785px',
+        alignSelf: 'center',
+        backgroundColor: 'black',
+        marginBottom: theme.spacing(3),
+        [theme.breakpoints.down("sm")]:
+        {
+            width: '550px'
+        },
+        [theme.breakpoints.down("xs")]:
+        {
+            width: '315px'
+        }
     }
 }));
 
@@ -35,48 +46,38 @@ const theme = createMuiTheme({
         h4:
         {
             fontSize: '25px'
+        },
+        subtitle1:
+        {
+            lineHeight: 1.2
         }
 	}
 });
 
 function PersonalLink(props) {
-    const [projects, setProjects] = useState([]);
-    const [userInfo, setUserInfo] = useState('');
-    const [url, setUrl] = useState('');
-    const classes = useStyles();
-
-    useEffect(() =>
-    {
-        getImageURL();
-        firebase.getAllProjects(props.match.params.username).then(setProjects);
-        firebase.getUserInfo(props.match.params.username).then(setUserInfo);
-    }, []);
-
-    /*if (projects.length < 1)
-    {
-        props.history.replace('/');
-		return null;
-    }*/
-
+    
+    /*card in close mode*/
     function Item(props) 
     {
         const [isOpen, setIsOpen] = useState(false);
         const toggleOpen = () => setIsOpen(!isOpen);
+        const stayOpen = () => setIsOpen(true);
       
         return (
-            <motion.li layout onClick={toggleOpen} initial={{ borderRadius: 10 }}>
-                <motion.div layout >
+            <Project layout onClick={toggleOpen} initial={{ borderRadius: 10 }}>
+                <motion.div layout>
                     <MuiThemeProvider theme={theme}>
                         <Typography variant="h4" gutterBottom>
                             {projects[props.location].title}
                         </Typography>
                     </MuiThemeProvider>
                 </motion.div>
-                <AnimatePresence>{isOpen && <Content location={props.location} />}</AnimatePresence>
-            </motion.li>
+                <AnimatePresence>{isOpen && <Content location={props.location} stayOpen={stayOpen} />}</AnimatePresence>
+            </Project>
         );
     }
       
+    /*card content - open mode*/
     function Content(props) 
     {
         return (
@@ -98,23 +99,37 @@ function PersonalLink(props) {
                                 <br />
                             </Typography>
                         </MuiThemeProvider>
+                        <Links>
                         {projects[props.location].links.map((link, index) =>
-                            <a href={link} target="_blank">{`link #${index+1}`}</a>
+                            <li key={index}>
+                                <Link href={link} target="_blank">{`link #${index+1}`}</Link>
+                            </li>
                         )}
-                        <div className="videoConainer">
-                            <iframe className="video"
-                                src={projects[props.location].video}
+                        </Links>
+                        <VideoContainer>
+                            <Video src={projects[props.location].video}
                                 frameborder="0"
                                 allowFullScreen
                                 allow="accelerometer; 
                                         autoplay; encrypted-media; 
                                         gyroscope; picture-in-picture;" />
-                        </div>
+                        </VideoContainer>
                     </div>
             </motion.div>
         );
     }
 
+    const [projects, setProjects] = useState([]);
+    const [userInfo, setUserInfo] = useState('');
+    const [url, setUrl] = useState('');
+    const classes = useStyles();
+
+    useEffect(() =>
+    {
+        getImageURL();
+        firebase.getAllProjects(props.match.params.username).then(setProjects);
+        firebase.getUserInfo(props.match.params.username).then(setUserInfo);
+    }, []);
 
     /*main*/
     return (
@@ -137,14 +152,23 @@ function PersonalLink(props) {
             </TopLine>
             <Divider variant="middle" className={classes.divider} />
             {projects.length >= 1 ?
-            <AnimateSharedLayout>
-                <motion.ul layout initial={{ borderRadius: 25 }}>
-                    {projects.map((project, index) =>
-                        <Item key={project} location={index} />
-                    )} 
-                </motion.ul>
-            </AnimateSharedLayout>
-            : `${props.match.params.username} has no projects yet`}
+            <ListWrapper>
+                <AnimateSharedLayout>
+                    <ProjectsList layout initial={{ borderRadius: 25 }}>
+                        {projects.map((project, index) =>
+                            <Item key={project} location={index} />
+                        )} 
+                    </ProjectsList>
+                </AnimateSharedLayout>
+            </ListWrapper>
+            :
+            <ListWrapper>
+                <MuiThemeProvider theme={theme}>
+                    <Typography variant="h4" >
+                        {`${props.match.params.username} has no projects yet`}
+                    </Typography>
+                </MuiThemeProvider>
+            </ListWrapper>}
         </Root>
     )
 

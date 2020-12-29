@@ -178,7 +178,7 @@ function Register(props)
 							placeholder="Profession.."
 							className={classes.input}
 							autoComplete="off" 
-							autoFocus value={profession} 
+							value={profession} 
 							onChange={e => setProfession(e.target.value)} 
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
@@ -265,10 +265,8 @@ function Register(props)
 		{
 			try 
 			{
-				const now = new Date();
-				const date = `${now.getDate()}/${now.getMonth()+1}/${now.getFullYear()}`;
 				await firebase.register(name, email, password); //register
-				await firebase.addUserToList(name, profession, date); //add to users' list
+				await firebase.addUserToList(name, profession, "N/A"); //add to users' list
 				props.history.replace('/dashboard');
 			} 
 			catch(error) 
