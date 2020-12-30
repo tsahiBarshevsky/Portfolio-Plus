@@ -1,22 +1,5 @@
-import styled from 'styled-components';
-
-export const Wrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
-export const Container = styled.div`
-    cursor: default;
-    background-color: #121212;
-    color: white;
-    z-index: 1;
-    width: 100%;
-    padding: 60px 50px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-`;
+import styled, { keyframes } from 'styled-components';
+import { Container as MUContainer } from '@material-ui/core';
 
 export const GridContainer = styled.div`
     z-index: 1;
@@ -26,4 +9,57 @@ export const GridContainer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+`;
+
+export const Container = styled(MUContainer)`
+    padding-top: 20px;
+`;
+
+/*---Loading animation---*/
+
+export const PulseContiner = styled.div`
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+    @media screen and (max-width: 375px)
+    {
+        width: 60px;
+    }
+`;
+
+const pulse = keyframes`
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: .25;
+        transform: scale(.75);
+    }
+`;
+
+export const PulseBubble1 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .0s infinite alternate;
+`;
+
+export const PulseBubble2 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .1s infinite alternate;
+`;
+
+export const PulseBubble3 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .2s infinite alternate;
 `;
