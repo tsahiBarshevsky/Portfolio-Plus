@@ -106,7 +106,6 @@ const styles = theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginTop: '65px'
-    	
 	},
 	profileImage:
 	{
@@ -170,12 +169,10 @@ function Dashboard(props)
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
 	const [image, setImage] = useState(null);
-	const [url, setUrl] = useState('');
 	const [isLoad, setIsLoad] = useState(false);
 
     useEffect(() =>
     {
-		//getImageURL();
 		setTimeout(() => {
 			setIsLoad(true);
 		}, 3000);
@@ -549,17 +546,6 @@ function Dashboard(props)
 		catch (error) 
 		{
 			console.log(error);
-		}
-	}
-
-	async function getImageURL()
-	{
-		if (firebase.getCurrentUsername())
-		{
-			var username = firebase.getCurrentUsername();
-			firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
-				url => {setUrl(url);}
-			);
 		}
 	}
 

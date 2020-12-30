@@ -75,8 +75,16 @@ class Firebase
         const uploadTask = this.storage.ref(`Profile images/${name}`).put(image);
         uploadTask.on(
             "state_changed", 
-            snapshot => {}, 
+            snapshot => {console.log((snapshot.bytesTransferred / snapshot.totalBytes) * 100)}, 
             error => {console.log(error);});
+    }
+
+    deleteImage(url)
+    {
+        let imageRef = this.storage.refFromURL(url);
+        imageRef.delete().then(() => {
+            console.log("Deleted")
+        }).catch(err => console.log(err))
     }
 
     addQuote(quote)

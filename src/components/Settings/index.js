@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
 	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
-	Grid } from '@material-ui/core';
+	Grid, Avatar } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter, Link } from 'react-router-dom';
@@ -85,6 +85,8 @@ const styles = theme => ({
 		  	duration: theme.transitions.duration.leavingScreen,
 		}),
 		marginLeft: -drawerWidth,
+		height: '100vh',
+		overflowY: 'scroll'
 	},
 	mainShift: 
 	{
@@ -101,7 +103,7 @@ const styles = theme => ({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'start',
-		marginTop: '55px'
+		marginTop: '65px'
 	},
 	profileImage:
 	{
@@ -126,6 +128,17 @@ const styles = theme => ({
 		bottom: theme.spacing(2),
 		right: theme.spacing(2),
 	},
+	avatar: {
+        width: theme.spacing(22),
+        height: theme.spacing(22)
+	},
+	divider: {
+        height: theme.spacing(.3),
+        width: '285px',
+        backgroundColor: 'black',
+		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(3)
+    }
 });
 
 const typographyTheme = createMuiTheme({
@@ -149,17 +162,13 @@ function Settings(props)
 	const [openError, setOpenError] = useState(false);
 	const [error, setError] = useState('');
 	const [openSuccess, setOpenSuccess] = useState('');
+	const [url, setUrl] = useState('');
 
     useEffect(() =>
     {
 		firebase.getAllUsers().then(setUsers);
+		getImageURL();
     }, []);
-
-	/*useEffect(() =>
-	{
-		if (firebase.getCurrentUsername())
-			firebase.getCurrentUserQuote().then(setQuote);
-	}, [firebase.getCurrentUsername(), firebase.getCurrentUserQuote()]);*/
 
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
@@ -193,6 +202,31 @@ function Settings(props)
 	{
 		setOpen(false);
 	}
+
+	const handleImageChange = e =>
+	{
+		if (e.target.files[0])
+		{
+			try 
+			{	
+				if (e.target.files[0].size < 5000000) //less then 5mb
+				{
+					if (url !== '')
+						deleteImage();
+					firebase.uploadImage(e.target.files[0], firebase.getCurrentUsername());
+					alert("Upload successfully");
+				}
+				else
+					alert("Image's size is bigger than 5mb!");
+			} 
+			catch (error) 
+			{
+				console.log(error);
+			}
+		}
+	}
+
+	console.log("url: " + url);
 
 	return (
 		<div className={classes.root}>
@@ -263,7 +297,7 @@ function Settings(props)
         		})}>
 				<div className={classes.content}>
                     <MuiThemeProvider theme={typographyTheme}>
-                        <Typography align="center" variant="h5">
+                        <Typography align="center" variant="h4" gutterBottom>
                             {`Account details`}
                         </Typography>
                     </MuiThemeProvider>
@@ -275,7 +309,26 @@ function Settings(props)
                             {`Email: ${firebase.getCurrentUsernameEmail()}`}
                         </Typography>
                     </MuiThemeProvider>
-                    <Divider />
+                    <Divider className={classes.divider}/>
+					<MuiThemeProvider theme={typographyTheme}>
+                        <Typography align="center" variant="h4" gutterBottom>
+                            {`Profile picture`}
+                        </Typography>
+                    </MuiThemeProvider>
+					<Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
+					<label htmlFor="upload-photo">
+						<input
+							accept="image/*"
+							style={{ display: "none" }}
+							id="upload-photo"
+							name="upload-photo"
+							type="file"
+							onChange={handleImageChange}/>
+						<Fab color="primary" size="small" component="span">
+							<PhotoCameraOutlinedIcon />
+						</Fab>
+					</label>
+					<Button onClick={deleteImage}>delete</Button>
 				</div>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
@@ -297,8 +350,24 @@ function Settings(props)
 				</Snackbar>
       		</main>
     	</div>
-    );
-    
+	);
+
+	function deleteImage()
+	{
+		firebase.deleteImage(url);
+	}
+	
+	async function getImageURL()
+	{
+		if (firebase.getCurrentUsername())
+		{
+			var username = firebase.getCurrentUsername();
+			firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
+				url => {setUrl(url);}
+			);
+		}
+	}
+
     async function goToDashboard()
     {
         props.history.push('/dashboard');
