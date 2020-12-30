@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     avatar: {
         width: theme.spacing(19),
         height: theme.spacing(19),
+        boxShadow: '0px 0px 23px 0px rgba(0,0,0,0.75)',
         //border: '5px double black',
         [theme.breakpoints.down("xs")]:
         {
@@ -45,7 +46,7 @@ const theme = createMuiTheme({
         },
         h4:
         {
-            fontSize: '25px'
+            fontSize: '25px',
         },
         subtitle1:
         {

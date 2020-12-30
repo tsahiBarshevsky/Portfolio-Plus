@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { motion } from "framer-motion";
+import background from '../../images/bg2.png';
 
 export const Root = styled.div`
     /*margin: 0;
@@ -12,11 +13,14 @@ export const Root = styled.div`
     justify-content: center;*/
     padding-bottom: 30px;
     height: 100vh;
-    background: royalblue;
     display: flex;
     flex-direction: column;
     cursor: default;
     overflow-y: scroll;
+    background: linear-gradient(rgba(255, 255, 255, 0.6) 2%,
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(255, 255, 255, 0.6) 98%), 
+                url(${background}) no-repeat center center;
 `;
 
 export const TopLine = styled.div`

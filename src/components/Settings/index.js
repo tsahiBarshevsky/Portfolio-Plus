@@ -329,6 +329,12 @@ function Settings(props)
 						</Fab>
 					</label>
 					<Button onClick={deleteImage}>delete</Button>
+					<Divider className={classes.divider}/>
+					<MuiThemeProvider theme={typographyTheme}>
+                        <Typography align="center" variant="h4" gutterBottom>
+                            {`Personal link area`}
+                        </Typography>
+                    </MuiThemeProvider>
 				</div>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
