@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 export const Root = styled.div`
     /*margin: 0;

@@ -61,7 +61,7 @@ function ProjectCard(props)
 		<Container>
 			<MuiThemeProvider theme={theme}>
 				<Typography variant="subtitle1">
-					{props.title}
+					{props.title.length <= 10 ? props.title : `${props.title.slice(0, 10)}...`}
 				</Typography>
 			</MuiThemeProvider>
 			<div>

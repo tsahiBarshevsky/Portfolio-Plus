@@ -8,7 +8,8 @@ export const Container = styled(Paper)`
     align-items: center;
     box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
     padding: 15px;
-    width: 250px;
+    width: 270px;
+    height: 75px;
 `;
 
 export const Icon = styled(Fab)`

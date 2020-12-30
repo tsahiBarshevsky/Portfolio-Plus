@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
 	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
-	Grid } from '@material-ui/core';
+	Grid, 
+	Container} from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter, Link } from 'react-router-dom';
@@ -23,6 +24,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
+import { GridContainer, Wrapper } from './DashboardElements';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -30,7 +32,7 @@ const styles = theme => ({
 	{
 		backgroundColor: '#f5f5f5',
 		display: 'flex',
-		cursor: 'default'
+		cursor: 'default',
 	},
 	appBar: 
 	{
@@ -85,6 +87,8 @@ const styles = theme => ({
 		  	duration: theme.transitions.duration.leavingScreen,
 		}),
 		marginLeft: -drawerWidth,
+		height: '100vh',
+		overflowY: 'scroll'
 	},
 	mainShift: 
 	{
@@ -101,7 +105,8 @@ const styles = theme => ({
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
-		marginTop: '55px'
+		marginTop: '65px'
+    	
 	},
 	profileImage:
 	{
@@ -322,7 +327,7 @@ function Dashboard(props)
           			[classes.mainShift]: open,
         		})}>
 				<div className={classes.content}>
-					<img className={classes.profileImage}
+					{/*<img className={classes.profileImage}
 						src={url !== '' ? url : GenericPhoto} alt="Profile image" />
 					<label htmlFor="upload-photo">
 						<input
@@ -336,29 +341,42 @@ function Dashboard(props)
 							<PhotoCameraOutlinedIcon />
 						</Fab>
 					</label>
-					<Button onClick={uploadImage}>Upload</Button>
+					<Button onClick={uploadImage}>Upload</Button>*/}
 					<MuiThemeProvider theme={typographyTheme}>
-						<Typography align="center" variant="h5">
+						<Typography align="center" variant="h4">
 							{`${greet}, ${firebase.getCurrentUsername()}!`}
 						</Typography>
 					</MuiThemeProvider>
-					<MuiThemeProvider theme={typographyTheme}>
+					{/*<MuiThemeProvider theme={typographyTheme}>
 						<Typography align="center" variant="h5">
 							<Link target="_blank" to={`/${firebase.getCurrentUsername()}`}>Your link</Link>
 						</Typography>
-					</MuiThemeProvider>
+					</MuiThemeProvider>*/}
 					{projects.length >= 1 ?
-					<Grid 
-						container spacing={3} direction="row"
-						justify="center" alignItems="center">
-						{projects.map((project, index) =>
-						<Grid item key={index}>
-							<ProjectCard 
-								name={firebase.getCurrentUsername()}
-								title={project.title} />
-						</Grid>
-						)}
-					</Grid>
+					<Container>
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="h5">
+								{`So far, you've added ${projects.length > 1 ? `${projects.length} projects` : `one project`}`}
+							</Typography>
+						</MuiThemeProvider>
+						<GridContainer>
+							<Grid spacing={4}
+									container
+									direction="row"
+									justify="center"
+									alignItems="center"
+									alignContent="center"
+								>
+								{projects.map((project, index) =>
+								<Grid item lg={3} xl={3} key={index}>
+									<ProjectCard 
+										name={firebase.getCurrentUsername()}
+										title={project.title} />
+								</Grid>
+								)}
+							</Grid>
+						</GridContainer>
+					</Container>
 					: <CircularProgress />}
 				</div>
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
