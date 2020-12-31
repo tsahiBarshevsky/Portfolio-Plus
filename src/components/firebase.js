@@ -142,12 +142,13 @@ class Firebase
         });*/
     }
 
-    async addUserToList(name, profession, date)
+    async addUserToList(name, profession, date, background)
     {
         return this.db.doc(`list-of-users/${name}`).set({
             username: name,
             profession: profession,
-            lastUpdate: date
+            lastUpdate: date,
+            background: background
         });
     }
 

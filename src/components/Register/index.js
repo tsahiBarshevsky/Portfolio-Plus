@@ -266,7 +266,7 @@ function Register(props)
 			try 
 			{
 				await firebase.register(name, email, password); //register
-				await firebase.addUserToList(name, profession, "N/A"); //add to users' list
+				await firebase.addUserToList(name, profession, "N/A", "default"); //add to users' list
 				props.history.replace('/dashboard');
 			} 
 			catch(error) 

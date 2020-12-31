@@ -1,33 +1,20 @@
 import styled from 'styled-components';
 import { motion } from "framer-motion";
-import background from '../../images/bg2.png';
 
 export const Root = styled.div`
-    /*margin: 0;
-    padding: 0;
-    background: black;
-    
-    height: 100vh;
-    --secondary: rgb(161, 161, 161);
-    display: flex;
-    justify-content: center;*/
     padding-bottom: 30px;
     height: 100vh;
     display: flex;
     flex-direction: column;
     cursor: default;
     overflow-y: scroll;
-    background: linear-gradient(rgba(255, 255, 255, 0.6) 2%,
-                rgba(255, 255, 255, 0.1) 50%, 
-                rgba(255, 255, 255, 0.6) 98%), 
-                url(${background}) no-repeat center center;
 `;
 
 export const TopLine = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 30px 30px 10px 30px;
+    padding: 30px 30px 20px 30px;
 `;
 
 export const TextWrapper = styled.div`
@@ -50,6 +37,7 @@ export const ProjectsList = styled(motion.ul)`
     flex-direction: column;
     background: white;
     padding: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 25px;
 
     //sm

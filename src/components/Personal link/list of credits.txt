@@ -1,2 +1,5 @@
 bg1 - https://www.freepik.com/free-vector/flat-design-blue-comic-style-background_11685286.htm#page=1&query=background&position=11
 bg2 - https://www.freepik.com/free-vector/abstract-design-background-with-blue-purple-gradient_10547226.htm#page=1&query=background&position=26
+bg3 - https://www.freepik.com/free-vector/flat-design-red-comic-style-background_11685287.htm#page=1&query=background&position=38
+bg4 - https://www.freepik.com/free-vector/abstract-colorful-shapes-background_11299315.htm#page=1&query=background&position=42#position=42&page=1&query=background
+bg5 - https://www.freepik.com/free-vector/brush-strokes-background_4122340.htm#page=2&query=background&position=4

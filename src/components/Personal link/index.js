@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import firebase from '../firebase';
-import GenericPhoto from '../../images/person-circle-outline.svg';
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Divider } from '@material-ui/core';
@@ -123,6 +122,9 @@ function PersonalLink(props) {
     const [projects, setProjects] = useState([]);
     const [userInfo, setUserInfo] = useState('');
     const [url, setUrl] = useState('');
+    const [background, setBackground] = useState('');
+    console.log(background);
+    var style;
     const classes = useStyles();
 
     useEffect(() =>
@@ -132,9 +134,19 @@ function PersonalLink(props) {
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
     }, []);
 
+    if (userInfo.background !== 'default')
+    {
+        getBackgroundURL();
+        style = {
+            background: "linear-gradient(rgba(255, 255, 255, 0.6) 2%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.6) 98%), url(" + background + ") no-repeat center center"
+        }
+    }
+    else
+        style = {background: "#f5f5f5"}
+
     /*main*/
     return (
-        <Root>
+        <Root style={style}>
             <TopLine>
                 <MuiThemeProvider theme={theme}>
                     <TextWrapper>
@@ -157,7 +169,7 @@ function PersonalLink(props) {
                 <AnimateSharedLayout>
                     <ProjectsList layout initial={{ borderRadius: 25 }}>
                         {projects.map((project, index) =>
-                            <Item key={project} location={index} />
+                            <Item key={index} location={index} />
                         )} 
                     </ProjectsList>
                 </AnimateSharedLayout>
@@ -172,6 +184,13 @@ function PersonalLink(props) {
             </ListWrapper>}
         </Root>
     )
+
+    async function getBackgroundURL()
+    {
+        firebase.storage.ref("Backgrounds").child(`${userInfo.background}.png`).getDownloadURL().then(
+            url => {setBackground(url);}
+        );
+    }
 
     async function getImageURL()
 	{
