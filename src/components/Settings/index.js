@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ProgressBar from '@ramonak/react-progress-bar';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
 	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
@@ -129,8 +130,8 @@ const styles = theme => ({
 		right: theme.spacing(2),
 	},
 	avatar: {
-        width: theme.spacing(22),
-        height: theme.spacing(22)
+        width: theme.spacing(25),
+        height: theme.spacing(25)
 	},
 	divider: {
         height: theme.spacing(.3),
@@ -162,19 +163,33 @@ function Settings(props)
 	const [openError, setOpenError] = useState(false);
 	const [error, setError] = useState('');
 	const [openSuccess, setOpenSuccess] = useState('');
+	const [message, setMessage] = useState('');
 	const [url, setUrl] = useState('');
+	const [progress, setProgress] = useState(0);
 
     useEffect(() =>
     {
-		firebase.getAllUsers().then(setUsers);
-		getImageURL();
-    }, []);
+		if (update)
+		{
+			getImageURL();
+			setUpdate(false);
+		}
+    }, [getImageURL]);
 
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
 		//console.log('Please login first');
 		props.history.replace('/login');
 		return null;
+	}
+
+	if (progress === 100)
+	{
+		setOpenSuccess(true);
+		setMessage("Image uploaded successfully!");
+		getImageURL();
+		setProgress(0);
+		setUpdate(true);
 	}
 
 	const Alert = (props) =>
@@ -203,6 +218,11 @@ function Settings(props)
 		setOpen(false);
 	}
 
+	const handleOpen = () => 
+	{
+		setOpenSuccess(true);
+	}
+
 	const handleImageChange = e =>
 	{
 		if (e.target.files[0])
@@ -212,21 +232,30 @@ function Settings(props)
 				if (e.target.files[0].size < 5000000) //less then 5mb
 				{
 					if (url !== '')
-						deleteImage();
-					firebase.uploadImage(e.target.files[0], firebase.getCurrentUsername());
-					alert("Upload successfully");
+						deleteImage(false);
+					const uploadTask = firebase.storage.ref(`Profile images/${firebase.getCurrentUsername()}`).put(e.target.files[0]);
+					uploadTask.on(
+						"state_changed", 
+						snapshot => {
+							const progress = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+							setProgress(progress);
+						}, 
+						error => {console.log(error);});
+						//firebase.uploadImage(e.target.files[0], firebase.getCurrentUsername());
 				}
 				else
-					alert("Image's size is bigger than 5mb!");
+				{
+					setError("Image's size is bigger than 5mb!");
+					setOpenError(true);
+				}
 			} 
 			catch (error) 
 			{
-				console.log(error);
+				setError(error.message);
+				setOpenError(true);
 			}
 		}
 	}
-
-	console.log("url: " + url);
 
 	return (
 		<div className={classes.root}>
@@ -315,6 +344,11 @@ function Settings(props)
                             {`Profile picture`}
                         </Typography>
                     </MuiThemeProvider>
+					<MuiThemeProvider theme={typographyTheme}>
+                        <Typography align="center" variant="subtitle1">
+                            {`Note: Picture should be less than 5mb and 1:1 ratio is recomended.`}
+                        </Typography>
+                    </MuiThemeProvider>
 					<Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
 					<label htmlFor="upload-photo">
 						<input
@@ -328,7 +362,13 @@ function Settings(props)
 							<PhotoCameraOutlinedIcon />
 						</Fab>
 					</label>
-					<Button onClick={deleteImage}>delete</Button>
+					<Button onClick={() => deleteImage(true)}>delete</Button>
+					{progress > 0 ? 
+					<ProgressBar width="250px"
+						completed={progress} 
+						bgcolor="#ff4040" 
+						labelColor="#000000" 
+						labelAlignment="center" /> : null}
 					<Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>
@@ -340,7 +380,7 @@ function Settings(props)
 					<Alert onClose={closeSnackbar} severity="success">
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="subtitle1">
-								{`Project added successfully!`}
+								{message}
 							</Typography>
 						</MuiThemeProvider>
 					</Alert>
@@ -358,9 +398,18 @@ function Settings(props)
     	</div>
 	);
 
-	function deleteImage()
+	function deleteImage(showMessage)
 	{
-		firebase.deleteImage(url);
+		if (url !== '')
+		{
+			firebase.deleteImage(url);
+			if (showMessage)
+			{
+				setOpenSuccess(true);
+				setMessage("Image deleted successfully!")
+				setUrl('');
+			}
+		}
 	}
 	
 	async function getImageURL()
