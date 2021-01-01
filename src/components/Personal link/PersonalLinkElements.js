@@ -37,6 +37,7 @@ export const ProjectsList = styled(motion.ul)`
     flex-direction: column;
     background: white;
     padding: 15px;
+    box-shadow: 3px 4px 10px 1px rgba(0, 0, 0, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 25px;
 

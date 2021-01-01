@@ -17,13 +17,9 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import clsx from 'clsx';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import AddIcon from '@material-ui/icons/Add';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import ProjectCard from '../ProjectCard';
-import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
+import { ImagePanel, ButtonsPanel, Wrapper } from './SettingsElement';
+import { red } from '@material-ui/core/colors';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -106,22 +102,47 @@ const styles = theme => ({
 		alignItems: 'start',
 		marginTop: '65px'
 	},
-	profileImage:
+	uploadButton: 
 	{
-		width: '200px',
-		height: '200px',
-		borderRadius: '50%'
+		width: '170px',
+		height: '43px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: '#ff4040',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		cursor: 'pointer',
+		margin: theme.spacing(1),
+		transition: 'all 0.2s ease-out',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040',
+			transition: 'all 0.2s ease-in'
+		}
 	},
-	submit: 
+	deleteButton: 
 	{
-		marginTop: theme.spacing(3),
-	},
-	input:
-	{
-		backgroundColor: 'rgba(255, 255, 255, 0.65)',
-        height: '40px',
-        borderRadius: '25px',
-		fontFamily: 'Andika New Basic'
+		width: '170px',
+		height: '43px',
+		color: 'white',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: '#ff4040',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		margin: theme.spacing(1),
+		'&:hover':
+		{
+			color: '#ff4040',
+			backgroundColor: 'transparent',
+		}
 	},
 	fab: 
 	{
@@ -130,8 +151,11 @@ const styles = theme => ({
 		right: theme.spacing(2),
 	},
 	avatar: {
-        width: theme.spacing(25),
-        height: theme.spacing(25)
+        width: theme.spacing(18),
+		height: theme.spacing(18),
+		marginRight: theme.spacing(1.5),
+		marginBottom: theme.spacing(1)
+
 	},
 	divider: {
         height: theme.spacing(.3),
@@ -149,6 +173,10 @@ const typographyTheme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 		},
+		subtitle2:
+		{
+			color: red[900]
+		}
 	}
 });
 
@@ -341,38 +369,46 @@ function Settings(props)
                     <Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>
-                            {`Profile picture`}
+                            {`Appearance`}
                         </Typography>
                     </MuiThemeProvider>
 					<MuiThemeProvider theme={typographyTheme}>
-                        <Typography align="center" variant="subtitle1">
-                            {`Note: Picture should be less than 5mb and 1:1 ratio is recomended.`}
+                        <Typography align="center" variant="h6" gutterBottom>
+                            {`Profile image`}
                         </Typography>
                     </MuiThemeProvider>
-					<Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
-					<label htmlFor="upload-photo">
-						<input
-							accept="image/*"
-							style={{ display: "none" }}
-							id="upload-photo"
-							name="upload-photo"
-							type="file"
-							onChange={handleImageChange}/>
-						<Fab color="primary" size="small" component="span">
-							<PhotoCameraOutlinedIcon />
-						</Fab>
-					</label>
-					<Button onClick={() => deleteImage(true)}>delete</Button>
-					{progress > 0 ? 
-					<ProgressBar width="250px"
-						completed={progress} 
-						bgcolor="#ff4040" 
-						labelColor="#000000" 
-						labelAlignment="center" /> : null}
-					<Divider className={classes.divider}/>
+					<Wrapper>
+						<ImagePanel>
+							<Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
+							<ButtonsPanel>
+								<label htmlFor="upload-photo" className={classes.uploadButton}>
+									upload an image
+								</label>
+								<input
+									accept="image/*"
+									style={{ display: "none" }}
+									id="upload-photo"
+									name="upload-photo"
+									type="file"
+									onChange={handleImageChange}/>
+								<Button className={classes.deleteButton} onClick={() => deleteImage(true)}>delete</Button>
+							</ButtonsPanel>
+						</ImagePanel>
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="subtitle2" gutterBottom>
+								{`Note: Picture should be less than 5mb and 1:1 ratio is recomended.`}
+							</Typography>
+						</MuiThemeProvider>
+						{progress > 0 ? 
+						<ProgressBar width="250px"
+							completed={progress} 
+							bgcolor="#ff4040" 
+							labelColor="#000000" 
+							labelAlignment="center" /> : null}
+					</Wrapper>
 					<MuiThemeProvider theme={typographyTheme}>
-                        <Typography align="center" variant="h4" gutterBottom>
-                            {`Personal link area`}
+                        <Typography align="center" variant="h6" gutterBottom>
+                            {`Themes`}
                         </Typography>
                     </MuiThemeProvider>
 				</div>
