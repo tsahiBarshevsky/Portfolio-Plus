@@ -7,6 +7,7 @@ import { Container, LoginLink, Picture, SubtitleContianer, Text } from './HomePa
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
+import { Helmet } from 'react-helmet';
 
 const styles = theme => ({
 	button: 
@@ -88,6 +89,7 @@ function HomePage(props) {
 
 	return (
 		<Container>
+			<Helmet><title>Portfolio Plus | Home</title></Helmet>
 			<MuiThemeProvider theme={theme}>
 				<Typography variant="h1" gutterBottom>
 					Countless works, one place

@@ -9,6 +9,7 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import LockIcon from '@material-ui/icons/Lock';
 import Background from '../../images/login-form-background.png';
+import { Helmet } from 'react-helmet';
 
 const styles = theme => ({
 	main: 
@@ -119,6 +120,7 @@ function SignIn(props)
 
 	return (
 		<main className={classes.main}>
+			<Helmet><title>Portfolio Plus | Login</title></Helmet>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<LockOutlinedIcon className={classes.icon}/>

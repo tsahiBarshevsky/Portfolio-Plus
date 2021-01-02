@@ -24,7 +24,8 @@ import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
-    PulseBubble3, PulseContiner } from './DashboardElements';
+	PulseBubble3, PulseContiner } from './DashboardElements';
+import { Helmet } from 'react-helmet';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -262,6 +263,7 @@ function Dashboard(props)
 
 	return (
 		<div className={classes.root}>
+			<Helmet><title>{`Portfolio Plus | @${firebase.getCurrentUsername()} dashboard`}</title></Helmet>
       		<CssBaseline />
       		<AppBar
         		position="fixed"
@@ -374,7 +376,8 @@ function Dashboard(props)
 									<Grid item lg={3} xl={3} key={index}>
 										<ProjectCard 
 											name={firebase.getCurrentUsername()}
-											title={project.title} />
+											title={project.title}
+											setUpdate={setUpdate} />
 									</Grid>
 									)}
 								</Grid>

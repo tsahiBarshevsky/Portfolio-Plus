@@ -20,6 +20,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { ImagePanel, ButtonsPanel, Wrapper } from './SettingsElement';
 import { red } from '@material-ui/core/colors';
+import { Helmet } from 'react-helmet';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -287,6 +288,7 @@ function Settings(props)
 
 	return (
 		<div className={classes.root}>
+			<Helmet><title>{`Portfolio Plus | @${firebase.getCurrentUsername()} settings`}</title></Helmet>
       		<CssBaseline />
       		<AppBar
         		position="fixed"

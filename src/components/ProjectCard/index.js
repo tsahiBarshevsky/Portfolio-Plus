@@ -143,6 +143,7 @@ function ProjectCard(props)
 			setOpen(false);
 			await firebase.deleteProject(props.title);
 			setOpenSuccess(true);
+			props.setUpdate(true);
 		} 
 		catch (error)
 		{

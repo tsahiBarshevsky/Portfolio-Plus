@@ -12,6 +12,7 @@ import firebase from '../firebase';
 import Background from '../../images/register-form-background.png';
 import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
+import { Helmet } from 'react-helmet';
 
 const styles = theme => ({
 	main: 
@@ -144,6 +145,7 @@ function Register(props)
 
 	return (
 		<main className={classes.main}>
+			<Helmet><title>Portfolio Plus | Register</title></Helmet>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
 					<PersonAddRoundedIcon className={classes.icon} />

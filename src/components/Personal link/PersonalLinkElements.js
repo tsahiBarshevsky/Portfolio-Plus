@@ -109,8 +109,6 @@ export const Logo = styled.img`
     bottom: 0px;
     align-self: center;
     transform: translateY(30%);
-    //when the page isn't full
-    //position: fixed;
     margin-top: auto;
 `;
 
