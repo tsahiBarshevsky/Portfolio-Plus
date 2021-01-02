@@ -7,9 +7,52 @@ import firebase from '../firebase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import WarningIcon from '@material-ui/icons/Warning';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Container, Icon } from './projectCardElements';
+import { Container, Icon, Warning } from './projectCardElements';
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+	cancleButton: 
+	{
+		width: '85px',
+		display: 'flex',
+		justifyContent: 'center',
+		alignItems: 'center',
+		color: 'orange',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid orange',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		cursor: 'pointer',
+		margin: theme.spacing(1),
+		transition: 'all 0.2s ease-out',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: 'orange',
+			transition: 'all 0.2s ease-in'
+		}
+	},
+	deleteButton: 
+	{
+		width: '85px',
+		color: 'white',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid orange',
+		backgroundColor: 'orange',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		margin: theme.spacing(1),
+		'&:hover':
+		{
+			color: 'orange',
+			backgroundColor: 'transparent',
+		}
+	}
+});
 
 const theme = createMuiTheme({
 	typography:
@@ -21,6 +64,10 @@ const theme = createMuiTheme({
 		subtitle1:
 		{
 			fontSize: '20px',
+		},
+		h5:
+		{
+			color: 'orange'
 		}
 	}
 });
@@ -29,6 +76,7 @@ function ProjectCard(props)
 {
 	const [open, setOpen] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState('');
+	const { classes } = props;
 
 	const Alert = (props) =>
     {
@@ -75,12 +123,10 @@ function ProjectCard(props)
 			<Dialog
 				open={open}
 				onClose={handleClose}
-				aria-labelledby="alert-dialog-title"
-				aria-describedby="alert-dialog-description"
-				style={{cursor: "default"}}>
-					<DialogTitle >
+				style={{cursor: "default", borderRadius: '25px'}}>
+					<DialogTitle>
 						<div style={{display: 'flex', flexDirection: 'row'}}>
-							<WarningIcon style={{fontSize: '30px'}} />
+							<Warning style={{fontSize: '30px'}} />
 							<MuiThemeProvider theme={theme}>
 								<Typography component="h1" variant="h5">
 									{`Delete project`}
@@ -90,14 +136,14 @@ function ProjectCard(props)
 					</DialogTitle>
 					<DialogContent>
 						<MuiThemeProvider theme={theme}>
-							<Typography variant="h6">
+							<Typography variant="h6" gutterBottom>
 								{`Wait! Are you sure you want to delete ${props.title}?`}
 							</Typography>
 						</MuiThemeProvider>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleClose}>Cancel</Button>
-						<Button onClick={deleteProject}>Delete</Button>
+						<Button onClick={handleClose} className={classes.cancleButton}>Cancel</Button>
+						<Button onClick={deleteProject} className={classes.deleteButton}>Delete</Button>
 					</DialogActions>
 			</Dialog>
 			<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
@@ -152,4 +198,4 @@ function ProjectCard(props)
 	}
 }
 
-export default ProjectCard;
+export default (withStyles(styles)(ProjectCard));
