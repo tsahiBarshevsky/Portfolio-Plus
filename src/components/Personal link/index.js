@@ -5,7 +5,9 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Title } from './PersonalLinkElements';
+import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink } from './PersonalLinkElements';
+import { Helmet } from "react-helmet";
+import logo from '../../images/logo.png';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -123,7 +125,6 @@ function PersonalLink(props) {
     const [userInfo, setUserInfo] = useState('');
     const [url, setUrl] = useState('');
     const [background, setBackground] = useState('');
-    console.log(background);
     var style;
     const classes = useStyles();
 
@@ -134,7 +135,7 @@ function PersonalLink(props) {
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
     }, []);
 
-    if (userInfo.background !== 'default')
+    if (userInfo && userInfo.background !== 'default')
     {
         getBackgroundURL();
         style = {
@@ -146,7 +147,10 @@ function PersonalLink(props) {
 
     /*main*/
     return (
+        <>
+        {userInfo ?
         <Root style={style}>
+            <Helmet><title>{`Portfolio Plus | @${props.match.params.username}`}</title></Helmet>
             <TopLine>
                 <MuiThemeProvider theme={theme}>
                     <TextWrapper>
@@ -182,7 +186,20 @@ function PersonalLink(props) {
                     </Typography>
                 </MuiThemeProvider>
             </ListWrapper>}
-        </Root>
+            <Logo src={logo} alt="Logo" />
+        </Root> 
+        : 
+        <ErrorRoot>
+            <Helmet><title>Portfolio Plus | Page Not Found</title></Helmet>
+            <MuiThemeProvider theme={theme}>
+                <Typography variant="h4" align="center" gutterBottom>
+                    {`Oops! The page you’re looking for doesn’t exist.`}
+                </Typography>
+            </MuiThemeProvider>
+            <BackToHomeLink to="/">Back to homepage</BackToHomeLink>
+            <ErrorLogo src={logo} alt="Logo" />
+        </ErrorRoot>}
+        </>
     )
 
     async function getBackgroundURL()

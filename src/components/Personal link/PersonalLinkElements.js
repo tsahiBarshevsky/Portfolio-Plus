@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { motion } from "framer-motion";
+import { Link as LinkR } from 'react-router-dom';
 
 export const Root = styled.div`
     padding-bottom: 30px;
@@ -37,6 +38,7 @@ export const ProjectsList = styled(motion.ul)`
     flex-direction: column;
     background: white;
     padding: 15px;
+    margin-bottom: 20px;
     box-shadow: 3px 4px 10px 1px rgba(0, 0, 0, 0.75);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 25px;
@@ -99,4 +101,48 @@ export const Video = styled.iframe`
     width: 100%;
     height: 100%;
     border: none;
+`;
+
+export const Logo = styled.img`
+    width: 200px;
+    height: 32px;
+    bottom: 0px;
+    align-self: center;
+    transform: translateY(30%);
+    //when the page isn't full
+    //position: fixed;
+    margin-top: auto;
+`;
+
+export const ErrorLogo = styled.img`
+    width: 200px;
+    height: 32px;
+    bottom: 0px;
+    align-self: center;
+    position: absolute;
+    margin-bottom: 15px;
+`;
+
+export const ErrorRoot = styled.div`
+    height: 100vh;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;    
+    cursor: default;
+`;
+
+export const BackToHomeLink = styled(LinkR)`
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    transition: all 0.5s ease-out;
+
+    &:hover
+    {
+        transition: all 0.5s ease-in;
+        color: #ff4040;
+    }
 `;
