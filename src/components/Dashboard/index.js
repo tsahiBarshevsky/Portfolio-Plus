@@ -24,7 +24,7 @@ import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContiner } from './DashboardElements';
+	PulseBubble3, PulseContainer } from './DashboardElements';
 import { Helmet } from 'react-helmet';
 
 const drawerWidth = 240;
@@ -391,11 +391,11 @@ function Dashboard(props)
 						</MuiThemeProvider>}
 					</> 
 					: 
-					<PulseContiner>
+					<PulseContainer>
 						<PulseBubble1 />
 						<PulseBubble2 />
 						<PulseBubble3 />
-					</PulseContiner>}
+					</PulseContainer>}
 				</div>
 				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
 					<AddIcon />

@@ -64,10 +64,6 @@ const theme = createMuiTheme({
 		subtitle1:
 		{
 			fontSize: '20px',
-		},
-		h5:
-		{
-			color: 'orange'
 		}
 	}
 });

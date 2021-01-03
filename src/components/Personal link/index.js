@@ -5,7 +5,8 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink } from './PersonalLinkElements';
+import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
+	PulseBubble3, PulseContainer } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
 import logo from '../../images/logo.png';
 
@@ -125,6 +126,8 @@ function PersonalLink(props) {
     const [userInfo, setUserInfo] = useState('');
     const [url, setUrl] = useState('');
     const [background, setBackground] = useState('');
+    const [isLoad, setIsLoad] = useState(false);
+    
     var style;
     const classes = useStyles();
 
@@ -133,7 +136,15 @@ function PersonalLink(props) {
         getImageURL();
         firebase.getAllProjects(props.match.params.username).then(setProjects);
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
+        /*setTimeout(() => {
+			setIsLoad(true);
+		}, 1000);*/
     }, []);
+
+    if (userInfo && !isLoad)
+    {
+        setIsLoad(true);
+    }
 
     if (userInfo && userInfo.background !== 'default')
     {
@@ -148,57 +159,67 @@ function PersonalLink(props) {
     /*main*/
     return (
         <>
-        {userInfo ?
-        <Root style={style}>
-            <Helmet><title>{`Portfolio Plus | @${props.match.params.username}`}</title></Helmet>
-            <TopLine>
+        {!isLoad ? 
+        //if !userInfo - Error else loading
+        <ErrorRoot>
+            <PulseContainer>
+                <PulseBubble1 />
+                <PulseBubble2 />
+                <PulseBubble3 />
+            </PulseContainer>
+        </ErrorRoot> 
+        :
+        [(userInfo ?
+            <Root style={style}>
+                <Helmet><title>{`Portfolio Plus | @${props.match.params.username}`}</title></Helmet>
+                <TopLine>
+                    <MuiThemeProvider theme={theme}>
+                        <TextWrapper>
+                            <Typography variant="h3" >
+                                {`${props.match.params.username}`}
+                            </Typography>
+                            <Typography variant="h4" gutterBottom>
+                                {`${userInfo.profession}`}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                {`Last update: ${userInfo.lastUpdate}`}
+                            </Typography>
+                        </TextWrapper>
+                    </MuiThemeProvider>
+                    <Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
+                </TopLine>
+                <Divider variant="middle" className={classes.divider} />
+                {projects.length >= 1 ?
+                <ListWrapper>
+                    <AnimateSharedLayout>
+                        <ProjectsList layout initial={{ borderRadius: 25 }}>
+                            {projects.map((project, index) =>
+                                <Item key={index} location={index} />
+                            )} 
+                        </ProjectsList>
+                    </AnimateSharedLayout>
+                </ListWrapper>
+                :
+                <ListWrapper>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography variant="h4" >
+                            {`${props.match.params.username} has no projects yet`}
+                        </Typography>
+                    </MuiThemeProvider>
+                </ListWrapper>}
+                <Logo src={logo} alt="Logo" />
+            </Root> 
+            : 
+            <ErrorRoot>
+                <Helmet><title>Portfolio Plus | Page Not Found</title></Helmet>
                 <MuiThemeProvider theme={theme}>
-                    <TextWrapper>
-                        <Typography variant="h3" >
-                            {`${props.match.params.username}`}
-                        </Typography>
-                        <Typography variant="h4" gutterBottom>
-                            {`${userInfo.profession}`}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            {`Last update: ${userInfo.lastUpdate}`}
-                        </Typography>
-                    </TextWrapper>
-                </MuiThemeProvider>
-                <Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
-            </TopLine>
-            <Divider variant="middle" className={classes.divider} />
-            {projects.length >= 1 ?
-            <ListWrapper>
-                <AnimateSharedLayout>
-                    <ProjectsList layout initial={{ borderRadius: 25 }}>
-                        {projects.map((project, index) =>
-                            <Item key={index} location={index} />
-                        )} 
-                    </ProjectsList>
-                </AnimateSharedLayout>
-            </ListWrapper>
-            :
-            <ListWrapper>
-                <MuiThemeProvider theme={theme}>
-                    <Typography variant="h4" >
-                        {`${props.match.params.username} has no projects yet`}
+                    <Typography variant="h4" align="center" gutterBottom>
+                        {`Oops! The page you’re looking for doesn’t exist.`}
                     </Typography>
                 </MuiThemeProvider>
-            </ListWrapper>}
-            <Logo src={logo} alt="Logo" />
-        </Root> 
-        : 
-        <ErrorRoot>
-            <Helmet><title>Portfolio Plus | Page Not Found</title></Helmet>
-            <MuiThemeProvider theme={theme}>
-                <Typography variant="h4" align="center" gutterBottom>
-                    {`Oops! The page you’re looking for doesn’t exist.`}
-                </Typography>
-            </MuiThemeProvider>
-            <BackToHomeLink to="/">Back to homepage</BackToHomeLink>
-            <ErrorLogo src={logo} alt="Logo" />
-        </ErrorRoot>}
+                <BackToHomeLink to="/">Back to homepage</BackToHomeLink>
+                <ErrorLogo src={logo} alt="Logo" />
+            </ErrorRoot>)]}
         </>
     )
 

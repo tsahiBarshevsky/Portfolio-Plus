@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { motion } from "framer-motion";
 import { Link as LinkR } from 'react-router-dom';
 
@@ -143,4 +143,54 @@ export const BackToHomeLink = styled(LinkR)`
         transition: all 0.5s ease-in;
         color: #ff4040;
     }
+`;
+
+/*---Loading animation---*/
+
+export const PulseContainer = styled.div`
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+
+    @media screen and (max-width: 375px)
+    {
+        width: 60px;
+    }
+`;
+
+const pulse = keyframes`
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: .25;
+        transform: scale(.75);
+    }
+`;
+
+export const PulseBubble1 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .0s infinite alternate;
+`;
+
+export const PulseBubble2 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .1s infinite alternate;
+`;
+
+export const PulseBubble3 = styled.div`
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #ff4040;
+    animation: ${pulse} .4s ease .2s infinite alternate;
 `;

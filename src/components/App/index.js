@@ -24,7 +24,8 @@ export default function App() {
 	});
 
 
-	return firebaseInitialized !== false ? (
+	//return //firebaseInitialized !== false ? (
+	return (	
 		<MuiThemeProvider theme={theme}>
 			<CssBaseline />
 			<Router>
@@ -38,5 +39,5 @@ export default function App() {
 				</Switch>
 			</Router>
 		</MuiThemeProvider>
-	) : <div id="loader"><CircularProgress /></div>
+	) // : <div id="loader"><CircularProgress /></div>
 }

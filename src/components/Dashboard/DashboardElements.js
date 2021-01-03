@@ -17,12 +17,13 @@ export const Container = styled(MUContainer)`
 
 /*---Loading animation---*/
 
-export const PulseContiner = styled.div`
+export const PulseContainer = styled.div`
     width: 100px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 0px;
+
     @media screen and (max-width: 375px)
     {
         width: 60px;
