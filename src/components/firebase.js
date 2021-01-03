@@ -170,9 +170,13 @@ class Firebase
         const res = this.db.collection(`list-of-users`).doc(`${name}`).delete();
     }
     
-    async updateProject(username, title, type, description, links, video)
+    async updateProject(username, originalTitle, type, description, links, video)
     {
-        this.db.collection(`${username}`).doc(`${title}`).update({type: type});
+        this.db.collection(`${username}`).doc(`${originalTitle}`).update({
+            type: type,
+            description: description,
+            video: video
+        });
     }
 
     async updateUsername(username, oldUsername)

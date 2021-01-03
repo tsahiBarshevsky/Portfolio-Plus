@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Container, Icon, Warning } from './projectCardElements';
 import { withStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
 const styles = theme => ({
 	cancleButton: 
@@ -51,7 +52,14 @@ const styles = theme => ({
 			color: 'orange',
 			backgroundColor: 'transparent',
 		}
-	}
+	},
+	input:
+	{
+		backgroundColor: 'rgba(0, 0, 0, 0.65)',
+        height: '40px',
+        borderRadius: '25px',
+		fontFamily: 'Andika New Basic'
+	},
 });
 
 const theme = createMuiTheme({
@@ -64,6 +72,10 @@ const theme = createMuiTheme({
 		subtitle1:
 		{
 			fontSize: '20px',
+		},
+		subtitle2:
+		{
+			color: red[800]
 		}
 	}
 });
@@ -72,6 +84,17 @@ function ProjectCard(props)
 {
 	const [open, setOpen] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState('');
+	const [openDialog, setOpenDialog] = useState(false);
+	const [project, setProject] = useState('');
+	const [title, setTitle] = useState('');
+	const [type, setType] = useState('');
+	const [description, setDescription] = useState('');
+	const [links, setLinks] = useState([{link: ''}]);
+	const [video, setVideo] = useState('');
+	const [openError, setOpenError] = useState(false);
+	const [error, setError] = useState('');
+	const [projects, setProjects] = useState([]);
+	const [isLoad, setIsLoad] = useState(false);
 	const { classes } = props;
 
 	const Alert = (props) =>
@@ -87,14 +110,14 @@ function ProjectCard(props)
 	const handleClose = () =>
 	{
 		setOpen(false);
-		//setEdit(false);
+		setOpenDialog(false);
 	}
 
-	/*const handleOpenEditDialog = () =>
+	const handleOpenEditDialog = () =>
 	{
-		setEdit(true);
+		setOpenDialog(true);
 		getSingleProject();
-	}*/
+	}
 
 	const closeSnackbar = () =>
 	{
@@ -109,7 +132,7 @@ function ProjectCard(props)
 				</Typography>
 			</MuiThemeProvider>
 			<div>
-				<Icon color="primary" size="small">
+				<Icon color="primary" size="small" onClick={handleOpenEditDialog}>
 					<EditIcon />
 				</Icon>
 				<Icon color="primary" size="small" onClick={handleOpen}>
@@ -142,6 +165,80 @@ function ProjectCard(props)
 						<Button onClick={deleteProject} className={classes.deleteButton}>Delete</Button>
 					</DialogActions>
 			</Dialog>
+			<Dialog
+				open={openDialog}
+				onClose={handleClose}
+				style={{cursor: "default"}}>
+					<DialogTitle id="alert-dialog-title">
+						<MuiThemeProvider theme={theme}>
+							<Typography component="h1" variant="h5">
+								{`Edit ${project.title}`}
+							</Typography>
+						</MuiThemeProvider>
+					</DialogTitle>
+					<DialogContent>
+						<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
+							
+							<FormControl margin="normal" fullWidth>
+								<Input id="type" name="type"
+									inputProps={{min: 0, style: { marginLeft: '20px' }}}
+									disableUnderline 
+									placeholder="New project type.."
+									className={classes.input}
+									autoComplete="off" 
+									value={type} 
+									onChange={e => setType(e.target.value)} />
+							</FormControl>
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2">
+									{`Current value: ${project.type}`}
+								</Typography>
+							</MuiThemeProvider>
+							
+							<FormControl margin="normal" fullWidth>
+								<Input id="description" name="description"
+									inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
+									disableUnderline 
+									placeholder="New project description.."
+									className={classes.input}
+									autoComplete="off" 
+									value={description} 
+									onChange={e => setDescription(e.target.value)} />
+							</FormControl>
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2">
+									{`Current value: ${project.description}`}
+								</Typography>
+							</MuiThemeProvider>
+							
+							
+							<FormControl margin="normal" fullWidth>
+								<Input id="video" name="video"
+									inputProps={{min: 0, style: { marginLeft: '20px' }}}
+									disableUnderline 
+									placeholder="New video.."
+									className={classes.input}
+									autoComplete="off" 
+									value={video !== '' ? video : project.video} 
+									onChange={e => setVideo(e.target.value)} />
+							</FormControl>
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2" gutterBottom>
+									{`Current value: ${project.video}`}
+								</Typography>
+							</MuiThemeProvider>
+							<Button
+								type="submit"
+								fullWidth
+								variant="contained"
+								color="primary"
+								className={classes.submit}
+								onClick={updateProject}>
+								Edit
+							</Button>
+						</form>
+					</DialogContent>
+			</Dialog>
 			<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 				<Alert onClose={closeSnackbar} severity="success">
 					<MuiThemeProvider theme={theme}>
@@ -154,7 +251,7 @@ function ProjectCard(props)
 		</Container>
 	);
 
-	/*async function getSingleProject()
+	async function getSingleProject()
 	{
 		try 
 		{
@@ -170,13 +267,26 @@ function ProjectCard(props)
 	{
 		try 
 		{
-			await firebase.updateProject(props.name, props.title, "update type");
+			await firebase.updateProject(props.name, project.title,
+				type === '' ? project.type : type, 
+				description === '' ? project.description : description,
+				null,
+				video === '' ? project.video : video);
+			props.setUpdate(true);
+			setType('');
+			setDescription('');
+			setVideo('');
+			handleClose();
 		} 
 		catch (error) 
 		{
 			console.log(error.message);
+			setType('');
+			setDescription('');
+			setVideo('');
+			handleClose();
 		}
-	}*/
+	}
 	
 	async function deleteProject()
 	{
