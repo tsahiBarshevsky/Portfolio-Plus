@@ -124,6 +124,15 @@ function ProjectCard(props)
 		setOpenSuccess(false);
 	}
 
+	const handleInputChange = (e, index) => 
+	{
+		const { value } = e.target;
+		console.log(value);
+		const list = [...links];
+		list[index] = value;
+		setLinks(list);
+	}
+
     return (
 		<Container>
 			<MuiThemeProvider theme={theme}>
@@ -202,7 +211,7 @@ function ProjectCard(props)
 									placeholder="New project description.."
 									className={classes.input}
 									autoComplete="off" 
-									value={description} 
+									value={description !== '' ? description : project.description} 
 									onChange={e => setDescription(e.target.value)} />
 							</FormControl>
 							<MuiThemeProvider theme={theme}>
@@ -210,7 +219,21 @@ function ProjectCard(props)
 									{`Current value: ${project.description}`}
 								</Typography>
 							</MuiThemeProvider>
+
 							
+							
+							{/*project.links ?
+							project.links.map((link, index) =>
+								<FormControl margin="normal" required fullWidth>
+									<Input id="links" name="links"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
+										disableUnderline 
+										className={classes.input}
+										autoComplete="off" 
+										value={link}
+										onChange={e => handleInputChange(e, index)} />
+								</FormControl>
+							) : null*/}
 							
 							<FormControl margin="normal" fullWidth>
 								<Input id="video" name="video"

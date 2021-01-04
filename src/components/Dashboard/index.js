@@ -176,14 +176,14 @@ function Dashboard(props)
     {
 		setTimeout(() => {
 			setIsLoad(true);
-		}, 3000);
+		}, 1000);
 		if (update)
 		{
 			firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
 			setUpdate(false);
 		}
-    }, [firebase.getAllProjects()]);
-
+	}, [firebase.getAllProjects()]);
+	
 	/*useEffect(() =>
 	{
 		if (firebase.getCurrentUsername())
@@ -195,6 +195,18 @@ function Dashboard(props)
 		//console.log('Please login first');
 		props.history.replace('/login');
 		return null;
+	}
+
+	const checkVideoURL = () =>
+	{
+		const reg = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+		if (reg.test(video.trim()))
+		{
+			if (video.split('v=').pop().split('&')[0] !== video)
+				return `https://www.youtube.com/embed/${video.split('v=').pop().split('&')[0]}`;
+			return `https://www.youtube.com/embed/${video.split('/').pop()}`;
+		}
+		return false;
 	}
 
 	const handleInputChange = (e, index) => 
@@ -521,11 +533,20 @@ function Dashboard(props)
 	{
 		try
 		{
-			await firebase.addProject(title, type, description, links, video);
-			setOpenDialog(false);
-			setOpenSuccess(true);
-			setUpdate(true);
-			clearForm();
+			const result = checkVideoURL();
+			if (result)
+			{
+				await firebase.addProject(title, type, description, links, result);
+				setOpenDialog(false);
+				setOpenSuccess(true);
+				setUpdate(true);
+				clearForm();
+			}
+			else
+			{
+				setError("Invalid youtube URL");
+				setOpenError(true);
+			}
 		}
 		catch(error)
 		{
