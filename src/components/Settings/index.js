@@ -419,12 +419,12 @@ function Settings(props)
                         </Typography>
                     </MuiThemeProvider>
 					<Grid 
-						spacing={3} container direction="row"
+						spacing={5} container direction="row"
 						justify="flex-start" alignItems="center">
 						{themes.map((theme, index) =>
 							<Grid item>
 								<ThemeCard 
-								theme={theme} 
+								theme={theme}
 								username={firebase.getCurrentUsername()} 
 								selectedTheme={selectedTheme}
 								setSelectedTheme={setSelectedTheme}
