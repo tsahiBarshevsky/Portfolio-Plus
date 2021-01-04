@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
 	typography:
 	{
@@ -46,13 +47,28 @@ const theme = createMuiTheme({
 		{
             fontFamily: `"Andika New Basic", sans-serif`,
         },
+        h3:
+        {
+            [defaultTheme.breakpoints.down("xs")]:
+            {
+                textAlign: 'center'
+            }
+        },
         h4:
         {
             fontSize: '25px',
+            [defaultTheme.breakpoints.down("xs")]:
+            {
+                textAlign: 'center'
+            }
         },
         subtitle1:
         {
-            lineHeight: 1.2
+            lineHeight: 1.2,
+            [defaultTheme.breakpoints.down("xs")]:
+            {
+                textAlign: 'center'
+            }
         }
 	}
 });
@@ -175,7 +191,7 @@ function PersonalLink(props) {
                 <TopLine>
                     <MuiThemeProvider theme={theme}>
                         <TextWrapper>
-                            <Typography variant="h3" >
+                            <Typography variant="h3">
                                 {`${props.match.params.username}`}
                             </Typography>
                             <Typography variant="h4" gutterBottom>

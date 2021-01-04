@@ -16,12 +16,23 @@ export const TopLine = styled.div`
     justify-content: space-evenly;
     align-items: center;
     padding: 30px 30px 20px 30px;
+
+    @media screen and (max-width: 600px)
+    {
+        justify-content: center;
+        flex-direction: column-reverse;
+    }
 `;
 
 export const TextWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    @media screen and (max-width: 600px)
+    {
+        justify-content: center;
+    }
 `;
 
 export const ListWrapper = styled.div`
