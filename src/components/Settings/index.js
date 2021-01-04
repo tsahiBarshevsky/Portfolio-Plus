@@ -21,6 +21,7 @@ import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { ImagePanel, ButtonsPanel, Wrapper } from './SettingsElement';
 import { red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
+import ThemeCard from '../ThemeCard';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -196,14 +197,18 @@ function Settings(props)
 	const [url, setUrl] = useState('');
 	const [progress, setProgress] = useState(0);
 
+	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
+	const [selectedTheme, setSelectedTheme] = useState('');
+
     useEffect(() =>
     {
 		if (update)
 		{
+			getUserTheme();
 			getImageURL();
 			setUpdate(false);
 		}
-    }, [getImageURL]);
+    }, [getImageURL, getUserTheme]);
 
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
@@ -413,6 +418,20 @@ function Settings(props)
                             {`Themes`}
                         </Typography>
                     </MuiThemeProvider>
+					<Grid 
+						spacing={3} container direction="row"
+						justify="flex-start" alignItems="center">
+						{themes.map((theme, index) =>
+							<Grid item>
+								<ThemeCard 
+								theme={theme} 
+								username={firebase.getCurrentUsername()} 
+								selectedTheme={selectedTheme}
+								setSelectedTheme={setSelectedTheme}
+								key={index} />
+							</Grid>
+						)}
+					</Grid>
 				</div>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
@@ -448,6 +467,11 @@ function Settings(props)
 				setUrl('');
 			}
 		}
+	}
+
+	async function getUserTheme()
+	{
+		await firebase.getUserTheme(firebase.getCurrentUsername()).then(setSelectedTheme);
 	}
 	
 	async function getImageURL()

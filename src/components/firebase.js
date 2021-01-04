@@ -179,6 +179,20 @@ class Firebase
         });
     }
 
+    async updateUserTheme(theme, username)
+    {
+        this.db.collection(`list-of-users`).doc(`${username}`).update({
+            background: theme
+        });
+    }
+
+    async getUserTheme(username)
+    {
+        const ref = this.db.collection(`list-of-users`).doc(`${username}`);
+        const doc = await ref.get();
+        return doc.data().background;
+    }
+
     async updateUsername(username, oldUsername)
     {
         console.log(oldUsername);
