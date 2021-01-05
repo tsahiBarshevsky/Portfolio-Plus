@@ -18,7 +18,7 @@ import clsx from 'clsx';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
-import { ImagePanel, ButtonsPanel, Wrapper } from './SettingsElement';
+import { ImagePanel, ButtonsPanel, Wrapper, PreviewContianer, PersonalPage } from './SettingsElement';
 import { red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import ThemeCard from '../ThemeCard';
@@ -157,7 +157,6 @@ const styles = theme => ({
 		height: theme.spacing(18),
 		marginRight: theme.spacing(1.5),
 		marginBottom: theme.spacing(1)
-
 	},
 	divider: {
         height: theme.spacing(.3),
@@ -369,10 +368,11 @@ function Settings(props)
                         <Typography align="center" variant="h6">
                             {`Username: ${firebase.getCurrentUsername()}`}
                         </Typography>
-                        <Typography align="center" variant="h6">
+                        <Typography align="center" variant="h6" gutterBottom>
                             {`Email: ${firebase.getCurrentUsernameEmail()}`}
                         </Typography>
                     </MuiThemeProvider>
+					<PersonalPage target="_blank" to={`/${firebase.getCurrentUsername()}`}>Go to your personal page</PersonalPage>
                     <Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>

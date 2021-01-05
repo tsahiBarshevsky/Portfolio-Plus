@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Button, DialogActions, Typography, Snackbar, Input, FormControl } from '@material-ui/core';
+import { Button, DialogActions, Typography, Snackbar, Input, FormControl, Tooltip, Fade } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import firebase from '../firebase';
@@ -141,12 +141,22 @@ function ProjectCard(props)
 				</Typography>
 			</MuiThemeProvider>
 			<div>
-				<Icon color="primary" size="small" onClick={handleOpenEditDialog}>
-					<EditIcon />
-				</Icon>
-				<Icon color="primary" size="small" onClick={handleOpen}>
-					<DeleteIcon />
-				</Icon>
+				<Tooltip title="Edit" 
+					TransitionComponent={Fade} 
+					TransitionProps={{ timeout: 400 }}
+					enterDelay={500}>
+					<Icon color="primary" size="small" onClick={handleOpenEditDialog}>
+						<EditIcon />
+					</Icon>
+				</Tooltip>
+				<Tooltip title="Delete" 
+					TransitionComponent={Fade} 
+					TransitionProps={{ timeout: 400 }}
+					enterDelay={500}>
+					<Icon color="primary" size="small" onClick={handleOpen}>
+						<DeleteIcon />
+					</Icon>
+				</Tooltip>
 			</div>
 			<Dialog
 				open={open}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
 	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
-	Grid} from '@material-ui/core';
+	Grid, Tooltip, Fade} from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter, Link } from 'react-router-dom';
@@ -359,16 +359,20 @@ function Dashboard(props)
 					<Button onClick={uploadImage}>Upload</Button>*/}
 					{isLoad ? 
 					<>
+						<Tooltip title="Add new project" 
+							placement="left"
+							TransitionComponent={Fade} 
+							TransitionProps={{ timeout: 400 }}
+							enterDelay={500}>
+							<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
+								<AddIcon />
+							</Fab>
+						</Tooltip>
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="h4" gutterBottom>
 								{`${greet}, ${firebase.getCurrentUsername()}!`}
 							</Typography>
 						</MuiThemeProvider>
-						{/*<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="h5">
-								<Link target="_blank" to={`/${firebase.getCurrentUsername()}`}>Your link</Link>
-							</Typography>
-						</MuiThemeProvider>*/}
 						{projects.length >= 1 ?
 						<Container>
 							<MuiThemeProvider theme={typographyTheme}>
@@ -409,9 +413,7 @@ function Dashboard(props)
 						<PulseBubble3 />
 					</PulseContainer>}
 				</div>
-				<Fab className={classes.fab} color="primary" aria-label="add" onClick={handleClickOpen}>
-					<AddIcon />
-				</Fab>
+				
 				<Dialog
 					open={openDialog}
 					onClose={handleClickClose}

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -32,5 +33,19 @@ export const ButtonsPanel = styled.div`
     @media screen and (max-width: 610px)
     {
         flex-direction: column;
+    }
+`;
+
+export const PersonalPage = styled(Link)`
+    font-size: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+    transition: all 0.5s ease-out;
+
+    &:hover
+    {
+        transition: all 0.5s ease-in;
+        color: #ff4040;
     }
 `;
