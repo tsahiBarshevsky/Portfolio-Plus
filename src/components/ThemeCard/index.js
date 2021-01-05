@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import firebase from '../firebase';
 import { Container } from './ThemeCardElements';
-import { Typography } from '@material-ui/core';
+import { Typography, Snackbar } from '@material-ui/core';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import MuiAlert from '@material-ui/lab/Alert';
 import bg1 from '../../images/Backgrounds/bg1.png';
 import bg2 from '../../images/Backgrounds/bg2.png';
 import bg3 from '../../images/Backgrounds/bg3.png';
@@ -21,10 +22,25 @@ const typographyTheme = createMuiTheme({
 });
 
 function ThemeCard(props) {
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
+    const [error, setError] = useState('');
+
+    const Alert = (props) =>
+    {
+        return <MuiAlert elevation={6} variant="filled" {...props} />;
+    }
+    
+    const closeSnackbar = () =>
+	{
+		setOpenError(false);
+		setOpenSuccess(false);
+	}
+
     var selected, background; //styles
-    var name = ''; //presen the name to user insted of bg1, bg2 etc...
+    var name = ''; //present the name to user instead of bg1, bg2 etc...
     if (props.theme === props.selectedTheme)
-        selected = {border: "2px solid black"};
+        selected = {border: "2px solid black", cursor: "not-allowed"};
     else
         selected = {border: "none"};
 
@@ -63,6 +79,24 @@ function ThemeCard(props) {
                         {name}
                     </Typography>
                 </MuiThemeProvider>
+                <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+					<Alert onClose={closeSnackbar} severity="success">
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="subtitle1">
+								{`change successfully to ${name}`}
+							</Typography>
+						</MuiThemeProvider>
+					</Alert>
+				</Snackbar>
+				<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
+					<Alert onClose={closeSnackbar} severity="error">
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="subtitle1">
+								{error}
+							</Typography>
+						</MuiThemeProvider>
+					</Alert>
+				</Snackbar>
             </Container>
         </>
     );
@@ -75,11 +109,12 @@ function ThemeCard(props) {
             {
                 await firebase.updateUserTheme(props.theme, props.username);
                 props.setSelectedTheme(props.theme);
-                alert(`change successfully to ${name}`);
+                setOpenSuccess(true);
             } 
             catch (error) 
             {
-                alert(error.message);
+                setError(error.message);
+                setOpenError(true);
             }
         }
     }
