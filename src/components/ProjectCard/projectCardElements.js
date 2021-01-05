@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Fab, Paper } from '@material-ui/core';
+import { Paper } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
 
 export const Container = styled(Paper)`
@@ -11,10 +11,6 @@ export const Container = styled(Paper)`
     padding: 15px;
     width: 270px;
     height: 75px;
-`;
-
-export const Icon = styled(Fab)`
-    margin: 5px;
 `;
 
 export const Warning = styled(WarningIcon)`

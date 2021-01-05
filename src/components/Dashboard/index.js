@@ -26,6 +26,7 @@ import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer } from './DashboardElements';
 import { Helmet } from 'react-helmet';
+import { grey, blueGrey } from '@material-ui/core/colors';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -37,6 +38,7 @@ const styles = theme => ({
 	},
 	appBar: 
 	{
+		backgroundColor: grey[900],
 		transition: theme.transitions.create(['margin', 'width'], 
 		{
 			easing: theme.transitions.easing.sharp,
@@ -129,7 +131,14 @@ const styles = theme => ({
 	{
 		position: 'fixed',
 		bottom: theme.spacing(2),
-		right: theme.spacing(2)
+		right: theme.spacing(2),
+		color: blueGrey[50],
+		backgroundColor: blueGrey[900],
+		margin: theme.spacing(0.4),
+		"&:hover":
+		{
+			backgroundColor: blueGrey[800],
+		}
 	},
 });
 

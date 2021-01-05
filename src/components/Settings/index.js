@@ -19,7 +19,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { ImagePanel, ButtonsPanel, Wrapper, PreviewContianer, PersonalPage } from './SettingsElement';
-import { red } from '@material-ui/core/colors';
+import { grey, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import ThemeCard from '../ThemeCard';
 
@@ -33,6 +33,7 @@ const styles = theme => ({
 	},
 	appBar: 
 	{
+		backgroundColor: grey[900],
 		transition: theme.transitions.create(['margin', 'width'], 
 		{
 			easing: theme.transitions.easing.sharp,

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Button, DialogActions, Typography, Snackbar, Input, FormControl, Tooltip, Fade } from '@material-ui/core';
+import { Button, DialogActions, Typography, Snackbar, Input, FormControl, Tooltip, Fade, Fab } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import firebase from '../firebase';
@@ -10,7 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Container, Icon, Warning } from './projectCardElements';
 import { withStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
+import { blueGrey, red } from '@material-ui/core/colors';
 
 const styles = theme => ({
 	cancleButton: 
@@ -60,6 +60,16 @@ const styles = theme => ({
         borderRadius: '25px',
 		fontFamily: 'Andika New Basic'
 	},
+	fab:
+	{
+		color: blueGrey[50],
+		backgroundColor: blueGrey[900],
+		margin: theme.spacing(0.4),
+		"&:hover":
+		{
+			backgroundColor: blueGrey[800],
+		}
+	}
 });
 
 const theme = createMuiTheme({
@@ -145,17 +155,17 @@ function ProjectCard(props)
 					TransitionComponent={Fade} 
 					TransitionProps={{ timeout: 400 }}
 					enterDelay={500}>
-					<Icon color="primary" size="small" onClick={handleOpenEditDialog}>
+					<Fab className={classes.fab} size="small" onClick={handleOpenEditDialog}>
 						<EditIcon />
-					</Icon>
+					</Fab>
 				</Tooltip>
 				<Tooltip title="Delete" 
 					TransitionComponent={Fade} 
 					TransitionProps={{ timeout: 400 }}
 					enterDelay={500}>
-					<Icon color="primary" size="small" onClick={handleOpen}>
+					<Fab className={classes.fab} size="small" onClick={handleOpen}>
 						<DeleteIcon />
-					</Icon>
+					</Fab>
 				</Tooltip>
 			</div>
 			<Dialog
