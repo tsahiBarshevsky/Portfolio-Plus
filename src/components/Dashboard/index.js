@@ -24,7 +24,7 @@ import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer } from './DashboardElements';
+	PulseBubble3, PulseContainer, ButtonsWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
 import { grey, blueGrey } from '@material-ui/core/colors';
 
@@ -110,22 +110,53 @@ const styles = theme => ({
 		alignItems: 'center',
 		marginTop: '65px'
 	},
-	profileImage:
-	{
-		width: '200px',
-		height: '200px',
-		borderRadius: '50%'
-	},
 	submit: 
 	{
-		marginTop: theme.spacing(3),
+		color: '#ff4040',
+		width: '100px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		marginRight: theme.spacing(1),
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040',
+			transition: 'all 0.2s ease-in'
+		}
+	},
+	clear:
+	{
+		color: 'white',
+		width: '100px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: '#ff4040',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		marginLeft: theme.spacing(1),
+		'&:hover':
+		{
+			color: '#ff4040',
+			backgroundColor: 'white',
+			transition: 'all 0.2s ease-in'
+		}
 	},
 	input:
 	{
-		backgroundColor: 'rgba(255, 255, 255, 0.65)',
+		backgroundColor: 'white',
+		border: '1px solid black',
         height: '40px',
         borderRadius: '25px',
-		fontFamily: 'Andika New Basic'
+		fontFamily: 'Andika New Basic',
 	},
 	fab: 
 	{
@@ -180,6 +211,7 @@ function Dashboard(props)
 	const [projects, setProjects] = useState([]);
 	const [image, setImage] = useState(null);
 	const [isLoad, setIsLoad] = useState(false);
+	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
     useEffect(() =>
     {
@@ -351,21 +383,6 @@ function Dashboard(props)
           			[classes.mainShift]: open,
         		})}>
 				<div className={classes.content}>
-					{/*<img className={classes.profileImage}
-						src={url !== '' ? url : GenericPhoto} alt="Profile image" />
-					<label htmlFor="upload-photo">
-						<input
-							accept="image/*"
-							style={{ display: "none" }}
-							id="upload-photo"
-							name="upload-photo"
-							type="file"
-							onChange={handleImageChange}/>
-						<Fab color="primary" size="small" component="span" aria-label="add">
-							<PhotoCameraOutlinedIcon />
-						</Fab>
-					</label>
-					<Button onClick={uploadImage}>Upload</Button>*/}
 					{isLoad ? 
 					<>
 						<Tooltip title="Add new project" 
@@ -429,15 +446,15 @@ function Dashboard(props)
 					aria-labelledby="alert-dialog-title"
 					aria-describedby="alert-dialog-description"
 					style={{cursor: "default"}}>
-						<DialogTitle id="alert-dialog-title">
+						<DialogTitle style={dialogBackground}>
 							<MuiThemeProvider theme={typographyTheme}>
-								<Typography component="h1" variant="h5">
+								<Typography variant="h5">
 									{`Adding new project`}
 								</Typography>
 							</MuiThemeProvider>
 						</DialogTitle>
-						<DialogContent>
-							<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
+						<DialogContent style={dialogBackground}>
+							<form onSubmit={e => e.preventDefault() && false }>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="title" name="title"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}} 
@@ -498,23 +515,14 @@ function Dashboard(props)
 										value={video} 
 										onChange={e => setVideo(e.target.value)} />
 								</FormControl>
-								<Button
-									type="submit"
-									fullWidth
-									variant="contained"
-									color="primary"
-									onClick={addProject}
-									className={classes.submit}>
-									Add
-								</Button>
-								<Button
-									fullWidth
-									variant="contained"
-									color="primary"
-									onClick={clearForm}
-									className={classes.submit}>
-									Clear form
-								</Button>
+								<ButtonsWrapper>
+									<Button type="submit" onClick={addProject} className={classes.submit}>
+										Add
+									</Button>
+									<Button onClick={clearForm} className={classes.clear}>
+										Clear
+									</Button>
+								</ButtonsWrapper>
 							</form>
 						</DialogContent>
 				</Dialog>

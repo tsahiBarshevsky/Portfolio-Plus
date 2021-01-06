@@ -18,3 +18,11 @@ export const Warning = styled(WarningIcon)`
     margin-right: 10px;
     transform: translateY(10%);
 `;
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px 10px;
+    background-color: #f5f5f5;
+`;

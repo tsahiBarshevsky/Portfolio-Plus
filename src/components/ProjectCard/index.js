@@ -8,12 +8,31 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Container, Warning } from './projectCardElements';
+import { ButtonWrapper, Container, Warning } from './projectCardElements';
 import { withStyles } from '@material-ui/core/styles';
 import { blueGrey, red } from '@material-ui/core/colors';
 
 const styles = theme => ({
-	cancleButton: 
+	submit:
+	{
+		color: '#ff4040',
+		width: '100px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040',
+			transition: 'all 0.2s ease-in'
+		}
+	},
+	cancelButton: 
 	{
 		width: '85px',
 		display: 'flex',
@@ -55,10 +74,13 @@ const styles = theme => ({
 	},
 	input:
 	{
-		backgroundColor: 'rgba(0, 0, 0, 0.65)',
+		backgroundColor: 'white',
+		border: '1px solid black',
         height: '40px',
         borderRadius: '25px',
-		fontFamily: 'Andika New Basic'
+		fontFamily: 'Andika New Basic',
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(1.5)
 	},
 	fab:
 	{
@@ -114,6 +136,7 @@ function ProjectCard(props)
 	const [error, setError] = useState('');
 	const [success, setSuccess] = useState('');
 	const { classes } = props;
+	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
 	useEffect(() => {
 		setType(project.type);
@@ -217,45 +240,44 @@ function ProjectCard(props)
 						</MuiThemeProvider>
 					</DialogContent>
 					<DialogActions>
-						<Button onClick={handleClose} className={classes.cancleButton}>Cancel</Button>
+						<Button onClick={handleClose} className={classes.cancelButton}>Cancel</Button>
 						<Button onClick={deleteProject} className={classes.deleteButton}>Delete</Button>
 					</DialogActions>
 			</Dialog>
-			<Dialog
+			<Dialog fullWidth
 				open={openDialog}
 				onClose={handleClose}
 				style={{cursor: "default"}}>
-					<DialogTitle id="alert-dialog-title">
+					<DialogTitle style={dialogBackground}>
 						<MuiThemeProvider theme={theme}>
-							<Typography component="h1" variant="h5">
+							<Typography variant="h5">
 								{`Edit ${project.title}`}
 							</Typography>
 						</MuiThemeProvider>
 					</DialogTitle>
-					<DialogContent>
+					<DialogContent style={dialogBackground}>
 						<form onSubmit={e => e.preventDefault() && false }>
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
 									{`Project type`}
 								</Typography>
 							</MuiThemeProvider>
-							<FormControl margin="normal" fullWidth>
+							<FormControl fullWidth>
 								<Input id="type" name="type"
 									inputProps={{min: 0, style: { marginLeft: '20px' }}}
 									disableUnderline 
 									placeholder="New project type.."
 									className={classes.input}
 									autoComplete="off" 
-									value={type} 
+									autoFocus value={type} 
 									onChange={e => setType(e.target.value)} />
 							</FormControl>
-							
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
 									{`Project description`}
 								</Typography>
 							</MuiThemeProvider>
-							<FormControl margin="normal" fullWidth>
+							<FormControl fullWidth>
 								<Input id="description" name="description"
 									inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
 									disableUnderline 
@@ -265,7 +287,6 @@ function ProjectCard(props)
 									value={description} 
 									onChange={e => setDescription(e.target.value)} />
 							</FormControl>
-							
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
 									{`Links`}
@@ -273,23 +294,23 @@ function ProjectCard(props)
 							</MuiThemeProvider>
 							{links ?
 							links.map((link, index) =>
-								<FormControl margin="normal" required fullWidth>
+								<FormControl fullWidth>
 									<Input id="links" name="links"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
 										className={classes.input}
 										autoComplete="off" 
 										value={link}
+										placeholder={`New link #${index+1}`}
 										onChange={e => handleInputChange(e, index)} />
 								</FormControl>
 							) : null}
-
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
 									{`Video URL`}
 								</Typography>
 							</MuiThemeProvider>
-							<FormControl margin="normal" fullWidth>
+							<FormControl fullWidth>
 								<Input id="video" name="video"
 									inputProps={{min: 0, style: { marginLeft: '20px' }}}
 									disableUnderline 
@@ -299,15 +320,11 @@ function ProjectCard(props)
 									value={video} 
 									onChange={e => setVideo(e.target.value)} />
 							</FormControl>
-							<Button
-								type="submit"
-								fullWidth
-								variant="contained"
-								color="primary"
-								className={classes.submit}
-								onClick={updateProject}>
-								Edit
-							</Button>
+							<ButtonWrapper>
+								<Button	type="submit" className={classes.submit} onClick={updateProject}>
+									Edit
+								</Button>
+							</ButtonWrapper>
 						</form>
 					</DialogContent>
 			</Dialog>
@@ -351,18 +368,30 @@ function ProjectCard(props)
 			const result = checkVideoURL();
 			if (result)
 			{
-				await firebase.updateProject(props.name, project.title,	type, description, links, result);
-				props.setUpdate(true);
-				setType('');
-				setDescription('');
-				setVideo('');
-				handleClose();
-				setSuccess(`${project.title} edited successfully`);
-				setOpenSuccess(true);
+				var fault = false;
+				for (var i=0; i<links.length; i++)
+					if (links[i] === '')
+						fault = true;
+				if (type !== '' && description !== '' && !fault)
+				{
+					await firebase.updateProject(props.name, project.title,	type, description, links, result);
+					props.setUpdate(true);
+					setType('');
+					setDescription('');
+					setVideo('');
+					handleClose();
+					setSuccess(`${project.title} has been successfully updated`);
+					setOpenSuccess(true);
+				}
+				else
+				{
+					setError("One of the inputs is empty");
+					setOpenError(true);
+				}
 			}
 			else
 			{
-				setError("Invalid youtube URL");
+				setError("Invalid youtube URL!");
 				setOpenError(true);
 			}
 		} 
