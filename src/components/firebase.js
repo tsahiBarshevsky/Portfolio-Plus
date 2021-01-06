@@ -175,6 +175,7 @@ class Firebase
         this.db.collection(`${username}`).doc(`${title}`).update({
             type: type,
             description: description,
+            links: links,
             video: video
         });
     }

@@ -8,7 +8,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Container, Icon, Warning } from './projectCardElements';
+import { Container, Warning } from './projectCardElements';
 import { withStyles } from '@material-ui/core/styles';
 import { blueGrey, red } from '@material-ui/core/colors';
 
@@ -90,26 +90,35 @@ const theme = createMuiTheme({
 	}
 });
 
+const theme2 = createMuiTheme({
+	typography:
+	{
+		allVariants:
+		{
+			fontFamily: `"Andika New Basic", sans-serif`,
+		}
+	}
+});
+
 function ProjectCard(props) 
 {
 	const [open, setOpen] = useState(false);
 	const [openSuccess, setOpenSuccess] = useState('');
 	const [openDialog, setOpenDialog] = useState(false);
 	const [project, setProject] = useState('');
-	const [title, setTitle] = useState('');
 	const [type, setType] = useState('');
 	const [description, setDescription] = useState('');
 	const [links, setLinks] = useState([{link: ''}]);
 	const [video, setVideo] = useState('');
 	const [openError, setOpenError] = useState(false);
 	const [error, setError] = useState('');
-	const [projects, setProjects] = useState([]);
-	const [isLoad, setIsLoad] = useState(false);
+	const [success, setSuccess] = useState('');
 	const { classes } = props;
 
 	useEffect(() => {
 		setType(project.type);
 		setDescription(project.description);
+		setLinks(project.links);
 		setVideo(project.video);
 	}, [project]);
 
@@ -138,12 +147,12 @@ function ProjectCard(props)
 	const closeSnackbar = () =>
 	{
 		setOpenSuccess(false);
+		setOpenError(false);
 	}
 
 	const handleInputChange = (e, index) => 
 	{
 		const { value } = e.target;
-		console.log(value);
 		const list = [...links];
 		list[index] = value;
 		setLinks(list);
@@ -257,8 +266,13 @@ function ProjectCard(props)
 									onChange={e => setDescription(e.target.value)} />
 							</FormControl>
 							
-							{/*project.links ?
-							project.links.map((link, index) =>
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2">
+									{`Links`}
+								</Typography>
+							</MuiThemeProvider>
+							{links ?
+							links.map((link, index) =>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="links" name="links"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
@@ -268,7 +282,7 @@ function ProjectCard(props)
 										value={link}
 										onChange={e => handleInputChange(e, index)} />
 								</FormControl>
-							) : null*/}
+							) : null}
 
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
@@ -299,9 +313,18 @@ function ProjectCard(props)
 			</Dialog>
 			<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 				<Alert onClose={closeSnackbar} severity="success">
-					<MuiThemeProvider theme={theme}>
-						<Typography align="center" variant="subtitle1">
-							{`Project deleted successfully!`}
+					<MuiThemeProvider theme={theme2}>
+						<Typography align="center" variant="subtitle2">
+							{success}
+						</Typography>
+					</MuiThemeProvider>
+				</Alert>
+			</Snackbar>
+			<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
+				<Alert onClose={closeSnackbar} severity="error">
+					<MuiThemeProvider theme={theme2}>
+						<Typography align="center" variant="subtitle2">
+							{error}
 						</Typography>
 					</MuiThemeProvider>
 				</Alert>
@@ -314,7 +337,6 @@ function ProjectCard(props)
 		try 
 		{
 			await firebase.getSingleProject(props.name, props.title).then(setProject);
-			//setType(project.type);
 		} 
 		catch (error) 
 		{
@@ -329,15 +351,20 @@ function ProjectCard(props)
 			const result = checkVideoURL();
 			if (result)
 			{
-				await firebase.updateProject(props.name, project.title,	type, description, null, result);
+				await firebase.updateProject(props.name, project.title,	type, description, links, result);
 				props.setUpdate(true);
 				setType('');
 				setDescription('');
 				setVideo('');
 				handleClose();
+				setSuccess(`${project.title} edited successfully`);
+				setOpenSuccess(true);
 			}
 			else
-				alert("Invalid youtube URL")
+			{
+				setError("Invalid youtube URL");
+				setOpenError(true);
+			}
 		} 
 		catch (error) 
 		{
@@ -355,6 +382,7 @@ function ProjectCard(props)
 		{
 			setOpen(false);
 			await firebase.deleteProject(props.title);
+			setSuccess(`${project.title} edited successfully`);
 			setOpenSuccess(true);
 			props.setUpdate(true);
 		} 
