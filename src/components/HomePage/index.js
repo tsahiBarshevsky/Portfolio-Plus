@@ -3,7 +3,7 @@ import { Typography, Button, Grid } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Container, LoginLink, Picture, SubtitleContianer, Text } from './HomePageElements';
+import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
@@ -75,6 +75,12 @@ const theme = createMuiTheme({
 			fontFamily: `"Andika New Basic", sans-serif`,
 			fontWeight: "bold"
 		},
+		h5:
+		{
+			fontFamily: `"Andika New Basic", sans-serif`,
+			textDecoration: 'underline',
+			fontWeight: "bold"
+		},
 		subtitle1:
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
@@ -99,7 +105,7 @@ function HomePage(props) {
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h3" gutterBottom>
 						The importance of a portfolio is known for every inexperienced job seeker. <br />
-						On this website, you can create your own landing page with all of
+						On Portfolio Plus, you can create your own landing page with all of
 						your works in just a few clicks!
 					</Typography>
 				</MuiThemeProvider>
@@ -115,6 +121,20 @@ function HomePage(props) {
 			<Text>
 				Already have an account? <LoginLink to="/login">Login!</LoginLink>	
 			</Text>
+			<FixedBackground>
+				<MuiThemeProvider theme={theme}>
+					<Typography variant="h5">
+						What is Portfolio Plus?
+					</Typography>
+				</MuiThemeProvider>
+			</FixedBackground>
+			<FixedBackground>
+				<MuiThemeProvider theme={theme}>
+					<Typography variant="h5">
+						Why using Portfolio Plus?
+					</Typography>
+				</MuiThemeProvider>
+			</FixedBackground>
 			<Grid
 				spacing={0}
 				container

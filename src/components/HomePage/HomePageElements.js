@@ -8,7 +8,7 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 100px 30px;
+    padding: 75px 0px 100px 0px; //top right bottom left
     background-color: #f5f5f5;
 `;
 
@@ -28,7 +28,7 @@ export const SubtitleContianer = styled.div`
 export const Text = styled.p`
     font-size: 20px;
     text-align: center;
-    padding-bottom: 50px;
+    padding-bottom: 100px;
 `;
 
 export const LoginLink = styled(Link)`
@@ -48,4 +48,18 @@ export const LoginLink = styled(Link)`
 export const Picture = styled.img`
     width: 100%;
     height: auto;
+`;
+
+export const FixedBackground = styled.div`
+    width: 100%;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url() fixed center center;
+
+    @media screen and (max-width: 960px)
+    {
+        margin-bottom: 25px;
+    }
 `;
