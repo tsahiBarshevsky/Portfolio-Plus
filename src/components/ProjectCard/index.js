@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Button, DialogActions, Typography, Snackbar, Input, FormControl, Tooltip, Fade, Fab } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
@@ -107,6 +107,12 @@ function ProjectCard(props)
 	const [isLoad, setIsLoad] = useState(false);
 	const { classes } = props;
 
+	useEffect(() => {
+		setType(project.type);
+		setDescription(project.description);
+		setVideo(project.video);
+	}, [project]);
+
 	const Alert = (props) =>
     {
         return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -141,6 +147,18 @@ function ProjectCard(props)
 		const list = [...links];
 		list[index] = value;
 		setLinks(list);
+	}
+
+	const checkVideoURL = () =>
+	{
+		const reg = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+		if (reg.test(video.trim()))
+		{
+			if (video.split('v=').pop().split('&')[0] !== video)
+				return `https://www.youtube.com/embed/${video.split('v=').pop().split('&')[0]}`;
+			return `https://www.youtube.com/embed/${video.split('/').pop()}`;
+		}
+		return false;
 	}
 
     return (
@@ -206,8 +224,12 @@ function ProjectCard(props)
 						</MuiThemeProvider>
 					</DialogTitle>
 					<DialogContent>
-						<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
-							
+						<form onSubmit={e => e.preventDefault() && false }>
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2">
+									{`Project type`}
+								</Typography>
+							</MuiThemeProvider>
 							<FormControl margin="normal" fullWidth>
 								<Input id="type" name="type"
 									inputProps={{min: 0, style: { marginLeft: '20px' }}}
@@ -218,12 +240,12 @@ function ProjectCard(props)
 									value={type} 
 									onChange={e => setType(e.target.value)} />
 							</FormControl>
+							
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
-									{`Current value: ${project.type}`}
+									{`Project description`}
 								</Typography>
 							</MuiThemeProvider>
-							
 							<FormControl margin="normal" fullWidth>
 								<Input id="description" name="description"
 									inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
@@ -231,16 +253,9 @@ function ProjectCard(props)
 									placeholder="New project description.."
 									className={classes.input}
 									autoComplete="off" 
-									value={description !== '' ? description : project.description} 
+									value={description} 
 									onChange={e => setDescription(e.target.value)} />
 							</FormControl>
-							<MuiThemeProvider theme={theme}>
-								<Typography variant="subtitle2">
-									{`Current value: ${project.description}`}
-								</Typography>
-							</MuiThemeProvider>
-
-							
 							
 							{/*project.links ?
 							project.links.map((link, index) =>
@@ -254,22 +269,22 @@ function ProjectCard(props)
 										onChange={e => handleInputChange(e, index)} />
 								</FormControl>
 							) : null*/}
-							
+
+							<MuiThemeProvider theme={theme}>
+								<Typography variant="subtitle2">
+									{`Video URL`}
+								</Typography>
+							</MuiThemeProvider>
 							<FormControl margin="normal" fullWidth>
 								<Input id="video" name="video"
 									inputProps={{min: 0, style: { marginLeft: '20px' }}}
 									disableUnderline 
-									placeholder="New video.."
+									placeholder="New video URL.."
 									className={classes.input}
 									autoComplete="off" 
-									value={video !== '' ? video : project.video} 
+									value={video} 
 									onChange={e => setVideo(e.target.value)} />
 							</FormControl>
-							<MuiThemeProvider theme={theme}>
-								<Typography variant="subtitle2" gutterBottom>
-									{`Current value: ${project.video}`}
-								</Typography>
-							</MuiThemeProvider>
 							<Button
 								type="submit"
 								fullWidth
@@ -299,6 +314,7 @@ function ProjectCard(props)
 		try 
 		{
 			await firebase.getSingleProject(props.name, props.title).then(setProject);
+			//setType(project.type);
 		} 
 		catch (error) 
 		{
@@ -310,16 +326,18 @@ function ProjectCard(props)
 	{
 		try 
 		{
-			await firebase.updateProject(props.name, project.title,
-				type === '' ? project.type : type, 
-				description === '' ? project.description : description,
-				null,
-				video === '' ? project.video : video);
-			props.setUpdate(true);
-			setType('');
-			setDescription('');
-			setVideo('');
-			handleClose();
+			const result = checkVideoURL();
+			if (result)
+			{
+				await firebase.updateProject(props.name, project.title,	type, description, null, result);
+				props.setUpdate(true);
+				setType('');
+				setDescription('');
+				setVideo('');
+				handleClose();
+			}
+			else
+				alert("Invalid youtube URL")
 		} 
 		catch (error) 
 		{
