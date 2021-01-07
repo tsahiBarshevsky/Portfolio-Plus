@@ -437,7 +437,7 @@ function Settings(props)
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
 						<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="subtitle1">
+							<Typography align="center" variant="subtitle2">
 								{message}
 							</Typography>
 						</MuiThemeProvider>
@@ -446,7 +446,7 @@ function Settings(props)
 				<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="error">
 						<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="subtitle1">
+							<Typography align="center" variant="subtitle2">
 								{error}
 							</Typography>
 						</MuiThemeProvider>

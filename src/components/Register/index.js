@@ -245,7 +245,7 @@ function Register(props)
 			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="error">
 					<MuiThemeProvider theme={theme}>
-						<Typography align="center" variant="subtitle1">
+						<Typography align="center" variant="subtitle2">
 							{error}
 						</Typography>
 					</MuiThemeProvider>

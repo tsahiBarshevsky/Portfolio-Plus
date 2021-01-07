@@ -26,7 +26,7 @@ import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer, ButtonsWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
-import { grey, blueGrey } from '@material-ui/core/colors';
+import { grey, blueGrey, red } from '@material-ui/core/colors';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -130,6 +130,46 @@ const styles = theme => ({
 			transition: 'all 0.2s ease-in'
 		}
 	},
+	addLink: 
+	{
+		color: '#ff4040',
+		width: '100px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		marginLeft: theme.spacing(1),
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040',
+			transition: 'all 0.2s ease-in'
+		}
+	},
+	deleteLink: 
+	{
+		color: 'white',
+		width: '100px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: '#ff4040',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		marginLeft: theme.spacing(1),
+		'&:hover':
+		{
+			color: '#ff4040',
+			backgroundColor: 'transparent',
+			transition: 'all 0.2s ease-in'
+		}
+	},
 	clear:
 	{
 		color: 'white',
@@ -158,6 +198,13 @@ const styles = theme => ({
         borderRadius: '25px',
 		fontFamily: 'Andika New Basic',
 	},
+	descriptionInput:
+	{
+		backgroundColor: 'white',
+		border: '1px solid black',
+        borderRadius: '25px',
+		fontFamily: 'Andika New Basic',
+	},
 	fab: 
 	{
 		position: 'fixed',
@@ -180,6 +227,11 @@ const typographyTheme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 		},
+		subtitle1:
+		{
+			fontSize: '12px',
+			color: red[900]
+		}
 	}
 });
 
@@ -306,12 +358,6 @@ function Dashboard(props)
 	const handleClickClose = () =>
 	{
 		setOpenDialog(false);
-	}
-
-	const handleImageChange = e =>
-	{
-		if (e.target.files[0])
-			setImage(e.target.files[0]);
 	}
 
 	return (
@@ -465,6 +511,12 @@ function Dashboard(props)
 										autoFocus value={title} 
 										onChange={e => setTitle(e.target.value)} />
 								</FormControl>
+								{title !== '' ?
+								<MuiThemeProvider theme={typographyTheme}>
+								<Typography variant="subtitle1">
+										{`Note: the title is unchangeable after adding a project`}
+									</Typography>
+								</MuiThemeProvider> : null}
 								<FormControl margin="normal" required fullWidth>
 									<Input id="type" name="type"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
@@ -477,44 +529,50 @@ function Dashboard(props)
 								</FormControl>
 								<FormControl margin="normal" required fullWidth>
 									<Input id="description" name="description"
+										multiline rows={5} rowsMax={5}
 										inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
 										disableUnderline 
 										placeholder="Project description.."
-										className={classes.input}
+										className={classes.descriptionInput}
 										autoComplete="off" 
 										value={description} 
 										onChange={e => setDescription(e.target.value)} />
 								</FormControl>
-								{links.map((x, i) =>
-								{
-									return(
-										<FormControl margin="normal" required fullWidth>
-											<Input id="links" name="links"
-												inputProps={{min: 0, style: { marginLeft: '20px' }}}
-												disableUnderline 
-												placeholder={`link #${i+1}`}
-												className={classes.input}
-												autoComplete="off" 
-												value={x.links} 
-												onChange={e => handleInputChange(e, i)} />
-											<div>
-												{links.length !== 1 && <Button
-												onClick={() => handleRemoveClick(i)}>Remove</Button>}
-												{links.length - 1 === i && <Button onClick={handleAddClick}>Add</Button>}
-											</div>
-										</FormControl>
-									);
-								})}
 								<FormControl margin="normal" required fullWidth>
 									<Input id="video" name="video"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
-										placeholder="Video.."
+										placeholder="Youtube video URL.."
 										className={classes.input}
 										autoComplete="off" 
 										value={video} 
 										onChange={e => setVideo(e.target.value)} />
 								</FormControl>
+								{links.map((x, i) =>
+								{
+									return(
+										<FormControl style={{display: 'flex', flexDirection: 'row'}}
+											margin="normal" required fullWidth>
+											<Input id="links" name="links"
+												inputProps={{min: 0, style: { marginLeft: '20px' }}}
+												disableUnderline 
+												placeholder={`Link #${i+1}`}
+												className={classes.input}
+												autoComplete="off" 
+												value={x.links} 
+												fullWidth
+												onChange={e => handleInputChange(e, i)} />
+											<div style={{display: 'flex', flexDirection: 'row'}}>
+												{links.length !== 1 && <Button
+												onClick={() => handleRemoveClick(i)}
+												className={classes.deleteLink}>Remove</Button>}
+												{links.length - 1 === i && <Button 
+												onClick={handleAddClick}
+												className={classes.addLink}>Add</Button>}
+											</div>
+										</FormControl>
+									);
+								})}
 								<ButtonsWrapper>
 									<Button type="submit" onClick={addProject} className={classes.submit}>
 										Add
@@ -529,7 +587,7 @@ function Dashboard(props)
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
 						<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="subtitle1">
+							<Typography align="center" variant="subtitle2">
 								{`Project added successfully!`}
 							</Typography>
 						</MuiThemeProvider>
@@ -538,7 +596,7 @@ function Dashboard(props)
 				<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="error">
 						<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="subtitle1">
+							<Typography align="center" variant="subtitle2">
 								{error}
 							</Typography>
 						</MuiThemeProvider>
@@ -571,24 +629,6 @@ function Dashboard(props)
 		{
 			setError(error.message);
 			setOpenError(true);
-		}
-	}
-
-	async function uploadImage()
-	{
-		try 
-		{
-			if (image.size < 5000000) //less then 5mb
-			{
-				await firebase.uploadImage(image, firebase.getCurrentUsername());
-				alert("Upload successfully");
-			}
-			else
-				alert("Image's size is bigger than 5mb!");
-		} 
-		catch (error) 
-		{
-			console.log(error);
 		}
 	}
 

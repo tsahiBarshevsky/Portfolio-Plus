@@ -16,7 +16,7 @@ const styles = theme => ({
 	submit:
 	{
 		color: '#ff4040',
-		width: '100px',
+		width: '85px',
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
@@ -32,43 +32,20 @@ const styles = theme => ({
 			transition: 'all 0.2s ease-in'
 		}
 	},
-	cancelButton: 
-	{
-		width: '85px',
-		display: 'flex',
-		justifyContent: 'center',
-		alignItems: 'center',
-		color: 'orange',
-		fontSize: '15px',
-		fontWeight: '600',
-		border: '2px solid orange',
-		backgroundColor: 'transparent',
-		borderRadius: '25px',
-		textTransform: 'capitalize',
-		cursor: 'pointer',
-		margin: theme.spacing(1),
-		transition: 'all 0.2s ease-out',
-		'&:hover':
-		{
-			color: 'white',
-			backgroundColor: 'orange',
-			transition: 'all 0.2s ease-in'
-		}
-	},
 	deleteButton: 
 	{
 		width: '85px',
 		color: 'white',
 		fontSize: '15px',
 		fontWeight: '600',
-		border: '2px solid orange',
-		backgroundColor: 'orange',
+		border: '2px solid #ff4040',
+		backgroundColor: '#ff4040',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
 		margin: theme.spacing(1),
 		'&:hover':
 		{
-			color: 'orange',
+			color: '#ff4040',
 			backgroundColor: 'transparent',
 		}
 	},
@@ -222,7 +199,7 @@ function ProjectCard(props)
 				open={open}
 				onClose={handleClose}
 				style={{cursor: "default", borderRadius: '25px'}}>
-					<DialogTitle>
+					<DialogTitle style={dialogBackground}>
 						<div style={{display: 'flex', flexDirection: 'row'}}>
 							<Warning style={{fontSize: '30px'}} />
 							<MuiThemeProvider theme={theme}>
@@ -232,15 +209,15 @@ function ProjectCard(props)
 							</MuiThemeProvider>
 						</div>
 					</DialogTitle>
-					<DialogContent>
+					<DialogContent style={dialogBackground}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h6" gutterBottom>
 								{`Wait! Are you sure you want to delete ${props.title}?`}
 							</Typography>
 						</MuiThemeProvider>
 					</DialogContent>
-					<DialogActions>
-						<Button onClick={handleClose} className={classes.cancelButton}>Cancel</Button>
+					<DialogActions style={dialogBackground}>
+						<Button onClick={handleClose} className={classes.submit}>Cancel</Button>
 						<Button onClick={deleteProject} className={classes.deleteButton}>Delete</Button>
 					</DialogActions>
 			</Dialog>
