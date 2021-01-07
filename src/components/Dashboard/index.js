@@ -258,11 +258,12 @@ function Dashboard(props)
 	const [open, setOpen] = useState(false);
 	const [openError, setOpenError] = useState(false);
 	const [error, setError] = useState('');
+	const [success, setSuccess] = useState('');
 	const [openSuccess, setOpenSuccess] = useState('');
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
-	const [image, setImage] = useState(null);
 	const [isLoad, setIsLoad] = useState(false);
+
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
     useEffect(() =>
@@ -337,6 +338,9 @@ function Dashboard(props)
 		setType('');
 		setDescription('');
 		setLinks([{link: ''}]);
+		Array.from(document.querySelectorAll("Input")).forEach(
+			input => (input.value = "")
+		);
 		setVideo('');
 	}
 
@@ -501,7 +505,7 @@ function Dashboard(props)
 						</DialogTitle>
 						<DialogContent style={dialogBackground}>
 							<form onSubmit={e => e.preventDefault() && false }>
-								<FormControl margin="normal" required fullWidth>
+								<FormControl margin="normal" fullWidth>
 									<Input id="title" name="title"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}} 
 										disableUnderline 
@@ -517,7 +521,7 @@ function Dashboard(props)
 										{`Note: the title is unchangeable after adding a project`}
 									</Typography>
 								</MuiThemeProvider> : null}
-								<FormControl margin="normal" required fullWidth>
+								<FormControl margin="normal" fullWidth>
 									<Input id="type" name="type"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
@@ -527,7 +531,7 @@ function Dashboard(props)
 										value={type} 
 										onChange={e => setType(e.target.value)} />
 								</FormControl>
-								<FormControl margin="normal" required fullWidth>
+								<FormControl margin="normal" fullWidth>
 									<Input id="description" name="description"
 										multiline rows={5} rowsMax={5}
 										inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
@@ -538,7 +542,7 @@ function Dashboard(props)
 										value={description} 
 										onChange={e => setDescription(e.target.value)} />
 								</FormControl>
-								<FormControl margin="normal" required fullWidth>
+								<FormControl margin="normal" fullWidth>
 									<Input id="video" name="video"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
 										disableUnderline 
@@ -552,7 +556,7 @@ function Dashboard(props)
 								{
 									return(
 										<FormControl style={{display: 'flex', flexDirection: 'row'}}
-											margin="normal" required fullWidth>
+											margin="normal" fullWidth>
 											<Input id="links" name="links"
 												inputProps={{min: 0, style: { marginLeft: '20px' }}}
 												disableUnderline 
@@ -588,7 +592,7 @@ function Dashboard(props)
 					<Alert onClose={closeSnackbar} severity="success">
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="subtitle2">
-								{`Project added successfully!`}
+								{success}
 							</Typography>
 						</MuiThemeProvider>
 					</Alert>
@@ -613,11 +617,30 @@ function Dashboard(props)
 			const result = checkVideoURL();
 			if (result)
 			{
-				await firebase.addProject(title, type, description, links, result);
-				setOpenDialog(false);
-				setOpenSuccess(true);
-				setUpdate(true);
-				clearForm();
+				var fault = false;
+				Array.from(document.querySelectorAll("Input")).forEach(
+					input => 
+					{
+						if (input.value === "")
+							fault = true;
+						else
+							fault = false;
+					}
+				);
+				if (!fault)
+				{
+					await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
+					setOpenDialog(false);
+					setOpenSuccess(true);
+					setSuccess(`${title.trim()} has been successfully added`);
+					setUpdate(true);
+					clearForm();
+				}
+				else
+				{
+					setError("One of the fields has left blank");
+					setOpenError(true);
+				}
 			}
 			else
 			{

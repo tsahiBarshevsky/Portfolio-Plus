@@ -362,7 +362,7 @@ function ProjectCard(props)
 				}
 				else
 				{
-					setError("One of the inputs is empty");
+					setError("One of the fields has left blank");
 					setOpenError(true);
 				}
 			}
@@ -388,7 +388,7 @@ function ProjectCard(props)
 		{
 			setOpen(false);
 			await firebase.deleteProject(props.title);
-			setSuccess(`${project.title} edited successfully`);
+			setSuccess(`${props.title} has been successfully deleted`);
 			setOpenSuccess(true);
 			props.setUpdate(true);
 		} 
