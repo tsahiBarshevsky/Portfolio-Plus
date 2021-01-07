@@ -124,7 +124,7 @@ function HomePage(props) {
 					Already have an account? <LoginLink to="/login">Login!</LoginLink>	
 				</Text>
 				<Text>
-					Having trouble? <LoginLink to="/">Get some help!</LoginLink>	
+					Having trouble? <LoginLink to="/questions-and-answers">Get some help!</LoginLink>	
 				</Text>
 			</HeroContianer>
 			<FixedBackground>
