@@ -3,7 +3,7 @@ import { Typography, Button, Grid } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text } from './HomePageElements';
+import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text, Paragraph, ParagraphWrapper, HeroContianer } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
@@ -28,14 +28,15 @@ const styles = theme => ({
 			backgroundColor: '#ff4040'
 		}
 	},
-	item1:
+	grid:
 	{
-		order: 1
+		[theme.breakpoints.down("sm")]:
+		{
+			paddingTop: '40px'
+		}
 	},
-	item2:
-	{
-		order: 2
-	},
+	item1: {order: 1},
+	item2: {order: 2},
 	item3:
 	{
 		order: 3,
@@ -52,14 +53,8 @@ const styles = theme => ({
 			order: 3
 		}
 	},
-	item5:
-	{
-		order: 5
-	},
-	item6:
-	{
-		order: 6
-	},
+	item5: {order: 5},
+	item6: {order: 6}
 });
 
 const theme = createMuiTheme({
@@ -70,6 +65,13 @@ const theme = createMuiTheme({
 			fontFamily: `"Caveat", sans-serif`,
 			lineHeight: 1
 		},
+		h1:
+		{
+			'@media (max-width:300px)':
+			{
+				fontSize: '80px'
+			}
+		},
 		h4:
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
@@ -77,9 +79,10 @@ const theme = createMuiTheme({
 		},
 		h5:
 		{
+			color: 'white',
 			fontFamily: `"Andika New Basic", sans-serif`,
-			textDecoration: 'underline',
-			fontWeight: "bold"
+			fontWeight: 'bold',
+			textShadow: '3px 3px black'
 		},
 		subtitle1:
 		{
@@ -96,31 +99,34 @@ function HomePage(props) {
 	return (
 		<Container>
 			<Helmet><title>Portfolio Plus | Home</title></Helmet>
-			<MuiThemeProvider theme={theme}>
-				<Typography variant="h1" gutterBottom>
-					Countless works, one place
-				</Typography>
-			</MuiThemeProvider>
-			<SubtitleContianer>
+			<HeroContianer>
 				<MuiThemeProvider theme={theme}>
-					<Typography variant="h3" gutterBottom>
-						The importance of a portfolio is known for every inexperienced job seeker. <br />
-						On Portfolio Plus, you can create your own landing page with all of
-						your works in just a few clicks!
+					<Typography variant="h1" gutterBottom>
+						One place, countless works
 					</Typography>
 				</MuiThemeProvider>
-			</SubtitleContianer>
-			<Button
-				variant="contained"
-				color="primary"
-				component={Link}
-				to="/register"
-				className={classes.button}>
-					Get started!
-			</Button>
-			<Text>
-				Already have an account? <LoginLink to="/login">Login!</LoginLink>	
-			</Text>
+				<SubtitleContianer>
+					<MuiThemeProvider theme={theme}>
+						<Typography variant="h3" gutterBottom>
+							The importance of a portfolio is known for every inexperienced job seeker. <br />
+							On Portfolio Plus, you can create your own landing page with all of
+							your works in just a few clicks!
+						</Typography>
+					</MuiThemeProvider>
+				</SubtitleContianer>
+				<Button to="/register"
+					variant="contained"
+					component={Link}
+					className={classes.button}>
+						Get started!
+				</Button>
+				<Text>
+					Already have an account? <LoginLink to="/login">Login!</LoginLink>	
+				</Text>
+				<Text>
+					Having trouble? <LoginLink to="/">Get some help!</LoginLink>	
+				</Text>
+			</HeroContianer>
 			<FixedBackground>
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h5">
@@ -128,6 +134,11 @@ function HomePage(props) {
 					</Typography>
 				</MuiThemeProvider>
 			</FixedBackground>
+			<ParagraphWrapper>
+			<Paragraph>
+				Portfolio Plus is a free service for creating a designed landing page with all of your personal projects and works.
+			</Paragraph>
+			</ParagraphWrapper>
 			<FixedBackground>
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h5">
@@ -136,6 +147,7 @@ function HomePage(props) {
 				</MuiThemeProvider>
 			</FixedBackground>
 			<Grid
+				className={classes.grid}
 				spacing={0}
 				container
 				direction="row"
@@ -190,4 +202,4 @@ function HomePage(props) {
 	)
 }
 
-export default withStyles(styles)(HomePage)
+export default withStyles(styles)(HomePage);
