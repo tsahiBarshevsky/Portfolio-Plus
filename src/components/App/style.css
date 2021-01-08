@@ -17,3 +17,27 @@
 	justify-content: center;
 	align-items: center;
 }
+
+::-webkit-scrollbar 
+{
+	width: 6px;
+	height: 6px;
+}
+
+::-webkit-scrollbar-thumb 
+{
+	background: linear-gradient(13deg, #424242 14%,#424242 64%);
+	border-radius: 10px;
+}
+   
+::-webkit-scrollbar-thumb:hover
+{
+	background: linear-gradient(13deg, #6E6E6E 14%,#6e6e6e 64%);
+}
+   
+::-webkit-scrollbar-track
+{
+	background: #ffffff;
+	border-radius: 10px;
+	box-shadow: inset 7px 10px 12px #f0f0f0;
+}

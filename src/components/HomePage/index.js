@@ -1,9 +1,9 @@
 import React from 'react';
-import { Typography, Button, Grid } from '@material-ui/core';
+import { Typography, Button, Grid, Divider } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text, Paragraph, ParagraphWrapper, HeroContianer } from './HomePageElements';
+import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer, Footer, LinksContainer, FooterLink } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
@@ -20,7 +20,7 @@ const styles = theme => ({
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		marginTop: theme.spacing(3),
-		marginBottom: theme.spacing(1),
+		marginBottom: theme.spacing(2),
 		textTransform: 'capitalize',
 		'&:hover':
 		{
@@ -55,7 +55,16 @@ const styles = theme => ({
 		}
 	},
 	item5: {order: 5, display: 'flex', flexDirection: 'column', alignItems: 'center'},
-	item6: {order: 6}
+	item6: {order: 6},
+	divider: 
+	{
+        height: theme.spacing(.1),
+        width: '90%',
+        alignSelf: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.2)',
+		marginBottom: theme.spacing(2),
+		marginTop: theme.spacing(1)
+    }
 });
 
 const theme = createMuiTheme({
@@ -63,32 +72,34 @@ const theme = createMuiTheme({
 	{
 		allVariants:
 		{
-			fontFamily: `"Caveat", sans-serif`,
+			fontFamily: `"Andika New Basic", sans-serif`,
 			lineHeight: 1
 		},
 		h1:
 		{
+			fontFamily: `"Caveat", sans-serif`,
 			'@media (max-width: 300px)':
 			{
 				fontSize: '80px'
 			}
 		},
+		h3:
+		{
+			fontFamily: `"Caveat", sans-serif`,
+		},
 		h4:
 		{
-			fontFamily: `"Andika New Basic", sans-serif`,
 			fontWeight: "bold"
 		},
 		h5:
 		{
 			color: 'white',
-			fontFamily: `"Andika New Basic", sans-serif`,
 			fontWeight: 'bold',
 			textShadow: '3px 3px black',
 			letterSpacing: '1.5px'
 		},
 		subtitle1:
 		{
-			fontFamily: `"Andika New Basic", sans-serif`,
 			fontSize: "20px",
 			lineHeight: 1.4,
 			width: '65%'
@@ -126,9 +137,9 @@ function HomePage(props) {
 				<Text>
 					Already have an account? <LoginLink to="/login">Login!</LoginLink>	
 				</Text>
-				<Text>
-					Having trouble? <LoginLink to="/questions-and-answers">Get some help!</LoginLink>	
-				</Text>
+				<Subtext>
+					Having trouble? <HelpLink to="/questions-and-answers">Get some help!</HelpLink>	
+				</Subtext>
 			</HeroContianer>
 			<FixedBackground>
 				<MuiThemeProvider theme={theme}>
@@ -213,7 +224,29 @@ function HomePage(props) {
 					<Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.item6}>
 						<Picture src={Vector3} alt="Vector3" />
 					</Grid>
-				</Grid>
+			</Grid>
+			<Footer>
+				<MuiThemeProvider theme={theme}>
+					<Typography variant="h6" gutterBottom>
+						Portfolio Plus
+					</Typography>
+					<Typography variant="subtitle" gutterBottom>
+						Creating a portfolio has never been easier
+					</Typography>
+				</MuiThemeProvider>
+				<Divider variant="middle" className={classes.divider} />
+				<LinksContainer>
+					<FooterLink to='/questions-and-answers'>Help</FooterLink>
+					<FooterLink to='/credits'>Credits</FooterLink>
+					<FooterLink to='/register'>Regitser</FooterLink>
+					<FooterLink to='/login'>Login</FooterLink>
+				</LinksContainer>
+				<MuiThemeProvider theme={theme}>
+					<Typography variant="subtitle" gutterBottom>
+						All rights reserved &copy; {new Date().getFullYear()}
+					</Typography>
+				</MuiThemeProvider>
+			</Footer>
 		</Container>
 	)
 }
