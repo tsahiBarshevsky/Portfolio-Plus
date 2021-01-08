@@ -91,7 +91,11 @@ const styles = theme => ({
 		}),
 		marginLeft: -drawerWidth,
 		height: '100vh',
-		overflowY: 'scroll'
+		overflowY: 'scroll',
+		'&::-webkit-scrollbar':
+		{
+			width: '0px', height: '0px'
+		}
 	},
 	mainShift: 
 	{

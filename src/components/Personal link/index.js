@@ -6,9 +6,11 @@ import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer } from './PersonalLinkElements';
+	PulseBubble3, PulseContainer, SocialIcons } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
 import logo from '../../images/logo.png';
+import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton,
+        FacebookIcon, LinkedinIcon, TelegramIcon, WhatsappIcon} from 'react-share';
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
@@ -36,7 +38,8 @@ const useStyles = makeStyles((theme) => ({
         {
             width: '315px'
         }
-    }
+    },
+    social: {margin: theme.spacing(1)}
 }));
 
 const defaultTheme = createMuiTheme();
@@ -205,6 +208,30 @@ function PersonalLink(props) {
                     <Avatar src={url !== '' ? url : null} alt="Profile picture" className={classes.avatar} />
                 </TopLine>
                 <Divider variant="middle" className={classes.divider} />
+                <SocialIcons>
+                    <FacebookShareButton
+                        className={classes.social}
+                        url={"http://www.camperstribe.com"}
+                        quote={"Hey, check out my projects!"}>
+                        <FacebookIcon size={40} round />
+                    </FacebookShareButton>
+                    <LinkedinShareButton
+                        className={classes.social}
+                        url={"http://www.camperstribe.com"}>
+                        <LinkedinIcon size={40} round />
+                    </LinkedinShareButton>
+                    <TelegramShareButton
+                        className={classes.social}
+                        url={"http://www.camperstribe.com"}>
+                        <TelegramIcon size={40} round />
+                    </TelegramShareButton>
+                    <WhatsappShareButton
+                        className={classes.social}
+                        url={"http://www.camperstribe.com"}
+                        quote={"Hey, check out my projects!"}>
+                        <WhatsappIcon size={40} round />
+                    </WhatsappShareButton>
+                </SocialIcons>
                 {projects.length >= 1 ?
                 <ListWrapper>
                     <AnimateSharedLayout>

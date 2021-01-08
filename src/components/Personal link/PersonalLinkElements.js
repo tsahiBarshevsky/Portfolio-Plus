@@ -24,6 +24,13 @@ export const TopLine = styled.div`
     }
 `;
 
+export const SocialIcons = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+`;
+
 export const TextWrapper = styled.div`
     display: flex;
     flex-direction: column;
