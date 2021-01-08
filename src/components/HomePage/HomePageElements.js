@@ -42,15 +42,18 @@ export const Text = styled.p`
 
 export const ParagraphWrapper = styled.div`
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 85%;
+    width: 65%;
     padding: 35px 0px; //top-bottom right-left
 `;
 
 export const Paragraph = styled.p`
-    font-size: 20px;
+    font-size: 23px;
     text-align: center;
+    padding-bottom: 10px;
+    text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
 `;
 
 export const LoginLink = styled(Link)`

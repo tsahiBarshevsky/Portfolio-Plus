@@ -35,7 +35,7 @@ const styles = theme => ({
 			paddingTop: '40px'
 		}
 	},
-	item1: {order: 1},
+	item1: {order: 1, display: 'flex', flexDirection: 'column', alignItems: 'center'},
 	item2: {order: 2},
 	item3:
 	{
@@ -47,13 +47,14 @@ const styles = theme => ({
 	},
 	item4:
 	{
+		display: 'flex', flexDirection: 'column', alignItems: 'center',
 		order: 4,
 		[theme.breakpoints.down("sm")]:
 		{
 			order: 3
 		}
 	},
-	item5: {order: 5},
+	item5: {order: 5, display: 'flex', flexDirection: 'column', alignItems: 'center'},
 	item6: {order: 6}
 });
 
@@ -67,7 +68,7 @@ const theme = createMuiTheme({
 		},
 		h1:
 		{
-			'@media (max-width:300px)':
+			'@media (max-width: 300px)':
 			{
 				fontSize: '80px'
 			}
@@ -82,13 +83,15 @@ const theme = createMuiTheme({
 			color: 'white',
 			fontFamily: `"Andika New Basic", sans-serif`,
 			fontWeight: 'bold',
-			textShadow: '3px 3px black'
+			textShadow: '3px 3px black',
+			letterSpacing: '1.5px'
 		},
 		subtitle1:
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 			fontSize: "20px",
-			lineHeight: 1.4
+			lineHeight: 1.4,
+			width: '65%'
 		}
 	}
 });
@@ -135,9 +138,19 @@ function HomePage(props) {
 				</MuiThemeProvider>
 			</FixedBackground>
 			<ParagraphWrapper>
-			<Paragraph>
-				Portfolio Plus is a free service for creating a designed landing page with all of your personal projects and works.
-			</Paragraph>
+				<Paragraph>
+					Portfolio Plus is a free service for creating a designed landing page with
+					all of your personal projects and works.
+				</Paragraph>
+				<Paragraph>
+					The idea was born out of a need to unify all projects in one place, 
+					which will be a slightly less generic and banal way as in a resume, 
+					but in a readable, colorful and eye-catching way.
+				</Paragraph>
+				<Paragraph>
+					The website allows you to create an unique and personal landing page that 
+					contains the projects that you've done, which you can share and send to anyone you want.
+				</Paragraph>
 			</ParagraphWrapper>
 			<FixedBackground>
 				<MuiThemeProvider theme={theme}>
@@ -152,15 +165,17 @@ function HomePage(props) {
 				container
 				direction="row"
 				justify="center"
-				alignItems="center">
+				alignItems="center"
+				alignContent="center">
 					<Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.item1}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h4" gutterBottom>
-								Easy to use and manage
+								It's easy to use and manage
 							</Typography>
 							<Typography variant="subtitle1">
-								Add, edit and delete projects in just few clicks.<br />
-								Send just one link to whom you wish to share your projects with!
+								With just few clicks, you can create a colorful landing page and 
+								add, edit and delete projects.<br />
+								Send just one link to anyone you'd like to share your projects with!
 							</Typography>
 						</MuiThemeProvider>
 					</Grid>
@@ -174,11 +189,12 @@ function HomePage(props) {
 					<Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.item4}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h4" gutterBottom>
-								Save precious time
+								It saves precious time
 							</Typography>
 							<Typography variant="subtitle1">
 								Creating any project can take some time.<br />
-								Don't waste more time on looking for a place to share it.
+								With using Portfolio Plus, you don't need to search for a
+								a place to share your works and project, they're all located in one place
 							</Typography>
 						</MuiThemeProvider>
 					</Grid>
@@ -186,11 +202,11 @@ function HomePage(props) {
 					<Grid item xs={12} sm={12} md={6} lg={6} xl={6} className={classes.item5}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h4" gutterBottom>
-								Impress potential employers
+								It can impress potential employers
 							</Typography>
 							<Typography variant="subtitle1">
-								For an inexperienced employee, a portfolio is a "Business Card" for his skills.
-								Attached your link to your CV or send it to employers, so they'll see your works.
+								If you're an inexperienced employee, a portfolio is a "Business Card" for your skills.<br />
+								Attached your link to your resume or send it to employers, so they'll see your works.
 							</Typography>
 						</MuiThemeProvider>
 					</Grid>
