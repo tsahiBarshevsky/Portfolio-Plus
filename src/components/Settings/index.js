@@ -201,7 +201,7 @@ function Settings(props)
 	const [url, setUrl] = useState('');
 	const [progress, setProgress] = useState(0);
 
-	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5'];
+	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5', 'bg6', 'bg7'];
 	const [selectedTheme, setSelectedTheme] = useState('');
 
     useEffect(() =>
@@ -427,7 +427,7 @@ function Settings(props)
 						spacing={5} container direction="row"
 						justify="flex-start" alignItems="center">
 						{themes.map((theme, index) =>
-							<Grid item>
+							<Grid item xs={12} sm={4} md={3} lg={2} xl={2}>
 								<ThemeCard 
 								theme={theme}
 								username={firebase.getCurrentUsername()} 

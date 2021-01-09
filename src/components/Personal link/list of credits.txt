@@ -3,3 +3,5 @@ bg2 - https://www.freepik.com/free-vector/abstract-design-background-with-blue-p
 bg3 - https://www.freepik.com/free-vector/flat-design-red-comic-style-background_11685287.htm#page=1&query=background&position=38
 bg4 - https://www.freepik.com/free-vector/abstract-colorful-shapes-background_11299315.htm#page=1&query=background&position=42#position=42&page=1&query=background
 bg5 - https://www.freepik.com/free-vector/brush-strokes-background_4122340.htm#page=2&query=background&position=4
+bg6 - https://www.freepik.com/free-vector/color-seamless-space-pattern_10838001.htm#page=2&query=pattern+background&position=17
+bg7 - https://www.freepik.com/free-vector/tropical-green-leaves-background_7557476.htm
