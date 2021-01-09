@@ -8,6 +8,7 @@ import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
 import { Helmet } from 'react-helmet';
+import Emoji from "react-emoji-render";
 
 const styles = theme => ({
 	button: 
@@ -230,7 +231,7 @@ function HomePage(props) {
 					<Typography variant="h6" gutterBottom>
 						Portfolio Plus
 					</Typography>
-					<Typography variant="subtitle" gutterBottom>
+					<Typography variant="subtitle2" gutterBottom>
 						Creating a portfolio has never been easier
 					</Typography>
 				</MuiThemeProvider>
@@ -242,7 +243,10 @@ function HomePage(props) {
 					<FooterLink to='/login'>Login</FooterLink>
 				</LinksContainer>
 				<MuiThemeProvider theme={theme}>
-					<Typography variant="subtitle" gutterBottom>
+					<Typography variant="subtitle2" gutterBottom>
+						Coded with <Emoji text=":heart:" style={{fontSize: "18px"}}/> by Tsahi Barshavsky
+					</Typography>
+					<Typography variant="subtitle2" gutterBottom>
 						All rights reserved &copy; {new Date().getFullYear()}
 					</Typography>
 				</MuiThemeProvider>

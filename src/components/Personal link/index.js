@@ -121,13 +121,17 @@ function PersonalLink(props) {
                                 <br />
                             </Typography>
                         </MuiThemeProvider>
+                        {projects[props.location].links !== null ?
                         <Links>
-                        {projects[props.location].links.map((link, index) =>
-                            <li key={index}>
-                                <Link href={link} target="_blank">{`link #${index+1}`}</Link>
-                            </li>
-                        )}
-                        </Links>
+                        {projects[props.location].links.map((link, index) => {
+                            return typeof link !== 'object' ?
+                                <li key={index}>
+                                    <Link href={link} target="_blank">{`link #${index+1}`}</Link>
+                                </li>
+                            : null
+                        })}
+                        </Links> : null }
+                        {projects[props.location].video !== null ? 
                         <VideoContainer>
                             <Video src={projects[props.location].video}
                                 frameborder="0"
@@ -135,7 +139,7 @@ function PersonalLink(props) {
                                 allow="accelerometer; 
                                         autoplay; encrypted-media; 
                                         gyroscope; picture-in-picture;" />
-                        </VideoContainer>
+                        </VideoContainer> : null }
                     </div>
             </motion.div>
         );
@@ -211,23 +215,23 @@ function PersonalLink(props) {
                 <SocialIcons>
                     <FacebookShareButton
                         className={classes.social}
-                        url={"http://www.camperstribe.com"}
+                        url={window.location.href}
                         quote={"Hey, check out my projects!"}>
                         <FacebookIcon size={40} round />
                     </FacebookShareButton>
                     <LinkedinShareButton
                         className={classes.social}
-                        url={"http://www.camperstribe.com"}>
+                        url={window.location.href}>
                         <LinkedinIcon size={40} round />
                     </LinkedinShareButton>
                     <TelegramShareButton
                         className={classes.social}
-                        url={"http://www.camperstribe.com"}>
+                        url={window.location.href}>
                         <TelegramIcon size={40} round />
                     </TelegramShareButton>
                     <WhatsappShareButton
                         className={classes.social}
-                        url={"http://www.camperstribe.com"}
+                        url={window.location.href}
                         quote={"Hey, check out my projects!"}>
                         <WhatsappIcon size={40} round />
                     </WhatsappShareButton>

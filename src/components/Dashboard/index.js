@@ -257,7 +257,7 @@ function Dashboard(props)
 	const [title, setTitle] = useState('');
 	const [type, setType] = useState('');
 	const [description, setDescription] = useState('');
-	const [links, setLinks] = useState([{link: ''}]);
+	const [links, setLinks] = useState([{}]);
 	const [video, setVideo] = useState('');
 	const [open, setOpen] = useState(false);
 	const [openError, setOpenError] = useState(false);
@@ -304,6 +304,9 @@ function Dashboard(props)
 				return `https://www.youtube.com/embed/${video.split('v=').pop().split('&')[0]}`;
 			return `https://www.youtube.com/embed/${video.split('/').pop()}`;
 		}
+		else
+			if (video.trim() === '')
+				return null;
 		return false;
 	}
 
@@ -322,7 +325,7 @@ function Dashboard(props)
 	}
 
 	const handleAddClick = () => {
-		setLinks([...links, { link: '' }]);
+		setLinks([...links, {}]);
 	};
 
 	const Alert = (props) =>
@@ -341,11 +344,18 @@ function Dashboard(props)
 		setTitle('');
 		setType('');
 		setDescription('');
-		setLinks([{link: ''}]);
-		Array.from(document.querySelectorAll("Input")).forEach(
-			input => (input.value = "")
-		);
+		setLinks([{}]);
 		setVideo('');
+		Array.from(document.querySelectorAll("Input")).forEach(
+			input => (input.id === "links" ? input.value = "" : null)
+		);
+		/*if (links.length === 1 && (typeof links[0] === "object" || links[0] === ""))
+			console.log("yes");
+		else
+			console.log("no");*/
+		/*Array.from(document.querySelectorAll("Input")).forEach(
+			input => (input.id === "links" ? [(input.value === "" ? console.log("yes") : console.log("no"))] : null)
+		);*/
 	}
 
 	const handleDrawerOpen = () => 
@@ -619,10 +629,10 @@ function Dashboard(props)
 		try
 		{
 			const result = checkVideoURL();
-			if (result)
+			if (result || result === null)
 			{
 				var fault = false;
-				Array.from(document.querySelectorAll("Input")).forEach(
+				/*Array.from(document.querySelectorAll("Input")).forEach(
 					input => 
 					{
 						if (input.value === "")
@@ -631,9 +641,14 @@ function Dashboard(props)
 							fault = false;
 					}
 				);
-				if (!fault)
+				if (!fault)*/
+				if (title.trim() !== '' && type.trim() !== '' && description.trim() !== '')
 				{
-					await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
+					//check if there are no links
+					if (links.length === 1 && (typeof links[0] === "object" || links[0] === ""))
+						await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
+					else
+						await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
 					setOpenDialog(false);
 					setOpenSuccess(true);
 					setSuccess(`${title.trim()} has been successfully added`);

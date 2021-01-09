@@ -122,7 +122,7 @@ export const LinksContainer = styled.div`
     justify-content: space-between;
     align-items: center;
     width: 50%;
-    padding-bottom: 20px;
+    padding-bottom: 30px;
 
     @media screen and (max-width: 600px)
     {
