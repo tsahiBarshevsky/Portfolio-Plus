@@ -9,6 +9,8 @@ import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
 import { Helmet } from 'react-helmet';
 import Emoji from "react-emoji-render";
+import { animateScroll as scroll, Link as LinkS} from 'react-scroll';
+import Navbar from '../Navbar';
 
 const styles = theme => ({
 	button: 
@@ -112,6 +114,8 @@ function HomePage(props) {
 	const { classes } = props;
 
 	return (
+		<>
+		<Navbar />
 		<Container>
 			<Helmet><title>Portfolio Plus | Home</title></Helmet>
 			<HeroContianer>
@@ -142,7 +146,7 @@ function HomePage(props) {
 					Having trouble? <HelpLink to="/questions-and-answers">Get some help!</HelpLink>	
 				</Subtext>
 			</HeroContianer>
-			<FixedBackground>
+			<FixedBackground id="about">
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h5">
 						What is Portfolio Plus?
@@ -164,7 +168,7 @@ function HomePage(props) {
 					contains the projects that you've done, which you can share and send to anyone you want.
 				</Paragraph>
 			</ParagraphWrapper>
-			<FixedBackground>
+			<FixedBackground id="services">
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h5">
 						Why using Portfolio Plus?
@@ -252,6 +256,7 @@ function HomePage(props) {
 				</MuiThemeProvider>
 			</Footer>
 		</Container>
+		</>
 	)
 }
 

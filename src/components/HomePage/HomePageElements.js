@@ -9,7 +9,7 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 75px 0px 0px 0px; //top right bottom left
+    padding: 155px 0px 0px 0px; //top right bottom left
     background-color: #f5f5f5;
 `;
 
