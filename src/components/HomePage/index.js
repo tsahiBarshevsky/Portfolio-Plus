@@ -3,14 +3,17 @@ import { Typography, Button, Grid, Divider } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer, Footer, LinksContainer, FooterLink } from './HomePageElements';
+import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, 
+		 Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer,
+		 Footer, LinksContainer, FooterLink, Logo } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
 import { Helmet } from 'react-helmet';
 import Emoji from "react-emoji-render";
-import { animateScroll as scroll, Link as LinkS} from 'react-scroll';
+import { animateScroll as scroll } from 'react-scroll';
 import Navbar from '../Navbar';
+import { motion } from "framer-motion";
 
 const styles = theme => ({
 	button: 
@@ -70,6 +73,10 @@ const styles = theme => ({
     }
 });
 
+const logoTheme = createMuiTheme({
+	typography: {allVariants: {fontFamily:`"Dancing Script", sans-serif`}}
+});
+
 const theme = createMuiTheme({
 	typography:
 	{
@@ -118,7 +125,7 @@ function HomePage(props) {
 		<Navbar />
 		<Container>
 			<Helmet><title>Portfolio Plus | Home</title></Helmet>
-			<HeroContianer>
+			<HeroContianer data-aos="zoom-in-up">
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h1" gutterBottom>
 						One place, countless works
@@ -231,20 +238,49 @@ function HomePage(props) {
 					</Grid>
 			</Grid>
 			<Footer>
+				<Logo to='/'onClick={() => scroll.scrollToTop()}>
+					<motion.div
+						whileHover={{ scale: 1.25 }}
+						transition={{ type: "spring", stiffness: 500 }}
+						style={{display: 'flex', alignItems: 'center'}}>
+						<MuiThemeProvider theme={logoTheme}>
+							<Typography variant="h4">
+								Portfolio +
+							</Typography>
+						</MuiThemeProvider>
+					</motion.div>
+				</Logo>
 				<MuiThemeProvider theme={theme}>
-					<Typography variant="h6" gutterBottom>
-						Portfolio Plus
-					</Typography>
-					<Typography variant="subtitle2" gutterBottom>
-						Creating a portfolio has never been easier
-					</Typography>
-				</MuiThemeProvider>
+						<Typography variant="subtitle2" gutterBottom>
+							Creating a portfolio has never been easier
+						</Typography>
+					</MuiThemeProvider>
 				<Divider variant="middle" className={classes.divider} />
 				<LinksContainer>
-					<FooterLink to='/questions-and-answers'>Help</FooterLink>
-					<FooterLink to='/credits'>Credits</FooterLink>
-					<FooterLink to='/register'>Regitser</FooterLink>
-					<FooterLink to='/login'>Login</FooterLink>
+					<motion.div
+						whileHover={{ rotateZ: 10, scale: 1.25 }}
+						transition={{ type: "spring", stiffness: 500 }}
+						style={{display: 'flex', alignItems: 'center'}}>
+						<FooterLink to='/questions-and-answers'>Help</FooterLink>
+					</motion.div>
+					<motion.div
+						whileHover={{ rotateZ: 10, scale: 1.25 }}
+						transition={{ type: "spring", stiffness: 500 }}
+						style={{display: 'flex', alignItems: 'center'}}>
+						<FooterLink to='/credits'>Credits</FooterLink>
+					</motion.div>
+					<motion.div
+						whileHover={{ rotateZ: -10, scale: 1.25 }}
+						transition={{ type: "spring", stiffness: 500 }}
+						style={{display: 'flex', alignItems: 'center'}}>
+						<FooterLink to='/register'>Regitser</FooterLink>
+					</motion.div>
+					<motion.div
+						whileHover={{ rotateZ: -10, scale: 1.25 }}
+						transition={{ type: "spring", stiffness: 500 }}
+						style={{display: 'flex', alignItems: 'center'}}>
+						<FooterLink to='/login'>Login</FooterLink>
+					</motion.div>
 				</LinksContainer>
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="subtitle2" gutterBottom>

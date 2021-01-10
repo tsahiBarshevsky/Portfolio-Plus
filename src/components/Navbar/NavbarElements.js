@@ -12,13 +12,13 @@ export const Nav = styled.nav`
     position: sticky;
     top: 0;
     z-index: 20;
-    transition: all 500ms ease-out;
+    transition: all 0.5s ease-out;
 
     &.active
     {
         background: #212121;
         border-bottom: 1px solid gray;
-        transition: all 500ms ease-in;   
+        transition: all 0.5s ease-in;   
     }
 `;
 
@@ -36,11 +36,6 @@ export const NavbarContainer = styled.div`
     padding-right: 50px;
     padding-left: 50px;*/
     
-`;
-
-export const Logo = styled.img`
-    height: 45px;
-    width: 45px;
 `;
 
 export const NavLogo = styled.div`

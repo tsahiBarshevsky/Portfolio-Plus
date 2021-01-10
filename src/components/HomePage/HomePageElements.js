@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link as LinkR } from 'react-router-dom';
 import background from '../../images/Backgrounds/fixed-bg.png';
+import { Link } from 'react-router-dom';
 
 export const Container = styled.div`
     cursor: default;
@@ -107,7 +108,8 @@ export const Footer = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 40px 0px 25px 0px; //top right bottom left
+    margin-top: 70px;
+    padding: 45px 0px 30px 0px; //top right bottom left
     color: white;
     background: linear-gradient(rgba(0, 0, 0, 0.4) 2%,
                 rgba(0, 0, 0, 0.4) 50%, 
@@ -137,4 +139,13 @@ export const FooterLink = styled(LinkR)`
     text-align: center;
     text-decoration: none;
     color: white;
+`;
+
+export const Logo = styled(Link)`
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 `;

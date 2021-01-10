@@ -163,6 +163,15 @@ export const BackToHomeLink = styled(LinkR)`
     }
 `;
 
+export const BackHome = styled(LinkR)`
+    bottom: 0px;
+    align-self: center;
+    transform: translateY(30%);
+    margin-top: auto;
+    color: black;
+    text-decoration: none;
+`;
+
 /*---Loading animation---*/
 
 export const PulseContainer = styled.div`

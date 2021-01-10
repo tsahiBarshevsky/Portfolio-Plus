@@ -6,7 +6,7 @@ import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer, SocialIcons } from './PersonalLinkElements';
+	PulseBubble3, PulseContainer, SocialIcons, BackHome } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
 import logo from '../../images/logo.png';
 import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton,
@@ -14,15 +14,14 @@ import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappS
 
 const useStyles = makeStyles((theme) => ({
     avatar: {
-        width: theme.spacing(19),
-        height: theme.spacing(19),
-        boxShadow: '0px 0px 23px 0px rgba(0,0,0,0.75)',
-        //border: '5px double black',
-        backgroundClip: 'content-box',
+        width: theme.spacing(20),
+        height: theme.spacing(20),
+        boxShadow: '0px 0px 23px 0px rgba(0, 0, 0, 0.75)',
+        border: '5px double black',
         [theme.breakpoints.down("xs")]:
         {
-            width: theme.spacing(14),
-            height: theme.spacing(14),
+            width: theme.spacing(15),
+            height: theme.spacing(15),
         }
     },
     divider: {
@@ -86,6 +85,10 @@ const theme = createMuiTheme({
             }
         }
 	}
+});
+
+const logoTheme = createMuiTheme({
+    typography: {allVariants: {fontFamily:`"Dancing Script", sans-serif`}}
 });
 
 function PersonalLink(props) {
@@ -251,7 +254,7 @@ function PersonalLink(props) {
                     </WhatsappShareButton>
                 </SocialIcons>
                 {projects.length >= 1 ?
-                <ListWrapper>
+                <ListWrapper data-aos="fade-up">
                     <AnimateSharedLayout>
                         <ProjectsList layout initial={{ borderRadius: 25 }}>
                             {projects.map((project, index) =>
@@ -268,7 +271,13 @@ function PersonalLink(props) {
                         </Typography>
                     </MuiThemeProvider>
                 </ListWrapper>}
-                <Logo src={logo} alt="Logo" />
+                <BackHome to="/">
+                    <MuiThemeProvider theme={logoTheme}>
+                        <Typography variant="h4">
+                            Portfolio +
+                        </Typography>
+                    </MuiThemeProvider>
+                </BackHome>
             </Root> 
             : 
             <ErrorRoot>
