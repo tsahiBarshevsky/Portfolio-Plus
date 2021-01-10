@@ -584,7 +584,7 @@ function Dashboard(props)
 												{links.length !== 1 && <Button
 												onClick={() => handleRemoveClick(i)}
 												className={classes.deleteLink}>Remove</Button>}
-												{links.length - 1 === i && <Button 
+												{links.length - 1 === i && links.length <= 2 && <Button 
 												onClick={handleAddClick}
 												className={classes.addLink}>Add</Button>}
 											</div>
@@ -648,12 +648,16 @@ function Dashboard(props)
 					if (links.length === 1 && (typeof links[0] === "object" || links[0] === ""))
 						await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
 					else
+					{
+						//check if any input left empty, if so, delete {} from array
+						links.map((x, i) => {return typeof x === 'object' ? links.splice(i, 1) : null});
 						await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
-					setOpenDialog(false);
-					setOpenSuccess(true);
-					setSuccess(`${title.trim()} has been successfully added`);
-					setUpdate(true);
-					clearForm();
+						setOpenDialog(false);
+						setOpenSuccess(true);
+						setSuccess(`${title.trim()} has been successfully added`);
+						setUpdate(true);
+						clearForm();
+					}
 				}
 				else
 				{

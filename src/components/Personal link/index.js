@@ -116,21 +116,23 @@ function PersonalLink(props) {
                             <Typography variant="subtitle1" gutterBottom>
                                 {projects[props.location].description}
                             </Typography>
-                            <Typography variant="subtitle1">
-                                <u>Links</u>
-                                <br />
-                            </Typography>
                         </MuiThemeProvider>
                         {projects[props.location].links !== null ?
-                        <Links>
-                        {projects[props.location].links.map((link, index) => {
-                            return typeof link !== 'object' ?
+                        <>
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="subtitle1" gutterBottom>
+                                    <u>Links</u>
+                                </Typography>
+                            </MuiThemeProvider>
+                            <Links>
+                            {projects[props.location].links.map((link, index) =>
                                 <li key={index}>
-                                    <Link href={link} target="_blank">{`link #${index+1}`}</Link>
+                                    <Link href={link} target="_blank">{link}</Link>
                                 </li>
-                            : null
-                        })}
-                        </Links> : null }
+                            )}
+                            </Links>
+                        </>
+                         : null }
                         {projects[props.location].video !== null ? 
                         <VideoContainer>
                             <Video src={projects[props.location].video}
@@ -150,6 +152,7 @@ function PersonalLink(props) {
     const [url, setUrl] = useState('');
     const [background, setBackground] = useState('');
     const [isLoad, setIsLoad] = useState(false);
+    console.log(projects);
     
     var style;
     const classes = useStyles();
