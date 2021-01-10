@@ -15,12 +15,12 @@ import { blueGrey, red } from '@material-ui/core/colors';
 const styles = theme => ({
 	submit:
 	{
-		color: '#ff4040',
+		color: '#263238',
 		width: '85px',
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
+		border: '2px solid #263238',
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
@@ -28,7 +28,7 @@ const styles = theme => ({
 		'&:hover':
 		{
 			color: 'white',
-			backgroundColor: '#ff4040',
+			backgroundColor: '#263238',
 			transition: 'all 0.2s ease-in'
 		}
 	},
@@ -38,14 +38,14 @@ const styles = theme => ({
 		color: 'white',
 		fontSize: '15px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
-		backgroundColor: '#ff4040',
+		border: '2px solid #263238',
+		backgroundColor: '#263238',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
 		margin: theme.spacing(1),
 		'&:hover':
 		{
-			color: '#ff4040',
+			color: '#263238',
 			backgroundColor: 'transparent',
 		}
 	},
@@ -57,7 +57,7 @@ const styles = theme => ({
         borderRadius: '25px',
 		fontFamily: 'Andika New Basic',
 		marginTop: theme.spacing(1),
-		marginBottom: theme.spacing(1.5)
+		marginBottom: theme.spacing(2)
 	},
 	fab:
 	{
@@ -212,7 +212,7 @@ function ProjectCard(props)
 					<DialogContent style={dialogBackground}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h6" gutterBottom>
-								{`Wait! Are you sure you want to delete ${props.title}?`}
+								{`Hey, wait! Are you sure you want to delete ${props.title}?`}
 							</Typography>
 						</MuiThemeProvider>
 					</DialogContent>
@@ -264,13 +264,14 @@ function ProjectCard(props)
 									value={description} 
 									onChange={e => setDescription(e.target.value)} />
 							</FormControl>
-							<MuiThemeProvider theme={theme}>
-								<Typography variant="subtitle2">
-									{`Links`}
-								</Typography>
-							</MuiThemeProvider>
 							{links ?
-							links.map((link, index) =>
+							<>
+								<MuiThemeProvider theme={theme}>
+									<Typography variant="subtitle2">
+										{links.length === 1 ? 'Link' : 'links'}
+									</Typography>
+								</MuiThemeProvider>
+								{links.map((link, index) =>
 								<FormControl fullWidth>
 									<Input id="links" name="links"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
@@ -281,22 +282,26 @@ function ProjectCard(props)
 										placeholder={`New link #${index+1}`}
 										onChange={e => handleInputChange(e, index)} />
 								</FormControl>
-							) : null}
-							<MuiThemeProvider theme={theme}>
-								<Typography variant="subtitle2">
-									{`Video URL`}
-								</Typography>
-							</MuiThemeProvider>
-							<FormControl fullWidth>
-								<Input id="video" name="video"
-									inputProps={{min: 0, style: { marginLeft: '20px' }}}
-									disableUnderline 
-									placeholder="New video URL.."
-									className={classes.input}
-									autoComplete="off" 
-									value={video} 
-									onChange={e => setVideo(e.target.value)} />
-							</FormControl>
+							)}
+							</> : null}
+							{video ? 
+							<>
+								<MuiThemeProvider theme={theme}>
+									<Typography variant="subtitle2">
+										{`Youtube video URL`}
+									</Typography>
+								</MuiThemeProvider>
+								<FormControl fullWidth>
+									<Input id="video" name="video"
+										inputProps={{min: 0, style: { marginLeft: '20px' }}}
+										disableUnderline 
+										placeholder="New video URL.."
+										className={classes.input}
+										autoComplete="off" 
+										value={video} 
+										onChange={e => setVideo(e.target.value)} />
+								</FormControl>
+							</> : null}
 							<ButtonWrapper>
 								<Button	type="submit" className={classes.submit} onClick={updateProject}>
 									Edit

@@ -14,7 +14,7 @@ export const Container = styled(Paper)`
 `;
 
 export const Warning = styled(WarningIcon)`
-    color: #ff4040;
+    color: #263238;
     margin-right: 10px;
     transform: translateY(10%);
 `;

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(19),
         boxShadow: '0px 0px 23px 0px rgba(0,0,0,0.75)',
         //border: '5px double black',
+        backgroundClip: 'content-box',
         [theme.breakpoints.down("xs")]:
         {
             width: theme.spacing(14),
@@ -37,9 +38,17 @@ const useStyles = makeStyles((theme) => ({
         [theme.breakpoints.down("xs")]:
         {
             width: '315px'
+        },
+        ["@media (max-width: 330px)"]:
+        {
+            width: '215px'
         }
     },
-    social: {margin: theme.spacing(1)}
+    social: 
+    {
+        margin: theme.spacing(1),
+        filter: 'drop-shadow(2px 2px 3px black)'
+    }
 }));
 
 const defaultTheme = createMuiTheme();
@@ -52,6 +61,7 @@ const theme = createMuiTheme({
         },
         h3:
         {
+            textShadow: '2px 2px 5px white',
             [defaultTheme.breakpoints.down("xs")]:
             {
                 textAlign: 'center'
@@ -59,6 +69,7 @@ const theme = createMuiTheme({
         },
         h4:
         {
+            textShadow: '2px 2px 5px white',
             fontSize: '25px',
             [defaultTheme.breakpoints.down("xs")]:
             {
@@ -67,6 +78,7 @@ const theme = createMuiTheme({
         },
         subtitle1:
         {
+            textShadow: '2px 2px 5px white',
             lineHeight: 1.2,
             [defaultTheme.breakpoints.down("xs")]:
             {
@@ -152,7 +164,6 @@ function PersonalLink(props) {
     const [url, setUrl] = useState('');
     const [background, setBackground] = useState('');
     const [isLoad, setIsLoad] = useState(false);
-    console.log(projects);
     
     var style;
     const classes = useStyles();

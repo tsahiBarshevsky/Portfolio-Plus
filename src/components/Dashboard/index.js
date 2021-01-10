@@ -116,12 +116,12 @@ const styles = theme => ({
 	},
 	submit: 
 	{
-		color: '#ff4040',
+		color: '#263238',
 		width: '100px',
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
+		border: '2px solid #263238',
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
@@ -130,18 +130,18 @@ const styles = theme => ({
 		'&:hover':
 		{
 			color: 'white',
-			backgroundColor: '#ff4040',
+			backgroundColor: '#263238',
 			transition: 'all 0.2s ease-in'
 		}
 	},
 	addLink: 
 	{
-		color: '#ff4040',
+		color: '#263238',
 		width: '100px',
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
+		border: '2px solid #263238',
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
@@ -150,7 +150,7 @@ const styles = theme => ({
 		'&:hover':
 		{
 			color: 'white',
-			backgroundColor: '#ff4040',
+			backgroundColor: '#263238',
 			transition: 'all 0.2s ease-in'
 		}
 	},
@@ -161,15 +161,15 @@ const styles = theme => ({
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
-		backgroundColor: '#ff4040',
+		border: '2px solid #263238',
+		backgroundColor: '#263238',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
 		transition: 'all 0.2s ease-out',
 		marginLeft: theme.spacing(1),
 		'&:hover':
 		{
-			color: '#ff4040',
+			color: '#263238',
 			backgroundColor: 'transparent',
 			transition: 'all 0.2s ease-in'
 		}
@@ -181,15 +181,15 @@ const styles = theme => ({
 		height: '40px',
 		fontSize: '16px',
 		fontWeight: '600',
-		border: '2px solid #ff4040',
-		backgroundColor: '#ff4040',
+		border: '2px solid #263238',
+		backgroundColor: '#263238',
 		borderRadius: '25px',
 		textTransform: 'capitalize',
 		transition: 'all 0.2s ease-out',
 		marginLeft: theme.spacing(1),
 		'&:hover':
 		{
-			color: '#ff4040',
+			color: '#263238',
 			backgroundColor: 'white',
 			transition: 'all 0.2s ease-in'
 		}
