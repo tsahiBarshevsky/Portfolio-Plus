@@ -17,7 +17,7 @@ export const TopLine = styled.div`
     align-items: center;
     padding: 30px 30px 20px 30px;
 
-    @media screen and (max-width: 600px)
+    @media screen and (max-width: 599px)
     {
         justify-content: center;
         flex-direction: column-reverse;
@@ -75,10 +75,11 @@ export const ProjectsList = styled(motion.ul)`
 `;
 
 export const Project = styled(motion.li)`
+    z-index: 1;
     list-style: none;
     margin: 5px;
     padding: 20px;
-    background-color: rgba(214, 214, 214, 0.5);
+    background-color: rgba(0, 105, 92, 0.3);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
@@ -95,11 +96,41 @@ export const VideoContainer = styled.div`
     margin-top: 20px;
 `;
 
-export const Links = styled.ol`
-    margin-left: 15px;
+export const Links = styled.ul`
+    counter-reset: index; 
+    margin-left: -10px;
+    padding: 0;
+    max-width: 300px;
+`;
+
+export const LinksLi = styled.li`
+    counter-increment: index; 
+    display: flex;
+    align-items: center;
+    padding: 1px 0;
+    box-sizing: border-box;
+    width: 10%;
+    
+    &:before
+    {
+        content: counters(index, ".", decimal-leading-zero);
+        font-size: 1.5rem;
+        text-align: right;
+        font-weight: bold;
+        min-width: 50px;
+        padding-right: 12px;
+        font-variant-numeric: tabular-nums;
+        align-self: flex-start;
+        background-image: linear-gradient(to bottom, black, orangered);
+        background-attachment: fixed;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
 `;
 
 export const Link = styled.a`
+    z-index: 20;
+    font-size: 1rem;
     color: black;
     text-decoration: none;
     transition: 0.5s ease-out;

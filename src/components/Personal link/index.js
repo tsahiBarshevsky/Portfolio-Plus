@@ -6,7 +6,7 @@ import { Typography, Divider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer, SocialIcons, BackHome } from './PersonalLinkElements';
+	PulseBubble3, PulseContainer, SocialIcons, BackHome, LinksLi } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
 import logo from '../../images/logo.png';
 import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton,
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         {
             width: theme.spacing(15),
             height: theme.spacing(15),
+            marginBottom: theme.spacing(1.5)
         }
     },
     divider: {
@@ -54,41 +55,50 @@ const defaultTheme = createMuiTheme();
 const theme = createMuiTheme({
 	typography:
 	{
-		allVariants:
-		{
-            fontFamily: `"Andika New Basic", sans-serif`,
+		allVariants: { fontFamily: `"Andika New Basic", sans-serif` },
+        h4: { fontSize: '25px' },
+        h6: { lineHeight: 1.35, paddingBottom: '20px', paddingTop: '10px' },
+        subtitle1: { fontWeight: 'bold', lineHeight: 1.2 }
+	}
+});
+
+const logoTheme = createMuiTheme({
+    typography: {allVariants: {fontFamily: `"Dancing Script", sans-serif`}}
+});
+
+const topLineTheme = createMuiTheme({
+    typography: 
+    {
+        allVariants: 
+        {
+            fontFamily: `"Andika New Basic", sans-serif`
         },
         h3:
         {
-            textShadow: '2px 2px 5px white',
             [defaultTheme.breakpoints.down("xs")]:
             {
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '35px'
             }
         },
         h4:
         {
-            textShadow: '2px 2px 5px white',
             fontSize: '25px',
             [defaultTheme.breakpoints.down("xs")]:
             {
-                textAlign: 'center'
+                textAlign: 'center',
+                fontSize: '20px'
             }
         },
         subtitle1:
         {
-            textShadow: '2px 2px 5px white',
             lineHeight: 1.2,
             [defaultTheme.breakpoints.down("xs")]:
             {
                 textAlign: 'center'
             }
         }
-	}
-});
-
-const logoTheme = createMuiTheme({
-    typography: {allVariants: {fontFamily:`"Dancing Script", sans-serif`}}
+    }
 });
 
 function PersonalLink(props) {
@@ -98,18 +108,17 @@ function PersonalLink(props) {
     {
         const [isOpen, setIsOpen] = useState(false);
         const toggleOpen = () => setIsOpen(!isOpen);
-        const stayOpen = () => setIsOpen(true);
       
         return (
             <Project layout onClick={toggleOpen} initial={{ borderRadius: 10 }}>
                 <motion.div layout>
                     <MuiThemeProvider theme={theme}>
-                        <Typography variant="h4" gutterBottom>
+                        <Typography variant="h4">
                             {projects[props.location].title}
                         </Typography>
                     </MuiThemeProvider>
                 </motion.div>
-                <AnimatePresence>{isOpen && <Content location={props.location} stayOpen={stayOpen} />}</AnimatePresence>
+                <AnimatePresence>{isOpen && <Content location={props.location} />}</AnimatePresence>
             </Project>
         );
     }
@@ -125,10 +134,11 @@ function PersonalLink(props) {
                 exit={{ opacity: 0 }}>
                     <div>
                         <MuiThemeProvider theme={theme}>
-                            <Typography variant="subtitle1" gutterBottom>
-                                {`Type: ${projects[props.location].type}`}
+                            <Typography variant="subtitle1" gutterBottom
+                                style={{paddingTop: '10px'}}>
+                                {`${projects[props.location].type}`}
                             </Typography>
-                            <Typography variant="subtitle1" gutterBottom>
+                            <Typography variant="h6" gutterBottom>
                                 {projects[props.location].description}
                             </Typography>
                         </MuiThemeProvider>
@@ -141,9 +151,9 @@ function PersonalLink(props) {
                             </MuiThemeProvider>
                             <Links>
                             {projects[props.location].links.map((link, index) =>
-                                <li key={index}>
+                                <LinksLi key={index}>
                                     <Link href={link} target="_blank">{link}</Link>
-                                </li>
+                                </LinksLi>
                             )}
                             </Links>
                         </>
@@ -213,7 +223,7 @@ function PersonalLink(props) {
             <Root style={style}>
                 <Helmet><title>{`Portfolio Plus | @${props.match.params.username}`}</title></Helmet>
                 <TopLine>
-                    <MuiThemeProvider theme={theme}>
+                    <MuiThemeProvider theme={topLineTheme}>
                         <TextWrapper>
                             <Typography variant="h3">
                                 {`${props.match.params.username}`}
@@ -230,31 +240,47 @@ function PersonalLink(props) {
                 </TopLine>
                 <Divider variant="middle" className={classes.divider} />
                 <SocialIcons>
-                    <FacebookShareButton
-                        className={classes.social}
-                        url={window.location.href}
-                        quote={"Hey, check out my projects!"}>
-                        <FacebookIcon size={40} round />
-                    </FacebookShareButton>
-                    <LinkedinShareButton
-                        className={classes.social}
-                        url={window.location.href}>
-                        <LinkedinIcon size={40} round />
-                    </LinkedinShareButton>
-                    <TelegramShareButton
-                        className={classes.social}
-                        url={window.location.href}>
-                        <TelegramIcon size={40} round />
-                    </TelegramShareButton>
-                    <WhatsappShareButton
-                        className={classes.social}
-                        url={window.location.href}
-                        quote={"Hey, check out my projects!"}>
-                        <WhatsappIcon size={40} round />
-                    </WhatsappShareButton>
+                    <motion.div layout
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ type: "spring", stiffness: 300 }}>
+                        <FacebookShareButton
+                            className={classes.social}
+                            url={window.location.href}
+                            quote={"Hey, check out my projects!"}>
+                            <FacebookIcon size={40} round />
+                        </FacebookShareButton>
+                    </motion.div>
+                    <motion.div layout
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ type: "spring", stiffness: 300 }}>
+                        <LinkedinShareButton
+                            className={classes.social}
+                            url={window.location.href}>
+                            <LinkedinIcon size={40} round />
+                        </LinkedinShareButton>
+                    </motion.div>
+                    <motion.div layout
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ type: "spring", stiffness: 300 }}>
+                        <TelegramShareButton
+                            className={classes.social}
+                            url={window.location.href}>
+                            <TelegramIcon size={40} round />
+                        </TelegramShareButton>
+                    </motion.div>
+                    <motion.div layout
+                        whileHover={{ scale: 1.2 }}
+                        transition={{ type: "spring", stiffness: 300 }}>
+                        <WhatsappShareButton
+                            className={classes.social}
+                            url={window.location.href}
+                            quote={"Hey, check out my projects!"}>
+                            <WhatsappIcon size={40} round />
+                        </WhatsappShareButton>
+                    </motion.div>
                 </SocialIcons>
                 {projects.length >= 1 ?
-                <ListWrapper data-aos="fade-up">
+                <ListWrapper> {/*data-aos="fade-up">*/}
                     <AnimateSharedLayout>
                         <ProjectsList layout initial={{ borderRadius: 25 }}>
                             {projects.map((project, index) =>
