@@ -8,7 +8,7 @@ import firebase from '../firebase';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import LockIcon from '@material-ui/icons/Lock';
-import Background from '../../images/login-form-background.png';
+import Background from '../../images/Backgrounds/forms.png';
 import { Helmet } from 'react-helmet';
 
 const styles = theme => ({
@@ -32,12 +32,13 @@ const styles = theme => ({
 	{
 		borderRadius: '20px',
 		marginTop: theme.spacing(8),
+		marginBottom: theme.spacing(8),
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
 		boxShadow: '2px 2px 5px 0px rgba(0, 0, 0, 0.5)',
-		backgroundColor: 'rgba(40, 57, 101, 0.7)',
+		backgroundColor: 'rgba(40, 57, 101, 0.5)',
 		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
 	},
 	avatar: 
@@ -71,16 +72,19 @@ const styles = theme => ({
 	},
 	submit: 
 	{
+		color: 'white',
 		fontSize: '17px',
 		textTransform: 'capitalize',
 		width: '130px',
-		height: '35px',
-		backgroundColor: 'rgba(255, 255, 255, 0.65)',
+		height: '40px',
+		border: '2px solid white',
+		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		marginTop: theme.spacing(3),
-		"&:hover":
+		"&:hover": 
 		{
-			backgroundColor: 'rgba(255, 255, 255, 0.55)'
+			color: 'black',
+			backgroundColor: 'white'
 		}
 	},
 });

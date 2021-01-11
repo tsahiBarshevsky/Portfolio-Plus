@@ -5,12 +5,12 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import PersonIcon from '@material-ui/icons/Person';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
-import LockIcon from '@material-ui/icons/Lock';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
-import Background from '../../images/register-form-background.png';
-import EmojiEventsIcon from '@material-ui/icons/EmojiEvents';
+import Background from '../../images/Backgrounds/forms.png';
+import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import { Helmet } from 'react-helmet';
 
@@ -36,12 +36,13 @@ const styles = theme => ({
 	{
 		borderRadius: '20px',
 		marginTop: theme.spacing(8),
+		marginBottom: theme.spacing(8),
 		display: 'flex',
 		flexDirection: 'column',
 		justifyContent: 'center',
 		alignItems: 'center',
 		boxShadow: '2px 2px 5px 0px rgba(0, 0, 0, 0.5)',
-		backgroundColor: 'rgba(40, 57, 101, 0.7)',
+		backgroundColor: 'rgba(40, 57, 101, 0.4)',
 		padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(3)}px`,
 	},
 	avatar: 
@@ -82,25 +83,29 @@ const styles = theme => ({
 	},
 	submit: 
 	{
+		color: 'white',
 		fontSize: '17px',
 		textTransform: 'capitalize',
 		width: '130px',
-		height: '35px',
-		backgroundColor: 'rgba(255, 255, 255, 0.65)',
+		height: '40px',
+		border: '2px solid white',
+		backgroundColor: 'transparent',
 		borderRadius: '25px',
 		marginTop: theme.spacing(3),
-		"&:hover":
+		"&:hover": 
 		{
-			backgroundColor: 'rgba(255, 255, 255, 0.55)'
+			color: 'black',
+			backgroundColor: 'white'
 		}
 	},
 	helpIcon:
 	{
-		fontSize: '30px',
+		fontSize: '20px',
 		color: 'rgba(255, 255, 255, 0.65)',
 		margin: '10px',
 		cursor: 'pointer'
-	}
+	},
+	tooltip: {fontSize: '15px', textAlign: 'center', lineHeight: 1.2}
 });
 
 const theme = createMuiTheme({
@@ -158,8 +163,9 @@ function Register(props)
 				<form className={classes.form} onSubmit={e => e.preventDefault() && false }>
 					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="name" name="name"
+							fullWidth
 							disableUnderline 
-							placeholder="Name.."
+							placeholder="Username.."
 							className={classes.input}
 							autoComplete="off" 
 							autoFocus value={name} 
@@ -168,14 +174,15 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<PersonIcon />
 							</InputAdornment>} />
-						<Tooltip title="It'll be the name for your personal link" 
-							TransitionComponent={Fade} 
+						<Tooltip title={<p className={classes.tooltip}>This is how you will identify your own page</p>}
+							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
 							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
 						</Tooltip>
 					</FormControl>
 					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="profession" name="profession"
+							fullWidth
 							disableUnderline 
 							placeholder="Profession.."
 							className={classes.input}
@@ -184,16 +191,17 @@ function Register(props)
 							onChange={e => setProfession(e.target.value)} 
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<EmojiEventsIcon />
+								<WorkOutlineOutlinedIcon />
 							</InputAdornment>} />
-						<Tooltip title="What are you doing in life?" 
-							TransitionComponent={Fade} 
+						<Tooltip title={<p className={classes.tooltip}>What are you doing in life?</p>}
+							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
 							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
 						</Tooltip>
 					</FormControl>
 					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="email" name="email"
+							fullWidth
 							disableUnderline
 							placeholder="Email address.."
 							className={classes.input}  
@@ -204,14 +212,15 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<AlternateEmailIcon />
 							</InputAdornment>} />
-						<Tooltip title="The email will be used by you to login" 
-							TransitionComponent={Fade} 
+						<Tooltip title={<p className={classes.tooltip}>The email will serve you to login to your account</p>}
+							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
 							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
 						</Tooltip>
 					</FormControl>
 					<FormControl className={classes.formControl} margin="normal" required fullWidth>
 						<Input id="password" name="password"
+							fullWidth
 							disableUnderline 
 							placeholder="Password.."
 							className={classes.input} 
@@ -221,19 +230,14 @@ function Register(props)
 							onChange={e => setPassword(e.target.value)}
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<LockIcon />
+								<LockOutlinedIcon />
 							</InputAdornment>} />
-						<Tooltip title="Must be at least 6 characters" 
-							TransitionComponent={Fade} 
+						<Tooltip title={<p className={classes.tooltip}>Must contain at least 6 characters</p>} 
+							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
 							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
 						</Tooltip>
 					</FormControl>
-					{/*<FormControl margin="normal" required fullWidth>
-						<InputLabel htmlFor="quote">Your Favorite Quote</InputLabel>
-						<Input disableUnderline className={classes.input} name="quote" type="text" id="quote" autoComplete="off" value={quote} onChange={e => setQuote(e.target.value)}  />
-					/FormControl>*/}
-
 					<Button
 						type="submit"
 						onClick={onRegister}
