@@ -27,6 +27,8 @@ import { GridContainer, Container, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer, ButtonsWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
 import { grey, blueGrey, red } from '@material-ui/core/colors';
+import DashboradCard from './DashboradCard';
+import ProjectsTable from '../ProjectsTable';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -211,6 +213,7 @@ const styles = theme => ({
 	},
 	fab: 
 	{
+		zIndex: '20',
 		position: 'fixed',
 		bottom: theme.spacing(2),
 		right: theme.spacing(2),
@@ -222,6 +225,7 @@ const styles = theme => ({
 			backgroundColor: blueGrey[800],
 		}
 	},
+	tooltip: {fontSize: '15px', textAlign: 'center', lineHeight: 1.2}
 });
 
 const typographyTheme = createMuiTheme({
@@ -449,8 +453,8 @@ function Dashboard(props)
 				<div className={classes.content}>
 					{isLoad ? 
 					<>
-						<Tooltip title="Add new project" 
-							placement="left"
+						<Tooltip title={<p className={classes.tooltip}>Add new project</p>} 
+							placement="left" arrow
 							TransitionComponent={Fade} 
 							TransitionProps={{ timeout: 400 }}
 							enterDelay={500}>
@@ -458,12 +462,16 @@ function Dashboard(props)
 								<AddIcon />
 							</Fab>
 						</Tooltip>
+						<ProjectsTable projects={projects}
+							name={firebase.getCurrentUsername()}
+							setUpdate={setUpdate}/>
+						<DashboradCard title="Number of projects" content={projects.length} />
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="h4" gutterBottom>
 								{`${greet}, ${firebase.getCurrentUsername()}!`}
 							</Typography>
 						</MuiThemeProvider>
-						{projects.length >= 1 ?
+						{/*projects.length >= 1 ?
 						<Container>
 							<MuiThemeProvider theme={typographyTheme}>
 								<Typography align="center" variant="h5" gutterBottom>
@@ -494,7 +502,7 @@ function Dashboard(props)
 							<Typography align="center" variant="h5">
 								{`You haven't added any project yet. Don't worry, you can do it anytime!`}
 							</Typography>
-						</MuiThemeProvider>}
+									</MuiThemeProvider>*/}
 					</> 
 					: 
 					<PulseContainer>
@@ -652,12 +660,12 @@ function Dashboard(props)
 						//check if any input left empty, if so, delete {} from array
 						links.map((x, i) => {return typeof x === 'object' ? links.splice(i, 1) : null});
 						await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
-						setOpenDialog(false);
-						setOpenSuccess(true);
-						setSuccess(`${title.trim()} has been successfully added`);
-						setUpdate(true);
-						clearForm();
 					}
+					setOpenDialog(false);
+					setOpenSuccess(true);
+					setSuccess(`${title.trim()} has been successfully added`);
+					setUpdate(true);
+					clearForm();
 				}
 				else
 				{

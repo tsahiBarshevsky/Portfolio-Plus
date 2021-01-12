@@ -68,7 +68,8 @@ const styles = theme => ({
 		{
 			backgroundColor: blueGrey[800],
 		}
-	}
+	},
+	tooltip: {fontSize: '15px', textAlign: 'center', lineHeight: 1.2}
 });
 
 const theme = createMuiTheme({
@@ -178,18 +179,18 @@ function ProjectCard(props)
 				</Typography>
 			</MuiThemeProvider>
 			<div>
-				<Tooltip title="Edit" 
+				<Tooltip title={<p className={classes.tooltip}>Edit</p>} 
 					TransitionComponent={Fade} 
 					TransitionProps={{ timeout: 400 }}
-					enterDelay={500}>
+					enterDelay={500} arrow>
 					<Fab className={classes.fab} size="small" onClick={handleOpenEditDialog}>
 						<EditIcon />
 					</Fab>
 				</Tooltip>
-				<Tooltip title="Delete" 
+				<Tooltip title={<p className={classes.tooltip}>Delete</p>}
 					TransitionComponent={Fade} 
 					TransitionProps={{ timeout: 400 }}
-					enterDelay={500}>
+					enterDelay={500} arrow>
 					<Fab className={classes.fab} size="small" onClick={handleOpen}>
 						<DeleteIcon />
 					</Fab>

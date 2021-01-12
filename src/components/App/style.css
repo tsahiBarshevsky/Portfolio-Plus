@@ -20,6 +20,7 @@
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 ::-webkit-scrollbar-button {
   width: 1px;
