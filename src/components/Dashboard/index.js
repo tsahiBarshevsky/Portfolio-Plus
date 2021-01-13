@@ -271,6 +271,7 @@ function Dashboard(props)
 	const [openDialog, setOpenDialog] = useState('');
 	const [projects, setProjects] = useState([]);
 	const [isLoad, setIsLoad] = useState(false);
+	const [date, setDate] = useState('');
 
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
@@ -278,6 +279,7 @@ function Dashboard(props)
     {
 		setTimeout(() => {
 			setIsLoad(true);
+			firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
 		}, 1000);
 		if (update)
 		{
@@ -382,6 +384,11 @@ function Dashboard(props)
 		setOpenDialog(false);
 	}
 
+	const countTypes = (iterable) => 
+    {
+        return new Set(iterable.map(a => a.type)).size;
+	}
+	
 	return (
 		<div className={classes.root}>
 			<Helmet><title>{`Portfolio Plus | @${firebase.getCurrentUsername()} dashboard`}</title></Helmet>
@@ -466,6 +473,8 @@ function Dashboard(props)
 							name={firebase.getCurrentUsername()}
 							setUpdate={setUpdate}/>
 						<DashboradCard title="Number of projects" content={projects.length} />
+						<DashboradCard title="Number of types" content={countTypes(projects)} />
+						<DashboradCard title="Last update" content={date} />
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="h4" gutterBottom>
 								{`${greet}, ${firebase.getCurrentUsername()}!`}

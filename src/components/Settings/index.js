@@ -200,6 +200,7 @@ function Settings(props)
 	const [message, setMessage] = useState('');
 	const [url, setUrl] = useState('');
 	const [progress, setProgress] = useState(0);
+		console.log(`${window.location.origin.toString()}`); // (or whatever)
 
 	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5', 'bg6', 'bg7'];
 	const [selectedTheme, setSelectedTheme] = useState('');
@@ -377,7 +378,7 @@ function Settings(props)
                             {`Email: ${firebase.getCurrentUsernameEmail()}`}
                         </Typography>
                     </MuiThemeProvider>
-					<PersonalPage target="_blank" to={`/${firebase.getCurrentUsername()}`}>Go to your personal page</PersonalPage>
+					<PersonalPage target="_blank" to={`/${firebase.getCurrentUsername()}`}>{`${window.location.origin.toString()}/${firebase.getCurrentUsername()}`}</PersonalPage>
                     <Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>

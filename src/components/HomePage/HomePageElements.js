@@ -137,14 +137,14 @@ export const LinksContainer = styled.div`
 export const FooterLink = styled(LinkR)`
     font-size: 18px;
     text-align: center;
-    text-decoration: none;
-    color: white;
+    text-decoration: none !important;
+    color: white !important;
 `;
 
 export const Logo = styled(Link)`
-    color: white;
+    color: white !important;
     cursor: pointer;
-    text-decoration: none;
+    text-decoration: none !important;
     display: flex;
     align-items: center;
     margin-bottom: 10px;

@@ -165,6 +165,13 @@ class Firebase
         return doc.data();
     }
 
+    async getLastUpdate(user)
+    {
+        const ref = this.db.collection(`list-of-users`).doc(`${user}`);
+        const doc = await ref.get();
+        return doc.data().lastUpdate;
+    }
+
     deleteUserFromList(name)
     {
         const res = this.db.collection(`list-of-users`).doc(`${name}`).delete();

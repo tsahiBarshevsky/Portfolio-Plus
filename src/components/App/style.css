@@ -1,9 +1,9 @@
 * 
 {
 	margin: 0;
-    padding: 0;
-	box-sizing: border-box;
-	font-family: 'Andika New Basic', sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Andika New Basic', sans-serif;
 }
 
 #loader 
@@ -20,7 +20,7 @@
 
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
+  height: 4px;
 }
 ::-webkit-scrollbar-button {
   width: 1px;
