@@ -23,6 +23,12 @@ export const ButtonsWrapper = styled.div`
     background-color: #f5f5f5;
 `;
 
+export const TableWrapper = styled.div`
+    display: 'flex';
+    justify-content: center;
+    width: 85%;
+`;
+
 /*---Loading animation---*/
 
 export const PulseContainer = styled.div`

@@ -7,7 +7,6 @@ import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
-import LockIcon from '@material-ui/icons/Lock';
 import Background from '../../images/Backgrounds/forms.png';
 import { Helmet } from 'react-helmet';
 
@@ -162,7 +161,7 @@ function SignIn(props)
 							onChange={e => setPassword(e.target.value)}
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<LockIcon />
+								<LockOutlinedIcon />
 							</InputAdornment>} />
 					</FormControl>
 					<Button

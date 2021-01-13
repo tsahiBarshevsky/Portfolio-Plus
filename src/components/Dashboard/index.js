@@ -24,7 +24,7 @@ import ProjectCard from '../ProjectCard';
 import GenericPhoto from '../../images/person-circle-outline.svg';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer, ButtonsWrapper } from './DashboardElements';
+	PulseBubble3, PulseContainer, ButtonsWrapper, TableWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
 import { grey, blueGrey, red } from '@material-ui/core/colors';
 import DashboradCard from './DashboradCard';
@@ -272,6 +272,7 @@ function Dashboard(props)
 	const [projects, setProjects] = useState([]);
 	const [isLoad, setIsLoad] = useState(false);
 	const [date, setDate] = useState('');
+	const [userInfo, setUserInfo] = useState('');
 
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
@@ -279,6 +280,7 @@ function Dashboard(props)
     {
 		setTimeout(() => {
 			setIsLoad(true);
+			//firebase.getUserInfo(firebase.getCurrentUsername()).then(setUserInfo);
 			firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
 		}, 1000);
 		if (update)
@@ -469,17 +471,35 @@ function Dashboard(props)
 								<AddIcon />
 							</Fab>
 						</Tooltip>
-						<ProjectsTable projects={projects}
-							name={firebase.getCurrentUsername()}
-							setUpdate={setUpdate}/>
-						<DashboradCard title="Number of projects" content={projects.length} />
-						<DashboradCard title="Number of types" content={countTypes(projects)} />
-						<DashboradCard title="Last update" content={date} />
 						<MuiThemeProvider theme={typographyTheme}>
 							<Typography align="center" variant="h4" gutterBottom>
 								{`${greet}, ${firebase.getCurrentUsername()}!`}
 							</Typography>
 						</MuiThemeProvider>
+						<Container>
+							<GridContainer>
+								<Grid spacing={7}
+									container
+									direction="row"
+									justify="center"
+									alignItems="center">
+										<Grid item>
+											<DashboradCard title="Number of projects" content={projects.length} />
+										</Grid>
+										<Grid item>
+											<DashboradCard title="Number of types" content={countTypes(projects)} />
+										</Grid>
+										<Grid item>
+											<DashboradCard title="Last update" content={date} />
+										</Grid>
+								</Grid>
+							</GridContainer>
+						</Container>
+						<TableWrapper>
+							<ProjectsTable projects={projects}
+								name={firebase.getCurrentUsername()}
+								setUpdate={setUpdate}/>
+						</TableWrapper>
 						{/*projects.length >= 1 ?
 						<Container>
 							<MuiThemeProvider theme={typographyTheme}>

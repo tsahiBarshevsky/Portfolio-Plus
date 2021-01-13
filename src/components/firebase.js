@@ -169,7 +169,7 @@ class Firebase
     {
         const ref = this.db.collection(`list-of-users`).doc(`${user}`);
         const doc = await ref.get();
-        return doc.data().lastUpdate;
+        return doc.data() ? doc.data().lastUpdate : null;
     }
 
     deleteUserFromList(name)
@@ -198,7 +198,7 @@ class Firebase
     {
         const ref = this.db.collection(`list-of-users`).doc(`${username}`);
         const doc = await ref.get();
-        return doc.data().background;
+        return doc.data() ? doc.data().background : null;
     }
 
     async updateUsername(username, oldUsername)

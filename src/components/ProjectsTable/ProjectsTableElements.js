@@ -1,15 +1,14 @@
 import styled from 'styled-components';
+import WarningIcon from '@material-ui/icons/Warning';
 
 export const TableContainer = styled.div`
     overflow-x: auto;
     width: 100%;
-    display: flex;
-    justify-content: center;
 `;
 
 export const Table = styled.table`
     border-collapse: collapse;
-    width: 85%;
+    width: 100%;
 `;
 
 export const TableRow = styled.tr`
@@ -44,4 +43,20 @@ export const TableHead = styled.th`
 export const TableData = styled.td`
     padding: 15px;
     font-size: 15px;
+`;
+
+/*---other components */
+
+export const Warning = styled(WarningIcon)`
+    color: #263238;
+    margin-right: 10px;
+    transform: translateY(10%);
+`;
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0px 10px;
+    background-color: #f5f5f5;
 `;
