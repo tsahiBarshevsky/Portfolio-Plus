@@ -4,8 +4,8 @@ import HighlightOffRoundedIcon from '@material-ui/icons/HighlightOffRounded';
 import { green, red, blueGrey } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import { Tooltip, Fade, Fab } from '@material-ui/core';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import firebase from '../firebase';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -14,7 +14,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Button, DialogActions, Typography, Snackbar, Input, FormControl } from '@material-ui/core';
 import { Table, TableContainer, TableData, TableHead, TableRow, Warning, ButtonWrapper } from './ProjectsTableElements';
-import { get } from 'react-scroll/modules/mixins/scroller';
 
 const styles = theme => ({
     submit:
@@ -211,7 +210,7 @@ function ProjectsTable(props)
                                     TransitionProps={{ timeout: 400 }}
                                     enterDelay={500} arrow>
                                     <Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpenEditDialog()}}>
-                                        <EditIcon />
+                                        <EditOutlinedIcon />
                                     </Fab>
                                 </Tooltip>
                                 <Tooltip title={<p className={classes.tooltip}>Delete</p>}
@@ -219,7 +218,7 @@ function ProjectsTable(props)
                                     TransitionProps={{ timeout: 400 }}
                                     enterDelay={500} arrow>
                                     <Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpen();}}>
-                                        <DeleteIcon />
+                                        <DeleteOutlinedIcon />
                                     </Fab>
                                 </Tooltip>
                             </TableData>
@@ -317,7 +316,7 @@ function ProjectsTable(props)
 								</FormControl>
 							)}
 							</> : null}
-							{video ? 
+							{project.video ? 
 							<>
 								<MuiThemeProvider theme={theme}>
 									<Typography variant="subtitle2">
@@ -334,7 +333,7 @@ function ProjectsTable(props)
 										value={video} 
 										onChange={e => setVideo(e.target.value)} />
 								</FormControl>
-							</> : "deleted"}
+							</> : null}
 							<ButtonWrapper>
 								<Button	type="submit" className={classes.submit} onClick={updateProject}>
 									Edit

@@ -27,6 +27,7 @@ import { GridContainer, Container, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer, ButtonsWrapper, TableWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
 import { grey, blueGrey, red } from '@material-ui/core/colors';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import DashboradCard from './DashboradCard';
 import ProjectsTable from '../ProjectsTable';
 
@@ -239,6 +240,10 @@ const typographyTheme = createMuiTheme({
 		{
 			fontSize: '12px',
 			color: red[900]
+		},
+		h6:
+		{
+			lineHeight: 1.1
 		}
 	}
 });
@@ -273,6 +278,10 @@ function Dashboard(props)
 	const [isLoad, setIsLoad] = useState(false);
 	const [date, setDate] = useState('');
 	const [userInfo, setUserInfo] = useState('');
+	//const gridTheme = useTheme();
+	const isMobile = useMediaQuery(theme.breakpoints.down('md'), {
+		defaultMatches: true
+	});
 
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
@@ -475,10 +484,13 @@ function Dashboard(props)
 							<Typography align="center" variant="h4" gutterBottom>
 								{`${greet}, ${firebase.getCurrentUsername()}!`}
 							</Typography>
+							<Typography align="center" variant="h6">
+								{`Here are information and stats about your account:`}
+							</Typography>
 						</MuiThemeProvider>
 						<Container>
 							<GridContainer>
-								<Grid spacing={7}
+								<Grid spacing={isMobile ? 2 : 7}
 									container
 									direction="row"
 									justify="center"
