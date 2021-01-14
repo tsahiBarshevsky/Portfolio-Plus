@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
@@ -126,7 +127,7 @@ function SignIn(props)
 			<Helmet><title>Portfolio Plus | Login</title></Helmet>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
-					<LockOutlinedIcon className={classes.icon}/>
+					<VpnKeyIcon className={classes.icon}/>
 				</Avatar>
 				<MuiThemeProvider theme={theme}>
 					<Typography align="center" component="h1" variant="h5">

@@ -124,7 +124,8 @@ function ProjectsTable(props)
 		setDescription(project.description);
 		setLinks(project.links);
         setVideo(project.video);
-	}, [project, title]);
+	}, [project]);
+
 
     const Alert = (props) =>
     {
@@ -154,16 +155,31 @@ function ProjectsTable(props)
 		const list = [...links];
 		list[index] = value;
 		setLinks(list);
-    }
+	}
+	
+	const checkVideoURL = () =>
+	{
+		const reg = /^((?:https?:)?\/\/)?((?:www|m)\.)?((?:youtube\.com|youtu.be))(\/(?:[\w\-]+\?v=|embed\/|v\/)?)([\w\-]+)(\S+)?$/;
+		if (reg.test(video.trim()))
+		{
+			if (video.split('v=').pop().split('&')[0] !== video)
+				return `https://www.youtube.com/embed/${video.split('v=').pop().split('&')[0]}`;
+			return `https://www.youtube.com/embed/${video.split('/').pop()}`;
+		}
+		return false;
+	}
     
     const handleOpenEditDialog = () =>
 	{
-        setOpenDialog(true);
-		getSingleProject();
+		setTimeout(() => {
+			
+		}, 500);
+		setOpenDialog(true);
+		//getSingleProject();
     }
 
-    if (openDialog)
-        getSingleProject();
+    /*if (openDialog)
+        getSingleProject();*/
     
     return (
         <>
@@ -237,14 +253,15 @@ function ProjectsTable(props)
                         <Button onClick={deleteProject} className={classes.deleteButton}>Delete</Button>
                     </DialogActions>
             </Dialog>
-            <Dialog fullWidth
+			<Dialog onEnter={getSingleProject}
+			fullWidth
 				open={openDialog}
 				onClose={handleClose}
 				style={{cursor: "default"}}>
 					<DialogTitle style={dialogBackground}>
 						<MuiThemeProvider theme={theme}>
 							<Typography variant="h5">
-								{`Edit ${project.title}`}
+								{`Edit ${title}`}
 							</Typography>
 						</MuiThemeProvider>
 					</DialogTitle>
@@ -263,7 +280,7 @@ function ProjectsTable(props)
 									className={classes.input}
 									autoComplete="off" 
 									autoFocus value={type} 
-									onChange={e => setType(e.target.value)} />
+									onChange={e => {setType(e.target.value); console.log(type);}} />
 							</FormControl>
 							<MuiThemeProvider theme={theme}>
 								<Typography variant="subtitle2">
@@ -317,9 +334,9 @@ function ProjectsTable(props)
 										value={video} 
 										onChange={e => setVideo(e.target.value)} />
 								</FormControl>
-							</> : null}
+							</> : "deleted"}
 							<ButtonWrapper>
-								<Button	type="submit" className={classes.submit} > {/*onClick={updateProject}>*/}
+								<Button	type="submit" className={classes.submit} onClick={updateProject}>
 									Edit
 								</Button>
 							</ButtonWrapper>
@@ -356,6 +373,197 @@ function ProjectsTable(props)
 		catch (error) 
 		{
 			console.log(error.message);
+		}
+	}
+
+	async function updateProject()
+	{
+		try 
+		{
+			/*situations:
+			1. no links no video
+			2. do links no video
+			3. no links do video
+			3. do links do video */
+			var result;
+			switch(true)
+			{
+				//1. no links no video
+				case links === null && video === null:
+					if (type !== '' && description !== '')
+					{
+						await firebase.updateProject(props.name, project.title,	type, description, null, null);
+						props.setUpdate(true);
+						setType('');
+						setDescription('');
+						setVideo('');
+						handleClose();
+						setSuccess(`${project.title} has been successfully updated`);
+						setOpenSuccess(true);
+					}
+					else
+					{
+						setError("One of the fields has left blank");
+						setOpenError(true);
+					}
+					break;
+				//2. do links no video
+				case links && video === null:
+					var fault = false;
+					for (var i=0; i<links.length; i++)
+						if (links[i] === '')
+							fault = true;
+					if (type !== '' && description !== '' && !fault)
+					{
+						await firebase.updateProject(props.name, project.title,	type, description, links, null);
+						props.setUpdate(true);
+						setType('');
+						setDescription('');
+						setVideo('');
+						handleClose();
+						setSuccess(`${project.title} has been successfully updated`);
+						setOpenSuccess(true);
+					}
+					else
+					{
+						setError("One of the fields has left blank");
+						setOpenError(true);
+					}
+					break;
+				//3. no links do video
+				case links === null && video !== null:
+					result = checkVideoURL();
+					if (result)
+					{
+						if (type !== '' && description !== '')
+						{
+							await firebase.updateProject(props.name, project.title,	type, description, null, result);
+							props.setUpdate(true);
+							setType('');
+							setDescription('');
+							setVideo('');
+							handleClose();
+							setSuccess(`${project.title} has been successfully updated`);
+							setOpenSuccess(true);
+						}
+						else
+						{
+							setError("One of the fields has left blank");
+							setOpenError(true);
+						}
+					}
+					else
+					{
+						setError("Invalid youtube URL!");
+						setOpenError(true);
+					}
+					break;
+				//4. do links do video
+				default:
+					result = checkVideoURL();
+					if (result)
+					{
+						var fault = false;
+						for (var i=0; i<links.length; i++)
+							if (links[i] === '')
+								fault = true;
+						if (type !== '' && description !== '' && !fault)
+						{
+							await firebase.updateProject(props.name, project.title,	type, description, links, result);
+							props.setUpdate(true);
+							setType('');
+							setDescription('');
+							setVideo('');
+							handleClose();
+							setSuccess(`${project.title} has been successfully updated`);
+							setOpenSuccess(true);
+						}
+						else
+						{
+							setError("One of the fields has left blank");
+							setOpenError(true);
+						}
+					}
+					else
+					{
+						setError("Invalid youtube URL!");
+						setOpenError(true);
+					}
+			}
+			/*props.setUpdate(true);
+			setType('');
+			setDescription('');
+			setVideo('');
+			handleClose();
+			setSuccess(`${project.title} has been successfully updated`);
+			setOpenSuccess(true);*/
+			/*if (!video)
+			{
+				//check if one of the links is empty
+				var fault = false;
+				for (var i=0; i<links.length; i++)
+					if (links[i] === '')
+						fault = true;
+				if (type !== '' && description !== '' && !fault)
+				{
+					await firebase.updateProject(props.name, project.title,	type, description, links, null);
+					props.setUpdate(true);
+					setType('');
+					setDescription('');
+					setVideo('');
+					handleClose();
+					setSuccess(`${project.title} has been successfully updated`);
+					setOpenSuccess(true);
+				}
+				else
+				{
+					setError("One of the fields has left blank");
+					setOpenError(true);
+				}
+			}
+			else
+			{
+				const result = checkVideoURL();
+				if (result)
+				{
+					//check if one of the links is empty
+					var fault = false;
+					for (var i=0; i<links.length; i++)
+						if (links[i] === '')
+							fault = true;
+					if (type !== '' && description !== '' && !fault)
+					{
+						await firebase.updateProject(props.name, project.title,	type, description, links, result);
+						props.setUpdate(true);
+						setType('');
+						setDescription('');
+						setVideo('');
+						handleClose();
+						setSuccess(`${project.title} has been successfully updated`);
+						setOpenSuccess(true);
+					}
+					else
+					{
+						setError("One of the fields has left blank");
+						setOpenError(true);
+					}
+				}
+				else
+				{
+					setError("Invalid youtube URL!");
+					setOpenError(true);
+				}
+			}*/
+		} 
+		catch (error) 
+		{
+			setError("An unexpected error occurred");
+			setOpenError(true);
+			console.log(error.message);
+			setType('');
+			setDescription('');
+			setVideo('');
+			handleClose();
 		}
 	}
 
