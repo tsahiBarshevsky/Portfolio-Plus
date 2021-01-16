@@ -172,6 +172,20 @@ class Firebase
         return doc.data() ? doc.data().lastUpdate : null;
     }
 
+    async getProfession(user)
+    {
+        const ref = this.db.collection(`list-of-users`).doc(`${user}`);
+        const doc = await ref.get();
+        return doc.data() ? doc.data().profession : null;
+    }
+
+    async updateProfession(user, profession)
+    {
+        this.db.collection(`list-of-users`).doc(`${user}`).update({
+            profession: profession
+        });
+    }
+
     deleteUserFromList(name)
     {
         const res = this.db.collection(`list-of-users`).doc(`${name}`).delete();

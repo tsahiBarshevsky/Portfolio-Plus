@@ -109,6 +109,35 @@ const styles = theme => ({
 		alignItems: 'start',
 		marginTop: '65px'
 	},
+	input:
+	{
+		backgroundColor: 'white',
+		border: '1px solid black',
+		height: '40px',
+		width: '300px',
+        borderRadius: '25px',
+		fontFamily: 'Andika New Basic',
+	},
+	updateButton:
+	{
+		width: '170px',
+		height: '43px',
+		color: '#ff4040',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		marginTop: theme.spacing(1),
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040',
+			transition: 'all 0.2s ease-in'
+		}
+	},
 	uploadButton: 
 	{
 		width: '170px',
@@ -168,21 +197,27 @@ const styles = theme => ({
         width: '285px',
         backgroundColor: 'black',
 		marginTop: theme.spacing(3),
-		marginBottom: theme.spacing(3)
+		marginBottom: theme.spacing(3),
+		[theme.breakpoints.down('xs')]:
+		{
+			width: '100%'
+		}
     }
 });
 
 const typographyTheme = createMuiTheme({
 	typography:
 	{
-		allVariants:
-		{
-			fontFamily: `"Andika New Basic", sans-serif`,
-		},
-		subtitle2:
-		{
-			color: red[900]
-		}
+		allVariants: { fontFamily: `"Andika New Basic", sans-serif` },
+		subtitle2: { color: red[900] },
+		h5: { paddingTop: '30px' }
+	}
+});
+
+const messagesTheme = createMuiTheme({
+	typography:
+	{
+		allVariants: { fontFamily: `"Andika New Basic", sans-serif` },
 	}
 });
 
@@ -200,7 +235,8 @@ function Settings(props)
 	const [message, setMessage] = useState('');
 	const [url, setUrl] = useState('');
 	const [progress, setProgress] = useState(0);
-		console.log(`${window.location.origin.toString()}`); // (or whatever)
+	const [profession, setProfession] = useState('');
+	const [newProfession, setNewProfession] = useState('');
 
 	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5', 'bg6', 'bg7'];
 	const [selectedTheme, setSelectedTheme] = useState('');
@@ -212,8 +248,9 @@ function Settings(props)
 			getUserTheme();
 			getImageURL();
 			setUpdate(false);
+			firebase.getProfession(firebase.getCurrentUsername()).then(setProfession);
 		}
-    }, [getImageURL, getUserTheme]);
+    }, [getImageURL, getUserTheme, firebase.getProfession]);
 
 	if (!firebase.getCurrentUsername()) {
 		// not logged in
@@ -377,8 +414,32 @@ function Settings(props)
                         <Typography align="center" variant="h6" gutterBottom>
                             {`Email: ${firebase.getCurrentUsernameEmail()}`}
                         </Typography>
+						<Typography variant="h6">
+                            {`Link to your page: `}
+							<PersonalPage target="_blank" to={`/${firebase.getCurrentUsername()}`}>{`${window.location.origin.toString()}/${firebase.getCurrentUsername()}`}</PersonalPage>
+                        </Typography>
+						<Typography align="center" variant="h5" gutterBottom>
+                            {`Change profession `}
+                        </Typography>
+						<Typography align="center" variant="h6" gutterBottom>
+                            {`Current profession: ${profession}`}
+                        </Typography>
                     </MuiThemeProvider>
-					<PersonalPage target="_blank" to={`/${firebase.getCurrentUsername()}`}>{`${window.location.origin.toString()}/${firebase.getCurrentUsername()}`}</PersonalPage>
+					<FormControl margin="normal" fullWidth>
+						<Input id="profession" name="profession"
+							inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
+							disableUnderline 
+							placeholder="New profession.."
+							className={classes.input}
+							autoComplete="off" 
+							value={newProfession} 
+							onChange={e => setNewProfession(e.target.value)} />
+					</FormControl>
+					<Button 
+						onClick={updateProfession}
+						className={classes.updateButton}>
+							update
+					</Button>
                     <Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>
@@ -441,7 +502,7 @@ function Settings(props)
 				</div>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
-						<MuiThemeProvider theme={typographyTheme}>
+						<MuiThemeProvider theme={messagesTheme}>
 							<Typography align="center" variant="subtitle2">
 								{message}
 							</Typography>
@@ -450,7 +511,7 @@ function Settings(props)
 				</Snackbar>
 				<Snackbar open={openError} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="error">
-						<MuiThemeProvider theme={typographyTheme}>
+						<MuiThemeProvider theme={messagesTheme}>
 							<Typography align="center" variant="subtitle2">
 								{error}
 							</Typography>
@@ -469,7 +530,7 @@ function Settings(props)
 			if (showMessage)
 			{
 				setOpenSuccess(true);
-				setMessage("Image deleted successfully!")
+				setMessage("Image deleted successfully!");
 				setUrl('');
 			}
 		}
@@ -488,6 +549,32 @@ function Settings(props)
 			firebase.storage.ref("Profile images").child(username).getDownloadURL().then(
 				url => {setUrl(url);}
 			);
+		}
+	}
+
+	async function updateProfession()
+	{
+		try 
+		{
+			if (newProfession !== '')
+			{
+				await firebase.updateProfession(firebase.getCurrentUsername(), newProfession);
+				setMessage(`Profession has been successfully changed to ${newProfession}`);
+				setOpenSuccess(true);
+				setUpdate(true);
+				setNewProfession('');
+			}
+			else
+			{
+				setError("Profession field has left blank");
+				setOpenError(true);
+			}
+		} 
+		catch (error) 
+		{
+			setError("An unexpected error occurred");
+			setOpenError(true);
+			console.log(error.message);
 		}
 	}
 
