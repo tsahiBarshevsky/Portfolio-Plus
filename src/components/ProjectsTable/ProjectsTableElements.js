@@ -4,6 +4,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 export const TableContainer = styled.div`
     overflow-x: auto;
     width: 100%;
+    padding-top: 10px;
 `;
 
 export const Table = styled.table`
@@ -44,6 +45,9 @@ export const TableData = styled.td`
     padding: 15px;
     font-size: 15px;
 `;
+
+export const Head = styled.thead``;
+export const Body = styled.tbody``;
 
 /*---other components */
 

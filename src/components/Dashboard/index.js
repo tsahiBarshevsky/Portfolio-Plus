@@ -287,17 +287,21 @@ function Dashboard(props)
 
     useEffect(() =>
     {
-		setTimeout(() => {
-			setIsLoad(true);
+		/*setTimeout(() => {
+			//setIsLoad(true);
 			//firebase.getUserInfo(firebase.getCurrentUsername()).then(setUserInfo);
-			firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
-		}, 1000);
+			//firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
+		}, 1000);*/
 		if (update)
 		{
 			firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
+			firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
 			setUpdate(false);
 		}
 	}, [firebase.getAllProjects()]);
+
+	if (projects && date && !isLoad)
+		setIsLoad(true);
 	
 	/*useEffect(() =>
 	{
@@ -507,11 +511,19 @@ function Dashboard(props)
 								</Grid>
 							</GridContainer>
 						</Container>
-						<TableWrapper>
-							<ProjectsTable projects={projects}
-								name={firebase.getCurrentUsername()}
-								setUpdate={setUpdate}/>
-						</TableWrapper>
+						{projects.length >= 1 ?
+						<>
+							<MuiThemeProvider theme={typographyTheme}>
+								<Typography align="center" variant="h6" gutterBottom>
+									{`Your projects:`}
+								</Typography>
+							</MuiThemeProvider>
+							<TableWrapper>
+								<ProjectsTable projects={projects}
+									name={firebase.getCurrentUsername()}
+									setUpdate={setUpdate}/>
+							</TableWrapper>
+						</> : null}
 						{/*projects.length >= 1 ?
 						<Container>
 							<MuiThemeProvider theme={typographyTheme}>
@@ -722,8 +734,9 @@ function Dashboard(props)
 		}
 		catch(error)
 		{
-			setError(error.message);
+			setError("An unexpected error occurred");
 			setOpenError(true);
+			console.log(error.message);
 		}
 	}
 

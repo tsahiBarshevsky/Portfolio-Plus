@@ -13,7 +13,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import { Button, DialogActions, Typography, Snackbar, Input, FormControl } from '@material-ui/core';
-import { Table, TableContainer, TableData, TableHead, TableRow, Warning, ButtonWrapper } from './ProjectsTableElements';
+import { Table, TableContainer, TableData, TableHead, TableRow, Warning, ButtonWrapper, Head, Body } from './ProjectsTableElements';
 
 const styles = theme => ({
     submit:
@@ -61,14 +61,31 @@ const styles = theme => ({
 		{
 			backgroundColor: blueGrey[800],
 		}
-    },
+	},
+	input:
+	{
+		backgroundColor: 'white',
+		border: '1px solid black',
+        height: '40px',
+        borderRadius: '25px',
+		fontFamily: 'Andika New Basic',
+		marginTop: theme.spacing(1),
+		marginBottom: theme.spacing(2)
+	},
     options:
     {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'flex-start',
         backgroundColor: 'transparent'
-    },
+	},
+	descriptionInput:
+	{
+		backgroundColor: 'white',
+		border: '1px solid black',
+        borderRadius: '25px',
+		fontFamily: 'Andika New Basic',
+	},
     tooltip: {fontSize: '15px', textAlign: 'center'}
 });
 
@@ -170,60 +187,57 @@ function ProjectsTable(props)
     
     const handleOpenEditDialog = () =>
 	{
-		setTimeout(() => {
-			
-		}, 500);
 		setOpenDialog(true);
-		//getSingleProject();
     }
-
-    /*if (openDialog)
-        getSingleProject();*/
     
     return (
         <>
             <TableContainer>
                 <Table>
-                    <TableRow>
-                        <TableHead>#</TableHead>
-                        <TableHead>Project name</TableHead>
-                        <TableHead>Project type</TableHead>
-                        <TableHead>Number of links</TableHead>
-                        <TableHead>Youtube video?</TableHead>
-                        <TableHead>Options</TableHead>
-                    </TableRow>
-                    {props.projects.map((project, index) =>
-                        <TableRow key={index}>
-                            <TableData>{index+1}</TableData>
-                            <TableData>{project.title}</TableData>
-                            <TableData>{project.type}</TableData>
-                            <TableData>{project.links !== null ? project.links.length : "0"}</TableData>
-                            <TableData>
-                                {project.video !== null ? 
-                                    <CheckCircleOutlineRoundedIcon style={{color: green[600]}} />
-                                    : 
-                                    <HighlightOffRoundedIcon style={{color: red[900]}} />}
-                            </TableData>
-                            <TableData className={classes.options}>
-                                <Tooltip title={<p className={classes.tooltip}>Edit</p>} 
-                                    TransitionComponent={Fade} 
-                                    TransitionProps={{ timeout: 400 }}
-                                    enterDelay={500} arrow>
-                                    <Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpenEditDialog()}}>
-                                        <EditOutlinedIcon />
-                                    </Fab>
-                                </Tooltip>
-                                <Tooltip title={<p className={classes.tooltip}>Delete</p>}
-                                    TransitionComponent={Fade} 
-                                    TransitionProps={{ timeout: 400 }}
-                                    enterDelay={500} arrow>
-                                    <Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpen();}}>
-                                        <DeleteOutlinedIcon />
-                                    </Fab>
-                                </Tooltip>
-                            </TableData>
-                        </TableRow>
-                    )}
+					<Head>
+						<TableRow>
+							<TableHead>#</TableHead>
+							<TableHead>Project name</TableHead>
+							<TableHead>Project type</TableHead>
+							<TableHead>Number of links</TableHead>
+							<TableHead>Youtube video?</TableHead>
+							<TableHead>Options</TableHead>
+						</TableRow>
+					</Head>
+					<Body>
+						{props.projects.map((project, index) =>
+							<TableRow key={index}>
+								<TableData>{index+1}</TableData>
+								<TableData>{project.title}</TableData>
+								<TableData>{project.type}</TableData>
+								<TableData>{project.links !== null ? project.links.length : "0"}</TableData>
+								<TableData>
+									{project.video !== null ? 
+										<CheckCircleOutlineRoundedIcon style={{color: green[600]}} />
+										: 
+										<HighlightOffRoundedIcon style={{color: red[900]}} />}
+								</TableData>
+								<TableData className={classes.options}>
+									<Tooltip title={<p className={classes.tooltip}>Edit</p>} 
+										TransitionComponent={Fade} 
+										TransitionProps={{ timeout: 400 }}
+										enterDelay={500} arrow>
+										<Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpenEditDialog()}}>
+											<EditOutlinedIcon />
+										</Fab>
+									</Tooltip>
+									<Tooltip title={<p className={classes.tooltip}>Delete</p>}
+										TransitionComponent={Fade} 
+										TransitionProps={{ timeout: 400 }}
+										enterDelay={500} arrow>
+										<Fab className={classes.fab} size="small" onClick={() => {props.projects.map((a, b) => b === index ? setTitle(a.title) : null); handleOpen();}}>
+											<DeleteOutlinedIcon />
+										</Fab>
+									</Tooltip>
+								</TableData>
+							</TableRow>
+                    	)}
+					</Body>
                 </Table>
             </TableContainer>  
             <Dialog
@@ -253,7 +267,7 @@ function ProjectsTable(props)
                     </DialogActions>
             </Dialog>
 			<Dialog onEnter={getSingleProject}
-			fullWidth
+				fullWidth
 				open={openDialog}
 				onClose={handleClose}
 				style={{cursor: "default"}}>
@@ -288,10 +302,11 @@ function ProjectsTable(props)
 							</MuiThemeProvider>
 							<FormControl fullWidth>
 								<Input id="description" name="description"
+									multiline rows={5} rowsMax={5}
 									inputProps={{min: 0, style: { marginLeft: '20px' }, maxLength: 500}}
 									disableUnderline 
 									placeholder="New project description.."
-									className={classes.input}
+									className={classes.descriptionInput}
 									autoComplete="off" 
 									value={description} 
 									onChange={e => setDescription(e.target.value)} />
@@ -383,7 +398,7 @@ function ProjectsTable(props)
 			1. no links no video
 			2. do links no video
 			3. no links do video
-			3. do links do video */
+			4. do links do video */
 			var result;
 			switch(true)
 			{
@@ -489,70 +504,6 @@ function ProjectsTable(props)
 						setOpenError(true);
 					}
 			}
-			/*props.setUpdate(true);
-			setType('');
-			setDescription('');
-			setVideo('');
-			handleClose();
-			setSuccess(`${project.title} has been successfully updated`);
-			setOpenSuccess(true);*/
-			/*if (!video)
-			{
-				//check if one of the links is empty
-				var fault = false;
-				for (var i=0; i<links.length; i++)
-					if (links[i] === '')
-						fault = true;
-				if (type !== '' && description !== '' && !fault)
-				{
-					await firebase.updateProject(props.name, project.title,	type, description, links, null);
-					props.setUpdate(true);
-					setType('');
-					setDescription('');
-					setVideo('');
-					handleClose();
-					setSuccess(`${project.title} has been successfully updated`);
-					setOpenSuccess(true);
-				}
-				else
-				{
-					setError("One of the fields has left blank");
-					setOpenError(true);
-				}
-			}
-			else
-			{
-				const result = checkVideoURL();
-				if (result)
-				{
-					//check if one of the links is empty
-					var fault = false;
-					for (var i=0; i<links.length; i++)
-						if (links[i] === '')
-							fault = true;
-					if (type !== '' && description !== '' && !fault)
-					{
-						await firebase.updateProject(props.name, project.title,	type, description, links, result);
-						props.setUpdate(true);
-						setType('');
-						setDescription('');
-						setVideo('');
-						handleClose();
-						setSuccess(`${project.title} has been successfully updated`);
-						setOpenSuccess(true);
-					}
-					else
-					{
-						setError("One of the fields has left blank");
-						setOpenError(true);
-					}
-				}
-				else
-				{
-					setError("Invalid youtube URL!");
-					setOpenError(true);
-				}
-			}*/
 		} 
 		catch (error) 
 		{
