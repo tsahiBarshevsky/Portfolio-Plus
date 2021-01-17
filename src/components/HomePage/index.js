@@ -16,6 +16,7 @@ import Navbar from '../Navbar';
 import Footer from '../Footer';
 import { motion } from "framer-motion";
 import ScrollToTop from '../ScrollToTop';
+import BackToTop from '../BackToTop';
 
 const styles = theme => ({
 	button: 
@@ -129,6 +130,7 @@ function HomePage(props) {
 		<ScrollToTop />
 		<Container>
 			<Helmet><title>Portfolio Plus | Home</title></Helmet>
+			<BackToTop showBelow={110} />
 			<HeroContianer data-aos="zoom-in-up">
 				<MuiThemeProvider theme={theme}>
 					<Typography variant="h1" gutterBottom>
