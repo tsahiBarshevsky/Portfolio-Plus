@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, 
 		 Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer,
-		 Footer, LinksContainer, FooterLink, Logo } from './HomePageElements';
+		 LinksContainer, FooterLink, Logo } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
@@ -13,7 +13,9 @@ import { Helmet } from 'react-helmet';
 import Emoji from "react-emoji-render";
 import { animateScroll as scroll } from 'react-scroll';
 import Navbar from '../Navbar';
+import Footer from '../Footer';
 import { motion } from "framer-motion";
+import ScrollToTop from '../ScrollToTop';
 
 const styles = theme => ({
 	button: 
@@ -36,6 +38,7 @@ const styles = theme => ({
 	},
 	grid:
 	{
+		marginBottom: '70px',
 		[theme.breakpoints.down("sm")]:
 		{
 			paddingTop: '40px'
@@ -123,6 +126,7 @@ function HomePage(props) {
 	return (
 		<>
 		<Navbar />
+		<ScrollToTop />
 		<Container>
 			<Helmet><title>Portfolio Plus | Home</title></Helmet>
 			<HeroContianer data-aos="zoom-in-up">
@@ -237,7 +241,8 @@ function HomePage(props) {
 						<Picture src={Vector3} alt="Vector3" />
 					</Grid>
 			</Grid>
-			<Footer>
+			<Footer to='/'/>
+			{/*<Footer>
 				<Logo to='/'onClick={() => scroll.scrollToTop()}>
 					<motion.div
 						whileHover={{ scale: 1.25 }}
@@ -290,7 +295,7 @@ function HomePage(props) {
 						All rights reserved &copy; {new Date().getFullYear()}
 					</Typography>
 				</MuiThemeProvider>
-			</Footer>
+			</Footer>*/}
 		</Container>
 		</>
 	)
