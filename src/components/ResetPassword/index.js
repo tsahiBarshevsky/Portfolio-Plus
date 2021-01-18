@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import VpnKeyIcon from '@material-ui/icons/VpnKey';
+import RestoreIcon from '@material-ui/icons/Restore';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 import firebase from '../firebase';
@@ -74,14 +74,15 @@ const styles = theme => ({
 	submit: 
 	{
 		color: 'white',
-		fontSize: '17px',
+		fontSize: '15px',
 		textTransform: 'capitalize',
 		width: '130px',
 		height: '40px',
 		border: '2px solid white',
 		backgroundColor: 'transparent',
 		borderRadius: '25px',
-		marginTop: theme.spacing(3),
+        marginTop: theme.spacing(3),
+        lineHeight: 1.2,
 		"&:hover": 
 		{
 			color: 'black',
@@ -109,22 +110,20 @@ const theme = createMuiTheme({
 		{
 			fontFamily: `"Andika New Basic", sans-serif`,
 			color: 'white'
-		},
-		subtitle1:
-		{
-			marginTop: '10px',
-			lineHeight: 1.2
-		}
+        },
+        h5: { paddingBottom: '10px' }, 
+        subtitle1: { lineHeight: 1.2 }
 	}
 });
 
-function SignIn(props) 
+function ResetPassword(props) 
 {
 	const { classes } = props;
 	const [email, setEmail] = useState('');
-	const [password, setPassword] = useState('');
-	const [error, setError] = useState('');
-	const [open, setOpen] = useState(false);
+    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [open, setOpen] = useState(false);
+    const [openSuccess, setOpenSuccess] = useState(false);
 
 	if (firebase.getCurrentUsername()) {
 		props.history.replace('/dashboard');
@@ -138,23 +137,29 @@ function SignIn(props)
 	
 	const closeSnackbar = () =>
 	{
-		setOpen(false);
+        setOpen(false);
+        setOpenSuccess(false);
 	}
 
 	return (
 		<main className={classes.main}>
-			<Helmet><title>Portfolio Plus | Login</title></Helmet>
+			<Helmet><title>Portfolio Plus | Reset Password</title></Helmet>
 			<Paper className={classes.paper}>
 				<Avatar className={classes.avatar}>
-					<VpnKeyIcon className={classes.icon}/>
+					<RestoreIcon className={classes.icon}/>
 				</Avatar>
 				<MuiThemeProvider theme={theme}>
 					<Typography align="center" component="h1" variant="h5">
-						Sign in
+                        Reset Password
 					</Typography>
 				</MuiThemeProvider>
 				<form className={classes.form} onSubmit={e => e.preventDefault() && false}>
-					<FormControl margin="normal" required fullWidth>
+					<MuiThemeProvider theme={theme}>
+                        <Typography align="center" variant="subtitle1">
+                            Enter the email you've registered with to receive a password reset email
+                        </Typography>
+                    </MuiThemeProvider>
+                    <FormControl margin="normal" required fullWidth>
 						<Input 
 							className={classes.input}
 							disableUnderline
@@ -169,38 +174,23 @@ function SignIn(props)
 								<AlternateEmailIcon />
 							</InputAdornment>} />
 					</FormControl>
-					<FormControl margin="normal" required fullWidth>
-						<Input 
-							className={classes.input}
-							disableUnderline
-							name="password" id="password"
-							placeholder="Password.."
-							type="password" 
-							autoComplete="off" 
-							value={password} 
-							onChange={e => setPassword(e.target.value)}
-							startAdornment=
-							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<LockOutlinedIcon />
-							</InputAdornment>} />
-					</FormControl>
 					<Button
 						type="submit"
-						onClick={login}
+						onClick={resetPassword}
 						className={classes.submit}>
-						Sign in
+						    Reset password
           			</Button>
 				</form>
-				<MuiThemeProvider theme={theme}>
-					<Typography align="center" variant="subtitle1">
-						Doesn't have an account? <Link to="/register" className={classes.link}>Sign up</Link>
-					</Typography>
-					<Typography style={{transform: 'translateY(-30%)'}}
-						align="center" variant="subtitle1">
-						Forgot your password? <Link to="/reset-password" className={classes.link}>Reset</Link>
-					</Typography>
-				</MuiThemeProvider>
 			</Paper>
+            <Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+                <Alert onClose={closeSnackbar} severity="success">
+                    <MuiThemeProvider theme={theme}>
+                        <Typography align="center" variant="subtitle2">
+                            {message}
+                        </Typography>
+                    </MuiThemeProvider>
+                </Alert>
+            </Snackbar>
 			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="error">
 					<MuiThemeProvider theme={theme}>
@@ -213,19 +203,34 @@ function SignIn(props)
 		</main>
 	)
 
-	async function login() 
+	async function resetPassword()
 	{
 		try 
 		{
-			await firebase.login(email, password);
-			props.history.replace('/dashboard');
+            var reg = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+            if (reg.test(email.trim()))
+            {
+                await firebase.resetPassword(email.trim());
+                setMessage("A password reset was sent to your email; Check your inbox.");
+                setOpenSuccess(true);
+                //setEmail('');
+                setTimeout(() => {
+                    props.history.replace('/');
+                }, 3500);
+            }
+            else
+            {
+                setOpen(true);
+			    setError("Please enter a valid email address");
+            }
 		} 
-		catch(error) 
+		catch (error)
 		{
-			setOpen(true);
+            console.log(error.message);
+            setOpen(true);
 			setError("An unexpected error occurred");
 		}
 	}
 }
 
-export default withRouter(withStyles(styles)(SignIn))
+export default withRouter(withStyles(styles)(ResetPassword))

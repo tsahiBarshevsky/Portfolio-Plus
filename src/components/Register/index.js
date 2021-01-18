@@ -3,7 +3,7 @@ import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, 
 import MuiAlert from '@material-ui/lab/Alert';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -13,6 +13,7 @@ import Background from '../../images/Backgrounds/forms.png';
 import WorkOutlineOutlinedIcon from '@material-ui/icons/WorkOutlineOutlined';
 import HelpOutlineOutlinedIcon from '@material-ui/icons/HelpOutlineOutlined';
 import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
 const styles = theme => ({
 	main: 
@@ -105,6 +106,18 @@ const styles = theme => ({
 		margin: '10px',
 		cursor: 'pointer'
 	},
+	link:
+	{
+		textAlign: 'center',
+		textDecoration: 'none',
+		color: 'white',
+		transition: 'all 0.5s ease-out',
+		"&:hover": 
+		{
+			transition: 'all 0.5s ease-in',
+			color: '#ff4040'
+		}
+	},
 	tooltip: {fontSize: '15px', textAlign: 'center', lineHeight: 1.2}
 });
 
@@ -118,7 +131,7 @@ const theme = createMuiTheme({
 		},
 		subtitle1:
 		{
-			fontSize: '15px'
+			marginTop: '10px'
 		}
 	}
 });
@@ -137,6 +150,11 @@ function Register(props)
 	useEffect(() => {
 		firebase.getAllUsers().then(setUsers);
 	}, []);
+
+	if (firebase.getCurrentUsername()) {
+		props.history.replace('/dashboard');
+		return null;
+	}
 
 	const Alert = (props) =>
     {
@@ -172,7 +190,7 @@ function Register(props)
 							onChange={e => setName(e.target.value)} 
 							startAdornment=
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
-								<PersonIcon />
+								<PersonOutlineOutlinedIcon />
 							</InputAdornment>} />
 						<Tooltip title={<p className={classes.tooltip}>This is how you will identify your own page</p>}
 							TransitionComponent={Fade} arrow
@@ -245,6 +263,11 @@ function Register(props)
 						Register
           			</Button>
 				</form>
+				<MuiThemeProvider theme={theme}>
+					<Typography align="center" variant="subtitle1">
+						Already have an account? <Link to="/login" className={classes.link}>Sign in</Link>
+					</Typography>
+				</MuiThemeProvider>
 			</Paper>
 			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="error">

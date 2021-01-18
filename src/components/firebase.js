@@ -222,6 +222,11 @@ class Firebase
             displayName: username
         });
     }
+
+    async resetPassword(email)
+    {
+        this.auth.sendPasswordResetEmail(email);
+    }
 }
 
 export default new Firebase();

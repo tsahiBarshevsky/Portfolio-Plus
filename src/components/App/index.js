@@ -12,6 +12,7 @@ import PersonalLink from '../Personal link';
 import Settings from '../Settings';
 import QuestionsAndAnswers from '../Q&A';
 import Credits from '../Credits';
+import ResetPassword from '../ResetPassword';
 
 const theme = createMuiTheme();
 
@@ -33,6 +34,7 @@ export default function App() {
 				<Switch>
 					<Route exact path="/" component={HomePage} />
 					<Route exact path="/login" component={Login} />
+					<Route exact path="/reset-password" component={ResetPassword} />
 					<Route exact path="/register" component={Register} />
 					<Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/settings" component={Settings} />
