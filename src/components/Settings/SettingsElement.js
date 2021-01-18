@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import WarningIcon from '@material-ui/icons/Warning';
+import { red } from '@material-ui/core/colors';
 
 export const Wrapper = styled.div`
     display: flex;
@@ -10,6 +12,17 @@ export const Wrapper = styled.div`
     border-radius: 25px;
     padding: 20px;
     margin-bottom: 20px;
+`;
+
+export const WarningWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(213, 0, 0, 0.7);
+    border-radius: 25px;
+    padding: 20px;
+    margin: 20px 0px;
 `;
 
 export const ImagePanel = styled.div`
@@ -48,4 +61,10 @@ export const PersonalPage = styled(Link)`
         transition: all 0.5s ease-in;
         color: #ff4040;
     }
+`;
+
+export const Warning = styled(WarningIcon)`
+    color: #263238;
+    margin-right: 10px;
+    transform: translateY(10%);
 `;

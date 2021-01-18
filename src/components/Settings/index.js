@@ -3,7 +3,7 @@ import ProgressBar from '@ramonak/react-progress-bar';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
 	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
-	Grid, Avatar } from '@material-ui/core';
+	Grid, Avatar, DialogActions } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
 import { withRouter, Link } from 'react-router-dom';
@@ -18,10 +18,13 @@ import clsx from 'clsx';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
-import { ImagePanel, ButtonsPanel, Wrapper, PreviewContianer, PersonalPage } from './SettingsElement';
+import { ImagePanel, ButtonsPanel, Wrapper, PreviewContianer, PersonalPage, Warning, WarningWrapper } from './SettingsElement';
 import { grey, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import ThemeCard from '../ThemeCard';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const drawerWidth = 240;
 const styles = theme => ({
@@ -180,6 +183,60 @@ const styles = theme => ({
 			backgroundColor: 'transparent',
 		}
 	},
+	deleteAccountButton:
+	{
+		width: '170px',
+		height: '43px',
+		color: 'white',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid #d50000',
+		backgroundColor: '#d50000',
+		borderRadius: '25px',
+		marginTop: theme.spacing(1),
+		textTransform: 'capitalize',
+		'&:hover':
+		{
+			color: red['A700'],
+			backgroundColor: 'transparent',
+		}
+	},
+	dialogButton:
+	{
+		color: '#263238',
+		width: '85px',
+		height: '40px',
+		fontSize: '16px',
+		fontWeight: '600',
+		border: '2px solid #263238',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		transition: 'all 0.2s ease-out',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#263238',
+			transition: 'all 0.2s ease-in'
+		}
+	},
+	deleteButtonDialog: 
+	{
+		width: '85px',
+		color: 'white',
+		fontSize: '15px',
+		fontWeight: '600',
+		border: '2px solid #263238',
+		backgroundColor: '#263238',
+		borderRadius: '25px',
+		textTransform: 'capitalize',
+		margin: theme.spacing(1),
+		'&:hover':
+		{
+			color: '#263238',
+			backgroundColor: 'transparent',
+		}
+	},
 	fab: 
 	{
 		position: 'fixed',
@@ -221,6 +278,17 @@ const messagesTheme = createMuiTheme({
 	}
 });
 
+const warningTheme = createMuiTheme({
+	typography:
+	{
+		allVariants: 
+		{ 
+			fontFamily: `"Andika New Basic", sans-serif`, 
+			color: red['A700'],
+		}
+	}
+})
+
 function Settings(props) 
 {
 	const { classes } = props;
@@ -237,9 +305,11 @@ function Settings(props)
 	const [progress, setProgress] = useState(0);
 	const [profession, setProfession] = useState('');
 	const [newProfession, setNewProfession] = useState('');
+	const [openDialog, setOpenDialog] = useState(false);
 
 	const themes = ['default', 'bg1', 'bg2', 'bg3', 'bg4', 'bg5', 'bg6', 'bg7'];
 	const [selectedTheme, setSelectedTheme] = useState('');
+	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
     useEffect(() =>
     {
@@ -294,9 +364,9 @@ function Settings(props)
 		setOpen(false);
 	}
 
-	const handleOpen = () => 
+	const handleOpenDialog = () =>
 	{
-		setOpenSuccess(true);
+		setOpenDialog(true);
 	}
 
 	const handleImageChange = e =>
@@ -332,6 +402,12 @@ function Settings(props)
 			}
 		}
 	}
+
+	const handleClose = () =>
+	{
+		setOpen(false);
+        setOpenDialog(false);
+    }
 
 	return (
 		<div className={classes.root}>
@@ -440,6 +516,22 @@ function Settings(props)
 						className={classes.updateButton}>
 							update
 					</Button>
+					<WarningWrapper>
+						<MuiThemeProvider theme={warningTheme}>
+							<Typography align="center" variant="h5" gutterBottom>
+								{`Delete account`}
+							</Typography>
+						</MuiThemeProvider>
+						<MuiThemeProvider theme={typographyTheme}>
+							<Typography align="center" variant="h6">
+								Once you delete your account, there's no going back.
+							</Typography>
+							<Typography align="center" variant="h6">
+								All of your data will be deleted. Please be certain!
+							</Typography>
+						</MuiThemeProvider>
+						<Button className={classes.deleteAccountButton} onClick={handleOpenDialog}>Delete account</Button>
+					</WarningWrapper>
                     <Divider className={classes.divider}/>
 					<MuiThemeProvider theme={typographyTheme}>
                         <Typography align="center" variant="h4" gutterBottom>
@@ -500,6 +592,34 @@ function Settings(props)
 						)}
 					</Grid>
 				</div>
+				<Dialog
+					open={openDialog}
+					onClose={handleClose}
+					style={{cursor: "default", borderRadius: '25px'}}>
+						<DialogTitle style={dialogBackground}>
+							<div style={{display: 'flex', flexDirection: 'row'}}>
+								<Warning style={{fontSize: '30px'}} />
+								<MuiThemeProvider theme={messagesTheme}>
+									<Typography component="h1" variant="h5">
+										{`Delete account`}
+									</Typography>
+								</MuiThemeProvider>
+							</div>
+						</DialogTitle>
+						<DialogContent style={dialogBackground}>
+							<MuiThemeProvider theme={typographyTheme}>
+								<Typography variant="h6" gutterBottom>
+									{`Hey ${firebase.getCurrentUsername()}, 
+									wait! Are you sure you want to delete your account?
+									This is a permanent action.`}
+								</Typography>
+							</MuiThemeProvider>
+						</DialogContent>
+						<DialogActions style={dialogBackground}>
+							<Button onClick={handleClose} className={classes.dialogButton}>Cancel</Button>
+							<Button onClick={deleteAccount} className={classes.deleteButtonDialog}>Delete</Button>
+						</DialogActions>
+				</Dialog>
 				<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
 					<Alert onClose={closeSnackbar} severity="success">
 						<MuiThemeProvider theme={messagesTheme}>
@@ -571,6 +691,22 @@ function Settings(props)
 			}
 		} 
 		catch (error) 
+		{
+			setError("An unexpected error occurred");
+			setOpenError(true);
+			console.log(error.message);
+		}
+	}
+
+	async function deleteAccount()
+	{
+		try 
+		{
+			await firebase.deleteAccount();
+			handleClose();
+			props.history.push('/');
+		} 
+		catch (error)
 		{
 			setError("An unexpected error occurred");
 			setOpenError(true);

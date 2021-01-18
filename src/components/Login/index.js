@@ -223,7 +223,11 @@ function SignIn(props)
 		catch(error) 
 		{
 			setOpen(true);
-			setError("An unexpected error occurred");
+			if (error.message === 'There is no user record corresponding to this identifier. The user may have been deleted.')
+				setError("There's no user record corresponding to this identifier")
+			else
+				setError("An unexpected error occurred");
+			console.log(error.message);
 		}
 	}
 }
