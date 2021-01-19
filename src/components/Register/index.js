@@ -166,6 +166,7 @@ function Register(props)
 	const closeSnackbar = () =>
 	{
 		setOpen(false);
+		setOpenSuccess(false);
 	}
 
 	return (
@@ -194,7 +195,11 @@ function Register(props)
 							{<InputAdornment style={{marginLeft: "13px"}} position="start">
 								<PersonOutlineOutlinedIcon />
 							</InputAdornment>} />
-						<Tooltip title={<p className={classes.tooltip}>This is how you will identify your own page</p>}
+						<Tooltip title={
+							<p className={classes.tooltip}>
+								This is how you will identify your own page. Username should be
+								one word in English and can contain numbers and the characters _ or .
+							</p>}
 							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
 							<HelpOutlineOutlinedIcon className={classes.helpIcon} />
@@ -305,13 +310,25 @@ function Register(props)
 		{
 			try 
 			{
-				await firebase.register(name, email, password); //register
-				await firebase.addUserToList(name, profession, "N/A", "default"); //add to users' list
-				await firebase.emailVerification(); //send email verification
-				await firebase.logout();
-				setSuccess("The registration has done successfully! Account verification was sent to the email you've been registered with");
-				setOpenSuccess(true);
-				setName('');
+				var reg = /^[a-zA-Z0-9_.]+$/;
+				if (reg.test(name))
+				{
+					await firebase.register(name, email, password); //register
+					await firebase.addUserToList(name, profession, "N/A", "default"); //add to users' list
+					await firebase.emailVerification(); //send email verification
+					await firebase.logout();
+					setSuccess("The registration has been done successfully! Account verification was sent to the email you've been registered with");
+					setOpenSuccess(true);
+					setName('');
+					setProfession('');
+					setEmail('');
+					setPassword('')
+				}
+				else
+				{
+					setOpen(true);
+					setError("Invalid username");
+				}
 			} 
 			catch(error) 
 			{
