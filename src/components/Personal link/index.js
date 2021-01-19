@@ -8,7 +8,6 @@ import Avatar from '@material-ui/core/Avatar';
 import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer, SocialIcons, BackHome, LinksLi } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
-import logo from '../../images/logo.png';
 import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton,
         FacebookIcon, LinkedinIcon, TelegramIcon, WhatsappIcon} from 'react-share';
 
@@ -314,7 +313,7 @@ function PersonalLink(props) {
                     </Typography>
                 </MuiThemeProvider>
                 <BackToHomeLink to="/">Back to homepage</BackToHomeLink>
-                <ErrorLogo src={logo} alt="Logo" />
+                {/*<ErrorLogo src={logo} alt="Logo" />*/}
             </ErrorRoot>)]}
         </>
     )

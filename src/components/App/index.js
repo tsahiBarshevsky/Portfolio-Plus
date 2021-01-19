@@ -13,6 +13,7 @@ import Settings from '../Settings';
 import QuestionsAndAnswers from '../Q&A';
 import Credits from '../Credits';
 import ResetPassword from '../ResetPassword';
+import Page404 from '../Page 404';
 
 const theme = createMuiTheme();
 
@@ -41,6 +42,7 @@ export default function App() {
 					<Route exact path="/credits" component={Credits} />
 					<Route exact path="/questions-and-answers" component={QuestionsAndAnswers} />
 					<Route exact path="/:username" component={PersonalLink} />
+					<Route exact path="*" component={Page404} />
 				</Switch>
 			</Router>
 		</MuiThemeProvider>

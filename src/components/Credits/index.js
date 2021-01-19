@@ -34,8 +34,9 @@ function Credits()
     const bg6 = "https://www.freepik.com/free-vector/color-seamless-space-pattern_10838001.htm#page=2&query=pattern+background&position=17";
     const bg7 = "https://www.freepik.com/free-vector/tropical-green-leaves-background_7557476.htm";
     const link1 = "https://www.freepik.com/free-vector/futuristic-wavy-dots-background_11299382.htm#page=1&query=abstract%20background&position=19";
-    const link2 = "https://dev.to/hrishikesh1990/i-made-100-high-quality-illustrations-totally-free-use-it-anywhere-without-attribution-452o?";
-    const link3 = "https://2.flexiple.com/scale/all-illustrations";
+    const link2 = "https://www.freepik.com/free-vector/404-error-poster-with-page-found-use-website_11244284.htm#page=2&query=404&position=0";
+    const link3 = "https://dev.to/hrishikesh1990/i-made-100-high-quality-illustrations-totally-free-use-it-anywhere-without-attribution-452o?";
+    const link4 = "https://2.flexiple.com/scale/all-illustrations";
     
     return (
         <Container>
@@ -105,8 +106,15 @@ function Credits()
                 <LinksLi>
                     <MuiThemeProvider theme={theme}>
                         <Typography>
+                            404 Illustration has made by macrovector <Link href={link2} target="_blank">Freepik</Link>
+                        </Typography>
+                    </MuiThemeProvider>
+                </LinksLi>
+                <LinksLi>
+                    <MuiThemeProvider theme={theme}>
+                        <Typography>
                             Although he doesn't demand any attribution, 
-                            I want to <br /> thank <Link href={link2} target="_blank">hrishikesh1990</Link> for the <Link href={link3} target="_blank">illustrations</Link>
+                            I want to <br /> thank <Link href={link3} target="_blank">hrishikesh1990</Link> for the <Link href={link4} target="_blank">illustrations</Link>
                         </Typography>
                     </MuiThemeProvider>
                 </LinksLi>
