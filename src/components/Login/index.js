@@ -218,16 +218,19 @@ function SignIn(props)
 		try 
 		{
 			await firebase.login(email, password);
-			props.history.replace('/dashboard');
+			if (firebase.auth.currentUser.emailVerified)
+				props.history.replace('/dashboard');
+			else
+			{
+				await firebase.logout();
+				setOpen(true);
+				setError("Account has not verified yet. Please check your email verification link in your inbox");
+			}
 		} 
 		catch(error) 
 		{
 			setOpen(true);
-			if (error.message === 'There is no user record corresponding to this identifier. The user may have been deleted.')
-				setError("There's no user record corresponding to this identifier")
-			else
-				setError("An unexpected error occurred");
-			console.log(error.message);
+			setError(error.message);
 		}
 	}
 }

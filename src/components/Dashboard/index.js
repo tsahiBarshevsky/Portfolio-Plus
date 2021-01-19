@@ -283,6 +283,8 @@ function Dashboard(props)
 		defaultMatches: true
 	});
 
+	//console.log(firebase.auth.currentUser.emailVerified);
+
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
     useEffect(() =>

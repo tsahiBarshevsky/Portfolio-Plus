@@ -228,6 +228,22 @@ class Firebase
         this.auth.sendPasswordResetEmail(email);
     }
 
+    async emailVerification()
+    {
+        this.auth.currentUser.sendEmailVerification();
+    }
+
+    async checkEmailVerification()
+    {
+        this.auth.onAuthStateChanged(function(user)
+        {
+            if (user !== null)
+                if (user.emailVerified)
+                    return true;
+            return false;
+        });
+    }
+
     async deleteQueryBatch(db, query, resolve) 
     {
         const snapshot = await query.get();

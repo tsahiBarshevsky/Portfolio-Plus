@@ -146,6 +146,8 @@ function Register(props)
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [open, setOpen] = useState(false);
+	const [openSuccess, setOpenSuccess] = useState(false);
+	const [success, setSuccess] = useState('');
 
 	useEffect(() => {
 		firebase.getAllUsers().then(setUsers);
@@ -269,6 +271,15 @@ function Register(props)
 					</Typography>
 				</MuiThemeProvider>
 			</Paper>
+			<Snackbar open={openSuccess} autoHideDuration={3500} onClose={closeSnackbar}>
+				<Alert onClose={closeSnackbar} severity="success">
+					<MuiThemeProvider theme={theme}>
+						<Typography align="center" variant="subtitle2">
+							{success}
+						</Typography>
+					</MuiThemeProvider>
+				</Alert>
+			</Snackbar>
 			<Snackbar open={open} autoHideDuration={3500} onClose={closeSnackbar}>
                 <Alert onClose={closeSnackbar} severity="error">
 					<MuiThemeProvider theme={theme}>
@@ -296,7 +307,11 @@ function Register(props)
 			{
 				await firebase.register(name, email, password); //register
 				await firebase.addUserToList(name, profession, "N/A", "default"); //add to users' list
-				props.history.replace('/dashboard');
+				await firebase.emailVerification(); //send email verification
+				await firebase.logout();
+				setSuccess("The registration has done successfully! Account verification was sent to the email you've been registered with");
+				setOpenSuccess(true);
+				setName('');
 			} 
 			catch(error) 
 			{
