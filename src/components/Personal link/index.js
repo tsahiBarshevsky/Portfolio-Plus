@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { Link as LinkR } from 'react-router-dom';
 import firebase from '../firebase';
 import { motion, AnimateSharedLayout, AnimatePresence } from "framer-motion";
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { Typography, Divider } from '@material-ui/core';
+import { Typography, Divider, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
@@ -47,7 +48,24 @@ const useStyles = makeStyles((theme) => ({
     {
         margin: theme.spacing(1),
         filter: 'drop-shadow(2px 2px 3px black)'
-    }
+    },
+    button: 
+	{
+		color: '#ff4040',
+		fontSize: '18px',
+		fontWeight: '600',
+		letterSpacing: '1px',
+		border: '3px solid #ff4040',
+		backgroundColor: 'transparent',
+		borderRadius: '25px',
+		marginTop: theme.spacing(1),
+		textTransform: 'capitalize',
+		'&:hover':
+		{
+			color: 'white',
+			backgroundColor: '#ff4040'
+		}
+	}
 }));
 
 const defaultTheme = createMuiTheme();
@@ -176,23 +194,35 @@ function PersonalLink(props) {
     const [url, setUrl] = useState('');
     const [background, setBackground] = useState('');
     const [isLoad, setIsLoad] = useState(false);
+    const [help, setHelp] = useState(false);
+    const [fault, setFault] = useState(false);
     
     var style;
     const classes = useStyles();
 
     useEffect(() =>
     {
-        getImageURL();
-        firebase.getAllProjects(props.match.params.username).then(setProjects);
+        /*getImageURL();
+        firebase.getAllProjects(props.match.params.username).then(setProjects);*/
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
         /*setTimeout(() => {
 			setIsLoad(true);
 		}, 1000);*/
     }, []);
 
+    if (userInfo === null && !fault) setFault(true);
+
+    /* ugly and unsafe solution
+    setTimeout(() => {
+        setFault(true);
+    }, 2000);*/
+
     if (userInfo && !isLoad)
     {
+        setTimeout(() => { setHelp(true); }, 500);
         setIsLoad(true);
+        getImageURL();
+        firebase.getAllProjects(props.match.params.username).then(setProjects);
     }
 
     if (userInfo && userInfo.background !== 'default')
@@ -208,17 +238,7 @@ function PersonalLink(props) {
     /*main*/
     return (
         <>
-        {!isLoad ? 
-        //if !userInfo - Error else loading
-        <ErrorRoot>
-            <PulseContainer>
-                <PulseBubble1 />
-                <PulseBubble2 />
-                <PulseBubble3 />
-            </PulseContainer>
-        </ErrorRoot> 
-        :
-        [(userInfo ?
+            {isLoad && help ? 
             <Root style={style}>
                 <Helmet><title>{`Portfolio Plus | @${props.match.params.username}`}</title></Helmet>
                 <TopLine>
@@ -278,8 +298,8 @@ function PersonalLink(props) {
                         </WhatsappShareButton>
                     </motion.div>
                 </SocialIcons>
-                {projects.length >= 1 ?
-                <ListWrapper> {/*data-aos="fade-up">*/}
+                {projects.length > 0 ?
+                <ListWrapper>
                     <AnimateSharedLayout>
                         <ProjectsList layout initial={{ borderRadius: 25 }}>
                             {projects.map((project, index) =>
@@ -304,7 +324,16 @@ function PersonalLink(props) {
                     </MuiThemeProvider>
                 </BackHome>
             </Root> 
-            : 
+            :
+            [(!fault ?
+            <ErrorRoot>
+                <PulseContainer>
+                    <PulseBubble1 />
+                    <PulseBubble2 />
+                    <PulseBubble3 />
+                </PulseContainer>
+            </ErrorRoot> 
+            :
             <ErrorRoot>
                 <Helmet><title>Portfolio Plus | Page Not Found</title></Helmet>
                 <MuiThemeProvider theme={theme}>
@@ -312,9 +341,21 @@ function PersonalLink(props) {
                         {`Oops! The page you’re looking for doesn’t exist.`}
                     </Typography>
                 </MuiThemeProvider>
-                <BackToHomeLink to="/">Back to homepage</BackToHomeLink>
-                {/*<ErrorLogo src={logo} alt="Logo" />*/}
-            </ErrorRoot>)]}
+                <Button to="/"
+					variant="contained"
+					component={LinkR}
+					className={classes.button}>
+						Back to homepage
+				</Button>
+                <ErrorLogo>
+                    <MuiThemeProvider theme={logoTheme}>
+                        <Typography variant="h4">
+                            Portfolio +
+                        </Typography>
+                    </MuiThemeProvider>
+                </ErrorLogo>
+            </ErrorRoot>  
+            )]}
         </>
     )
 

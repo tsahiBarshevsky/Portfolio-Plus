@@ -161,22 +161,13 @@ export const Logo = styled.img`
     margin-top: auto;
 `;
 
-export const ErrorLogo = styled.img`
-    width: 200px;
-    height: 32px;
-    bottom: 0px;
-    align-self: center;
-    position: absolute;
-    margin-bottom: 15px;
-`;
-
 export const ErrorRoot = styled.div`
     height: 100vh;
     padding: 15px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;    
+    align-items: center;   
     cursor: default;
 `;
 
@@ -201,6 +192,16 @@ export const BackHome = styled(LinkR)`
     margin-top: auto;
     color: black;
     text-decoration: none;
+`;
+
+export const ErrorLogo = styled.div`
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px;
 `;
 
 /*---Loading animation---*/
@@ -235,6 +236,11 @@ export const PulseBubble1 = styled.div`
     border-radius: 50%;
     background-color: #ff4040;
     animation: ${pulse} .4s ease .0s infinite alternate;
+    @media screen and (max-width: 375px)
+    {
+        width: 15px;
+        height: 15px;
+    }
 `;
 
 export const PulseBubble2 = styled.div`
@@ -243,6 +249,11 @@ export const PulseBubble2 = styled.div`
     border-radius: 50%;
     background-color: #ff4040;
     animation: ${pulse} .4s ease .1s infinite alternate;
+    @media screen and (max-width: 375px)
+    {
+        width: 15px;
+        height: 15px;
+    }
 `;
 
 export const PulseBubble3 = styled.div`
@@ -251,4 +262,9 @@ export const PulseBubble3 = styled.div`
     border-radius: 50%;
     background-color: #ff4040;
     animation: ${pulse} .4s ease .2s infinite alternate;
+    @media screen and (max-width: 375px)
+    {
+        width: 15px;
+        height: 15px;
+    }
 `;

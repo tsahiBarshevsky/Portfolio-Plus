@@ -162,7 +162,9 @@ class Firebase
     {
         const ref = this.db.collection(`list-of-users`).doc(`${user}`);
         const doc = await ref.get();
-        return doc.data();
+        if (doc.data())
+            return doc.data();
+        return null;
     }
 
     async getLastUpdate(user)
