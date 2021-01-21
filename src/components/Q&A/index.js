@@ -169,13 +169,40 @@ function QuestionsAndAnswers() {
                             <Typography>
                                 Registration requires providing a valid email account, username (which will be a unique identifier for your page), 
                                 profession and password. <br />
+                                Upon completion of the registration, a link to verify the account will be sent to the email you've been registered with,
+                                you must click on it and verify the account. <br />
+                                Once you've verified your account, you can log in. <br />
                                 The username and profession you provided, will be displayed on your personal page. <br />
                                 To log in, you have to enter the email and password you used to sign in to the site.
                             </Typography>
                             <br /><br />
                             <Typography variant="subtitle1">
-                                Note: The username should be unique. But don't worry, if you enter a username 
-                                that is used by another user, you will get an alert.
+                                Note: The username should have one word in English and can contain numbers and characters . and _.
+                                The username should be unique, so if you'll choose a username that used by 
+                                another user, you will get an alert.
+                            </Typography>
+                        </MuiThemeProvider>
+                    </AccordionDetails>
+                </Accordion>
+                <Accordion>
+                    <AccordionSummary
+                        classes={{
+                            expandIcon: classes.expandIcon,
+                            expanded: classes.expanded
+                        }}
+                        expandIcon={<ExpandMoreIcon />}>
+                            <MuiThemeProvider theme={theme}>
+                                <Typography variant="h6">
+                                    What can I do if I've forgotten my password?
+                                </Typography>
+                            </MuiThemeProvider>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <MuiThemeProvider theme={theme}>
+                            <Typography>
+                                In this case, the password can be reset. On the login page, click on "reset",
+                                enter the email address email you've been registered with and a link with
+                                the option to choose a new password will be sent to you.
                             </Typography>
                         </MuiThemeProvider>
                     </AccordionDetails>
@@ -404,7 +431,7 @@ function QuestionsAndAnswers() {
                 </Accordion>
                 <MuiThemeProvider theme={theme} >
                     <Typography align="center" variant="h6" style={{paddingTop: '20px'}}>
-                        If you still have questions, you can <MailTo href="mailto:tsahi.13@gmail.com">email me</MailTo>!
+                        If you still have further questions, you can <MailTo href="mailto:tsahi.13@gmail.com">email me</MailTo>!
                     </Typography>
                 </MuiThemeProvider>
             </InnerContainer>

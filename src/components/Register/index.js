@@ -197,8 +197,8 @@ function Register(props)
 							</InputAdornment>} />
 						<Tooltip title={
 							<p className={classes.tooltip}>
-								This is how you will identify your own page. Username should be
-								one word in English and can contain numbers and the characters _ or .
+								This is how you will identify your own page. The username should have one word 
+								in English and can contain numbers and characters _ and .
 							</p>}
 							TransitionComponent={Fade} arrow
 							TransitionProps={{ timeout: 400 }}>
