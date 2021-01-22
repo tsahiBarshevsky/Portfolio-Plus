@@ -152,15 +152,6 @@ export const Video = styled.iframe`
     border: none;
 `;
 
-export const Logo = styled.img`
-    width: 200px;
-    height: 32px;
-    bottom: 0px;
-    align-self: center;
-    transform: translateY(30%);
-    margin-top: auto;
-`;
-
 export const ErrorRoot = styled.div`
     height: 100vh;
     padding: 15px;
@@ -169,20 +160,6 @@ export const ErrorRoot = styled.div`
     justify-content: center;
     align-items: center;   
     cursor: default;
-`;
-
-export const BackToHomeLink = styled(LinkR)`
-    font-size: 20px;
-    text-align: center;
-    text-decoration: none;
-    color: black;
-    transition: all 0.5s ease-out;
-
-    &:hover
-    {
-        transition: all 0.5s ease-in;
-        color: #ff4040;
-    }
 `;
 
 export const BackHome = styled(LinkR)`

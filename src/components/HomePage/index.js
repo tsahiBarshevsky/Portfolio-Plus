@@ -1,20 +1,16 @@
 import React from 'react';
-import { Typography, Button, Grid, Divider } from '@material-ui/core';
+import { Typography, Button, Grid } from '@material-ui/core';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { Link } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Container, FixedBackground, LoginLink, Picture, SubtitleContianer, 
-		 Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer,
-		 LinksContainer, FooterLink, Logo } from './HomePageElements';
+		 Text, Subtext, HelpLink, Paragraph, ParagraphWrapper, HeroContianer } from './HomePageElements';
 import Vector1 from '../../images/Vector1.svg';
 import Vector2 from '../../images/Vector2.svg';
 import Vector3 from '../../images/Vector3.svg';
 import { Helmet } from 'react-helmet';
-import Emoji from "react-emoji-render";
-import { animateScroll as scroll } from 'react-scroll';
 import Navbar from '../Navbar';
 import Footer from '../Footer';
-import { motion } from "framer-motion";
 import ScrollToTop from '../ScrollToTop';
 import BackToTop from '../BackToTop';
 
@@ -75,10 +71,6 @@ const styles = theme => ({
 		marginBottom: theme.spacing(2),
 		marginTop: theme.spacing(1)
     }
-});
-
-const logoTheme = createMuiTheme({
-	typography: {allVariants: {fontFamily:`"Dancing Script", sans-serif`}}
 });
 
 const theme = createMuiTheme({
@@ -244,60 +236,6 @@ function HomePage(props) {
 					</Grid>
 			</Grid>
 			<Footer to='/'/>
-			{/*<Footer>
-				<Logo to='/'onClick={() => scroll.scrollToTop()}>
-					<motion.div
-						whileHover={{ scale: 1.25 }}
-						transition={{ type: "spring", stiffness: 500 }}
-						style={{display: 'flex', alignItems: 'center'}}>
-						<MuiThemeProvider theme={logoTheme}>
-							<Typography variant="h4">
-								Portfolio +
-							</Typography>
-						</MuiThemeProvider>
-					</motion.div>
-				</Logo>
-				<MuiThemeProvider theme={theme}>
-						<Typography variant="subtitle2" gutterBottom>
-							Creating a portfolio has never been easier
-						</Typography>
-					</MuiThemeProvider>
-				<Divider variant="middle" className={classes.divider} />
-				<LinksContainer>
-					<motion.div
-						whileHover={{ rotateZ: 10, scale: 1.25 }}
-						transition={{ type: "spring", stiffness: 500 }}
-						style={{display: 'flex', alignItems: 'center'}}>
-						<FooterLink to='/questions-and-answers'>Help</FooterLink>
-					</motion.div>
-					<motion.div
-						whileHover={{ rotateZ: 10, scale: 1.25 }}
-						transition={{ type: "spring", stiffness: 500 }}
-						style={{display: 'flex', alignItems: 'center'}}>
-						<FooterLink to='/credits'>Credits</FooterLink>
-					</motion.div>
-					<motion.div
-						whileHover={{ rotateZ: -10, scale: 1.25 }}
-						transition={{ type: "spring", stiffness: 500 }}
-						style={{display: 'flex', alignItems: 'center'}}>
-						<FooterLink to='/register'>Regitser</FooterLink>
-					</motion.div>
-					<motion.div
-						whileHover={{ rotateZ: -10, scale: 1.25 }}
-						transition={{ type: "spring", stiffness: 500 }}
-						style={{display: 'flex', alignItems: 'center'}}>
-						<FooterLink to='/login'>Login</FooterLink>
-					</motion.div>
-				</LinksContainer>
-				<MuiThemeProvider theme={theme}>
-					<Typography variant="subtitle2" gutterBottom>
-						Coded with <Emoji text=":heart:" style={{fontSize: "18px"}}/> by Tsahi Barshavsky
-					</Typography>
-					<Typography variant="subtitle2" gutterBottom>
-						All rights reserved &copy; {new Date().getFullYear()}
-					</Typography>
-				</MuiThemeProvider>
-			</Footer>*/}
 		</Container>
 		</>
 	)

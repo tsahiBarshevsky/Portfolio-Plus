@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
-	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
+	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab,
 	Grid, Tooltip, Fade} from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -20,9 +20,6 @@ import AddIcon from '@material-ui/icons/Add';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ProjectCard from '../ProjectCard';
-import GenericPhoto from '../../images/person-circle-outline.svg';
-import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import { GridContainer, Container, PulseBubble1, PulseBubble2,
 	PulseBubble3, PulseContainer, ButtonsWrapper, TableWrapper } from './DashboardElements';
 import { Helmet } from 'react-helmet';
@@ -277,23 +274,14 @@ function Dashboard(props)
 	const [projects, setProjects] = useState([]);
 	const [isLoad, setIsLoad] = useState(false);
 	const [date, setDate] = useState('');
-	const [userInfo, setUserInfo] = useState('');
-	//const gridTheme = useTheme();
 	const isMobile = useMediaQuery(theme.breakpoints.down('md'), {
 		defaultMatches: true
 	});
-
-	//console.log(firebase.auth.currentUser.emailVerified);
 
 	const dialogBackground = {backgroundColor: '#f5f5f5'};
 
     useEffect(() =>
     {
-		/*setTimeout(() => {
-			//setIsLoad(true);
-			//firebase.getUserInfo(firebase.getCurrentUsername()).then(setUserInfo);
-			//firebase.getLastUpdate(firebase.getCurrentUsername()).then(setDate);
-		}, 1000);*/
 		if (update)
 		{
 			firebase.getAllProjects(firebase.getCurrentUsername()).then(setProjects);
@@ -305,15 +293,8 @@ function Dashboard(props)
 	if (projects && date && !isLoad)
 		setIsLoad(true);
 	
-	/*useEffect(() =>
-	{
-		if (firebase.getCurrentUsername())
-			firebase.getCurrentUserQuote().then(setQuote);
-	}, [firebase.getCurrentUsername(), firebase.getCurrentUserQuote()]);*/
-
+	//not logged in - redirect to login page
 	if (!firebase.getCurrentUsername()) {
-		// not logged in
-		//console.log('Please login first');
 		props.history.replace('/login');
 		return null;
 	}
@@ -372,13 +353,6 @@ function Dashboard(props)
 		Array.from(document.querySelectorAll("Input")).forEach(
 			input => (input.id === "links" ? input.value = "" : null)
 		);
-		/*if (links.length === 1 && (typeof links[0] === "object" || links[0] === ""))
-			console.log("yes");
-		else
-			console.log("no");*/
-		/*Array.from(document.querySelectorAll("Input")).forEach(
-			input => (input.id === "links" ? [(input.value === "" ? console.log("yes") : console.log("no"))] : null)
-		);*/
 	}
 
 	const handleDrawerOpen = () => 
@@ -526,38 +500,6 @@ function Dashboard(props)
 									setUpdate={setUpdate}/>
 							</TableWrapper>
 						</> : null}
-						{/*projects.length >= 1 ?
-						<Container>
-							<MuiThemeProvider theme={typographyTheme}>
-								<Typography align="center" variant="h5" gutterBottom>
-									{`So far, you've added ${projects.length > 1 ? `${projects.length} projects` : `one project`}`}
-								</Typography>
-							</MuiThemeProvider>
-							<GridContainer>
-								<Grid spacing={4}
-										container
-										direction="row"
-										justify="center"
-										alignItems="center"
-										alignContent="center"
-									>
-									{projects.map((project, index) =>
-									<Grid item lg={3} xl={3} key={index}>
-										<ProjectCard 
-											name={firebase.getCurrentUsername()}
-											title={project.title}
-											setUpdate={setUpdate} />
-									</Grid>
-									)}
-								</Grid>
-							</GridContainer>
-						</Container>
-						: 
-						<MuiThemeProvider theme={typographyTheme}>
-							<Typography align="center" variant="h5">
-								{`You haven't added any project yet. Don't worry, you can do it anytime!`}
-							</Typography>
-									</MuiThemeProvider>*/}
 					</> 
 					: 
 					<PulseContainer>
@@ -694,17 +636,6 @@ function Dashboard(props)
 			const result = checkVideoURL();
 			if (result || result === null)
 			{
-				var fault = false;
-				/*Array.from(document.querySelectorAll("Input")).forEach(
-					input => 
-					{
-						if (input.value === "")
-							fault = true;
-						else
-							fault = false;
-					}
-				);
-				if (!fault)*/
 				if (title.trim() !== '' && type.trim() !== '' && description.trim() !== '')
 				{
 					//check if there are no links

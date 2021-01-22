@@ -63,10 +63,6 @@ class Firebase
     {
         if (!this.auth.currentUser)
             return alert("Not authorized");
-        /*this.db.collection(`${this.auth.currentUser.displayName}`).where("title", "==", title).get()
-        .then(querySnapshot => {
-            querySnapshot.docs[0].ref.delete();
-        });*/
         const res = this.db.collection(`${this.auth.currentUser.displayName}`).doc(`${title}`).delete();
     }
 
@@ -87,16 +83,6 @@ class Firebase
         }).catch(err => console.log(err))
     }
 
-    addQuote(quote)
-    {
-        if (!this.auth.currentUser)
-            return alert("Not authorized");
-        return this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).set({
-            quote: quote,
-            user: this.auth.currentUser.displayName
-        });
-    }
-
     isInitialized()
     {
         return new Promise(resolve => {
@@ -114,15 +100,6 @@ class Firebase
         return this.auth.currentUser && this.auth.currentUser.email;
     }
 
-    async getCurrentUserQuote()
-    {
-        if (this.auth.currentUser)
-        {
-            const quote = await this.db.doc(`users_codedamn_video/${this.auth.currentUser.uid}`).get()
-            return quote.get('quote');
-        }
-    }
-
     async getSingleProject(username, title)
     {
         const cityRef = this.db.collection(`${username}`).doc(`${title}`);
@@ -134,12 +111,6 @@ class Firebase
     {
         const snapshot = await app.firestore().collection(`${username}`).get();
         return snapshot.docs.map(doc => doc.data());
-        /*this.db.collection(`users_codedamn_video`).onSnapshot((snapshot) => {
-            const postData = [];
-            snapshot.forEach((doc) => postData.push({ ...doc.data(), id: doc.id }));
-            console.log(postData.length);
-            return postData['quote'];
-        });*/
     }
 
     async addUserToList(name, profession, date, background)
@@ -215,14 +186,6 @@ class Firebase
         const ref = this.db.collection(`list-of-users`).doc(`${username}`);
         const doc = await ref.get();
         return doc.data() ? doc.data().background : null;
-    }
-
-    async updateUsername(username, oldUsername)
-    {
-        console.log(oldUsername);
-        this.auth.currentUser.updateProfile({
-            displayName: username
-        });
     }
 
     async resetPassword(email)

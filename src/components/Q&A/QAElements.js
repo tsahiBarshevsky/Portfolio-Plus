@@ -45,17 +45,3 @@ export const MailTo = styled.a`
         color: #ff4040;
     }
 `;
-
-export const Question = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-`;
-
-export const Answer = styled.div`
-    display: flex;
-    justify-content: flex-start;
-    margin-left: 19px;
-    padding-bottom: 25px;
-`;

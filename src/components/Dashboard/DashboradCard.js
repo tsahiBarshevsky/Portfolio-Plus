@@ -32,6 +32,7 @@ function DashboradCard(props) {
                 return <CodeIcon style={style} />
             case 'Last update':
                 return <ScheduleIcon style={style} />
+            default: return null;
         }
     }
 

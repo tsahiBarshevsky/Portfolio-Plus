@@ -6,8 +6,10 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import { Typography, Divider, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
-import { Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer, Video, Links, Link, Logo, ErrorLogo, ErrorRoot, BackToHomeLink, PulseBubble1, PulseBubble2,
-	PulseBubble3, PulseContainer, SocialIcons, BackHome, LinksLi } from './PersonalLinkElements';
+import { 
+    Root, TextWrapper, TopLine, ListWrapper, ProjectsList, Project, VideoContainer,
+    Video, Links, Link, ErrorLogo, ErrorRoot, PulseBubble1, PulseBubble2, PulseBubble3,
+    PulseContainer, SocialIcons, BackHome, LinksLi } from './PersonalLinkElements';
 import { Helmet } from "react-helmet";
 import {FacebookShareButton, LinkedinShareButton, TelegramShareButton, WhatsappShareButton,
         FacebookIcon, LinkedinIcon, TelegramIcon, WhatsappIcon} from 'react-share';
@@ -202,20 +204,10 @@ function PersonalLink(props) {
 
     useEffect(() =>
     {
-        /*getImageURL();
-        firebase.getAllProjects(props.match.params.username).then(setProjects);*/
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
-        /*setTimeout(() => {
-			setIsLoad(true);
-		}, 1000);*/
     }, []);
 
     if (userInfo === null && !fault) setFault(true);
-
-    /* ugly and unsafe solution
-    setTimeout(() => {
-        setFault(true);
-    }, 2000);*/
 
     if (userInfo && !isLoad)
     {

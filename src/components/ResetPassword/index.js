@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Typography, Paper, Avatar, Button, FormControl, Input, InputAdornment, Snackbar } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import RestoreIcon from '@material-ui/icons/Restore';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
@@ -10,7 +9,6 @@ import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import AlternateEmailIcon from '@material-ui/icons/AlternateEmail';
 import Background from '../../images/Backgrounds/forms.png';
 import { Helmet } from 'react-helmet';
-import { Link } from 'react-router-dom';
 
 const styles = theme => ({
 	main: 
@@ -213,7 +211,6 @@ function ResetPassword(props)
                 await firebase.resetPassword(email.trim());
                 setMessage("A password reset was sent to your email; Check your inbox.");
                 setOpenSuccess(true);
-                //setEmail('');
                 setTimeout(() => {
                     props.history.replace('/');
                 }, 3500);

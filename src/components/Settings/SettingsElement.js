@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import WarningIcon from '@material-ui/icons/Warning';
-import { red } from '@material-ui/core/colors';
 
 export const Wrapper = styled.div`
     display: flex;

@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import { Answer, Container, InnerContainer, MailTo, Question, TextWrapper } from './QAElements';
+import React from 'react';
+import { Container, InnerContainer, MailTo, TextWrapper } from './QAElements';
 import { makeStyles } from '@material-ui/core/styles';
-import { Collapse, IconButton, Typography, Divider } from '@material-ui/core';
-import clsx from 'clsx';
+import { Typography } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
-import { grey, red } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';

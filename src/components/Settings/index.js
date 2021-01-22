@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import ProgressBar from '@ramonak/react-progress-bar';
 import { 
 	Typography, FormControl, Input, Button, Snackbar, Divider, List, ListItem,
-	AppBar, Toolbar, CssBaseline, IconButton, Drawer, Fab, CircularProgress,
+	AppBar, Toolbar, CssBaseline, IconButton, Drawer, 
 	Grid, Avatar, DialogActions } from '@material-ui/core';
 import { useTheme, withStyles } from '@material-ui/core/styles';
 import firebase from '../firebase';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import MuiAlert from '@material-ui/lab/Alert';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -17,8 +17,7 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import clsx from 'clsx';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
-import { ImagePanel, ButtonsPanel, Wrapper, PreviewContianer, PersonalPage, Warning, WarningWrapper } from './SettingsElement';
+import { ImagePanel, ButtonsPanel, Wrapper, PersonalPage, Warning, WarningWrapper } from './SettingsElement';
 import { grey, red } from '@material-ui/core/colors';
 import { Helmet } from 'react-helmet';
 import ThemeCard from '../ThemeCard';
@@ -294,8 +293,6 @@ function Settings(props)
 	const { classes } = props;
 	const theme = useTheme();
     const [update, setUpdate] = useState(true);  
-    const [users, setUsers] = useState([]);
-	const [username, setUsername] = useState('');
 	const [open, setOpen] = useState(false);
 	const [openError, setOpenError] = useState(false);
 	const [error, setError] = useState('');
@@ -322,9 +319,8 @@ function Settings(props)
 		}
     }, [getImageURL, getUserTheme, firebase.getProfession]);
 
+	//not logged in - redirect to login page
 	if (!firebase.getCurrentUsername()) {
-		// not logged in
-		//console.log('Please login first');
 		props.history.replace('/login');
 		return null;
 	}
@@ -347,11 +343,6 @@ function Settings(props)
 	{
 		setOpenError(false);
 		setOpenSuccess(false);
-	}
-
-	const clearForm = () =>
-	{
-		
 	}
 
 	const handleDrawerOpen = () => 

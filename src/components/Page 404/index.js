@@ -30,7 +30,7 @@ function Page404(props) {
         {
             props.history.push('/');
         }, 5000)
-    }, [])
+    }, [props.history])
     
     return (
         <div className={classes.root}>
