@@ -145,6 +145,30 @@ function PersonalLink(props) {
     /*card content - open mode*/
     function Content(props) 
     {
+        const [width, setWidth] = useState(window.innerWidth);;
+
+        useEffect(() => {
+            const updateWindowDimensions = () => 
+            {
+                const newWidth = window.innerWidth;
+                setWidth(newWidth);
+            };
+            window.addEventListener("resize", updateWindowDimensions);
+            return () => window.removeEventListener("resize", updateWindowDimensions) 
+        }, []);
+
+        //break the link if it's too big
+        const rednerLink = (link) =>
+        {
+            var x = [], y = [];
+            var http = link.substring(0, 8);
+            var other = link.slice(8, link.length);
+            other.split(/[/]/).map(i => {x.push(i)});
+            var res = x.join('/\n');
+            res.split(/[=]/).map(i => {y.push(i)});
+            return `${http}${y.join('=\n')}`;
+        }
+
         return (
             <motion.div
                 layout
@@ -171,7 +195,9 @@ function PersonalLink(props) {
                             <Links>
                             {projects[props.location].links.map((link, index) =>
                                 <LinksLi key={index}>
-                                    <Link href={link} target="_blank">{link}</Link>
+                                    <Link href={link} target="_blank">
+                                        {width < 600 ? rednerLink(link):link}
+                                    </Link>
                                 </LinksLi>
                             )}
                             </Links>
@@ -198,6 +224,8 @@ function PersonalLink(props) {
     const [isLoad, setIsLoad] = useState(false);
     const [help, setHelp] = useState(false);
     const [fault, setFault] = useState(false);
+    //const [width, setWidth] = useState(window.innerWidth);
+    //console.log(width);
     
     var style;
     const classes = useStyles();
@@ -205,6 +233,11 @@ function PersonalLink(props) {
     useEffect(() =>
     {
         firebase.getUserInfo(props.match.params.username).then(setUserInfo);
+        /*const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        return () => {
+            window.removeEventListener("resize", handleResize);
+        };*/
     }, []);
 
     if (userInfo === null && !fault) setFault(true);

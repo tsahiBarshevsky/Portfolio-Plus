@@ -68,9 +68,9 @@ export const ProjectsList = styled(motion.ul)`
     }
 
     //xs
-    @media screen and (max-width: 559px)
+    @media screen and (max-width: 599px)
     {
-        width: 300px;
+        width: 320px;
     }
 `;
 
@@ -109,7 +109,6 @@ export const LinksLi = styled.li`
     align-items: center;
     padding: 1px 0;
     box-sizing: border-box;
-    width: 10%;
     
     &:before
     {
@@ -138,6 +137,11 @@ export const Link = styled.a`
     {
         color: #ff4040;
         transition: 0.5s ease-in;
+    }
+    @media screen and (max-width: 599px)
+    {
+        width: 50%;
+        font-size: 0.9rem;
     }
 `;
 

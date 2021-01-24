@@ -644,8 +644,16 @@ function Dashboard(props)
 					else
 					{
 						//check if any input left empty, if so, delete {} from array
-						links.map((x, i) => {return typeof x === 'object' ? links.splice(i, 1) : null});
-						await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
+						links.map((x, i) => {return typeof x === 'object' || x.trim() === '' ? links.splice(i, 1) : null});
+						if (links.length === 0)
+							await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
+						else
+						{
+							if (links.length === 1 && links[0].replace(/\s/g, '').length === 0)
+								await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
+							else
+								await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
+						}
 					}
 					setOpenDialog(false);
 					setOpenSuccess(true);
