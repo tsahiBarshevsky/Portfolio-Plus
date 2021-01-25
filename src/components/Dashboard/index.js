@@ -314,6 +314,16 @@ function Dashboard(props)
 		return false;
 	}
 
+	const checkURL = (url) =>
+	{
+		if (typeof url === 'object')
+			return false;
+		const reg = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+		if (reg.test(url.trim()))
+			return true;
+		return false;
+	}
+
 	const handleInputChange = (e, index) => 
 	{
 		const { value } = e.target;
@@ -561,6 +571,20 @@ function Dashboard(props)
 										value={description} 
 										onChange={e => setDescription(e.target.value)} />
 								</FormControl>
+								{500 - description.length <= 10 && description.length !== 500 ? 
+								<MuiThemeProvider theme={typographyTheme}>
+									<Typography variant="subtitle1">
+										{`${500-description.length} characters left until the limit of 500`}
+									</Typography>
+								</MuiThemeProvider>
+								:
+								[(description.length === 500 ? 
+								<MuiThemeProvider theme={typographyTheme}>
+									<Typography variant="subtitle1">
+										{`You've exceeded the maximum character limit`}
+									</Typography>
+								</MuiThemeProvider>	
+								: null)]}
 								<FormControl margin="normal" fullWidth>
 									<Input id="video" name="video"
 										inputProps={{min: 0, style: { marginLeft: '20px' }}}
@@ -640,11 +664,34 @@ function Dashboard(props)
 				{
 					//check if there are no links
 					if (links.length === 1 && (typeof links[0] === "object" || links[0] === ""))
+					{
 						await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
+						setOpenDialog(false);
+						setOpenSuccess(true);
+						setSuccess(`${title.trim()} has been successfully added`);
+						setUpdate(true);
+						clearForm();
+					}
 					else
 					{
+						var fault = false;
+						links.map(x => !checkURL(x) ? fault = true : null)
+						if (fault)
+						{
+							setError("Invalid URL. If you left any of the fields empty, please remove it");
+							setOpenError(true);
+						}
+						else
+						{
+							await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
+							setOpenDialog(false);
+							setOpenSuccess(true);
+							setSuccess(`${title.trim()} has been successfully added`);
+							setUpdate(true);
+							clearForm();
+						}
 						//check if any input left empty, if so, delete {} from array
-						links.map((x, i) => {return typeof x === 'object' || x.trim() === '' ? links.splice(i, 1) : null});
+						/*links.map((x, i) => {return typeof x === 'object' || x.trim() === '' ? links.splice(i, 1) : null});
 						if (links.length === 0)
 							await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
 						else
@@ -653,13 +700,9 @@ function Dashboard(props)
 								await firebase.addProject(title.trim(), type.trim(), description.trim(), null, result);
 							else
 								await firebase.addProject(title.trim(), type.trim(), description.trim(), links, result);
-						}
+						}*/
 					}
-					setOpenDialog(false);
-					setOpenSuccess(true);
-					setSuccess(`${title.trim()} has been successfully added`);
-					setUpdate(true);
-					clearForm();
+					
 				}
 				else
 				{

@@ -184,6 +184,16 @@ function ProjectsTable(props)
 		}
 		return false;
 	}
+
+	const checkURL = (url) =>
+	{
+		if (typeof url === 'object')
+			return false;
+		const reg = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+		if (reg.test(url.trim()))
+			return true;
+		return false;
+	}
     
     const handleOpenEditDialog = () =>
 	{
@@ -423,9 +433,9 @@ function ProjectsTable(props)
 					break;
 				//2. do links no video
 				case links && video === null:
-					var fault = false;
+					var fault = false, invalid = false;
 					for (var i=0; i<links.length; i++)
-						if (links[i] === '')
+						if (!checkURL(links[i]))
 							fault = true;
 					if (type !== '' && description !== '' && !fault)
 					{
@@ -440,7 +450,7 @@ function ProjectsTable(props)
 					}
 					else
 					{
-						setError("One of the fields has left blank");
+						setError("Invalid URL");
 						setOpenError(true);
 					}
 					break;
@@ -479,7 +489,7 @@ function ProjectsTable(props)
 					{
 						var fault = false;
 						for (var i=0; i<links.length; i++)
-							if (links[i] === '')
+							if (!checkURL(links[i]))
 								fault = true;
 						if (type !== '' && description !== '' && !fault)
 						{
@@ -494,7 +504,7 @@ function ProjectsTable(props)
 						}
 						else
 						{
-							setError("One of the fields has left blank");
+							setError("Invalid URL");
 							setOpenError(true);
 						}
 					}
